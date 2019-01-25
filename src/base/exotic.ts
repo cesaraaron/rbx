@@ -26,6 +26,18 @@ export type FromReactType<
     : never
   : T;
 
+export type ForwardRefAsExoticComponentAsFinalType<
+  T extends ForwardRefAsExoticComponent<TOwnProps, React.ReactType>,
+  P extends TProps,
+  TOwnProps extends {} = T extends ForwardRefAsExoticComponent<
+    infer U,
+    React.ReactType
+  >
+    ? U
+    : never,
+  TProps extends { as?: React.ReactType } = { as?: React.ReactType } & TOwnProps
+> = P["as"] extends React.ReactType ? P["as"] : T["defaultProps"]["as"];
+
 export type ForwardRefAsExoticComponent<
   TOwnProps,
   TDefaultComponent extends React.ReactType
@@ -47,11 +59,15 @@ export type ForwardRefAsExoticComponent<
           : TAsComponent
       >,
   ): JSX.Element | null;
-  defaultProps: {
-    as: TDefaultComponent;
-  } & Partial<TOwnProps & React.ComponentPropsWithoutRef<TDefaultComponent>>;
+  defaultProps: { as: TDefaultComponent } & Partial<
+    Prefer<
+      React.PropsWithoutRef<TOwnProps> &
+        React.RefAttributes<FromReactType<TDefaultComponent>>,
+      React.ComponentPropsWithoutRef<TDefaultComponent>
+    >
+  >;
   displayName: string;
-  propTypes: React.WeakValidationMap<
+  propTypes?: React.WeakValidationMap<
     {
       [k in
         | "as"
@@ -64,22 +80,18 @@ export type ForwardRefAsExoticComponent<
 
 export function forwardRefAs<
   TOwnProps,
-  TDefaultComponent extends React.ReactType = React.ReactType
+  TDefaultComponent extends React.ReactType
 >(
   factory: React.RefForwardingComponent<
     HTMLElement | SVGElement | React.ComponentType,
     TOwnProps & { as: React.ReactType }
   >,
-  defaultProps: Partial<
-    Prefer<
-      React.PropsWithoutRef<TOwnProps & { as: TDefaultComponent }> &
-        React.RefAttributes<FromReactType<TDefaultComponent>>,
-      React.ComponentPropsWithoutRef<TDefaultComponent>
-    >
-  >,
+  defaultProps: ForwardRefAsExoticComponent<
+    TOwnProps,
+    TDefaultComponent
+  >["defaultProps"],
 ) {
-  const forward = React.forwardRef(factory);
-  forward.defaultProps = defaultProps;
-
-  return forward as ForwardRefAsExoticComponent<TOwnProps, TDefaultComponent>;
+  return Object.assign(React.forwardRef(factory), {
+    defaultProps,
+  }) as ForwardRefAsExoticComponent<TOwnProps, TDefaultComponent>;
 }
