@@ -26,21 +26,18 @@ export type FromReactType<
     : never
   : T;
 
-export type ForwardRefAsExoticComponentAsFinalType<
-  T extends ForwardRefAsExoticComponent<TOwnProps, React.ReactType>,
-  P extends TProps,
-  TOwnProps extends {} = T extends ForwardRefAsExoticComponent<
-    infer U,
-    React.ReactType
-  >
+export type AsType<
+  T extends React.ReactType,
+  P extends {} = {}
+> = T extends ForwardRefAsExoticComponent
+  ? P extends { as: infer U }
     ? U
-    : never,
-  TProps extends { as?: React.ReactType } = { as?: React.ReactType } & TOwnProps
-> = P["as"] extends React.ReactType ? P["as"] : T["defaultProps"]["as"];
+    : T["defaultProps"]["as"]
+  : T;
 
 export type ForwardRefAsExoticComponent<
-  TOwnProps,
-  TDefaultComponent extends React.ReactType
+  TOwnProps extends {} = {},
+  TDefaultComponent extends React.ReactType = React.ReactType
 > = Pick<
   React.ForwardRefExoticComponent<TDefaultComponent>,
   Exclude<
