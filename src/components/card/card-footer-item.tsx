@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type CardFooterItemProps = HelpersProps;
 
-export const CardFooterItem = forwardRefAs<CardFooterItemProps>(
+export const CardFooterItem = forwardRefAs<"div", CardFooterItemProps>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("card-footer-item", className)}

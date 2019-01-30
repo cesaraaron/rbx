@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type CardContentProps = HelpersProps;
 
-export const CardContent = forwardRefAs<CardContentProps>(
+export const CardContent = forwardRefAs<"div", CardContentProps>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("card-content", className)}

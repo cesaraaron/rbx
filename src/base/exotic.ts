@@ -130,8 +130,8 @@ export type ForwardRefAsExoticComponent<
 };
 
 export function forwardRefAs<
-  TOwnProps,
-  TDefaultComponent extends React.ReactType = React.ReactType
+  TDefaultComponent extends React.ReactType,
+  TOwnProps extends {}
 >(
   Component: React.RefForwardingComponent<
     any,

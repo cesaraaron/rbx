@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type HeroHeadProps = HelpersProps;
 
-export const HeroHead = forwardRefAs<HeroHeadProps>(
+export const HeroHead = forwardRefAs<"div", HeroHeadProps>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("hero-head", className)}

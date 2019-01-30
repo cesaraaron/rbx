@@ -29,7 +29,7 @@ export type TagGroupModifierProps = Partial<{
 
 export type TagGroupProps = HelpersProps & TagGroupModifierProps;
 
-export const TagGroup = forwardRefAs<TagGroupProps>(
+export const TagGroup = forwardRefAs<"span", TagGroupProps>(
   ({ className, gapless, size, ...rest }, ref) => (
     <Generic
       className={classNames(

@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type CardHeaderIconProps = HelpersProps;
 
-export const CardHeaderIcon = forwardRefAs<CardHeaderIconProps>(
+export const CardHeaderIcon = forwardRefAs<"div", CardHeaderIconProps>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("card-header-icon", className)}

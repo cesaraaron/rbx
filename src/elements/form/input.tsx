@@ -49,7 +49,7 @@ export type InputModifierProps = Partial<{
 
 export type InputProps = HelpersProps & InputModifierProps;
 
-export const Input = forwardRefAs<InputProps>(
+export const Input = forwardRefAs<"input", InputProps>(
   (
     {
       className,

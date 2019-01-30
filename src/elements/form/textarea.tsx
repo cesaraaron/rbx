@@ -35,7 +35,7 @@ export type TextareaModifierProps = Partial<{
 
 export type TextareaProps = HelpersProps & TextareaModifierProps;
 
-export const Textarea = forwardRefAs<TextareaProps>(
+export const Textarea = forwardRefAs<"textarea", TextareaProps>(
   ({ className, color, fixedSize, size, state, ...rest }, ref) => (
     <Generic
       className={classNames(

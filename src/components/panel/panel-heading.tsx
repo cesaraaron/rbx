@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type PanelHeadingProps = HelpersProps;
 
-export const PanelHeading = forwardRefAs<PanelHeadingProps>(
+export const PanelHeading = forwardRefAs<"div", PanelHeadingProps>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("panel-heading", className)}

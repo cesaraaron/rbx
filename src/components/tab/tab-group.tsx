@@ -36,7 +36,7 @@ export type TabGroupModifierProps = Partial<{
 
 export type TabGroupProps = HelpersProps & TabGroupModifierProps;
 
-export const TabGroup = forwardRefAs<TabGroupProps>(
+export const TabGroup = forwardRefAs<"div", TabGroupProps>(
   ({ align, children, className, fullwidth, kind, size, ...rest }, ref) => (
     <Generic
       className={classNames(

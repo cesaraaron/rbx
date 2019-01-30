@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type FileLabelProps = HelpersProps;
 
-export const FileLabel = forwardRefAs<FileLabelProps>(
+export const FileLabel = forwardRefAs<"label", FileLabelProps>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("file-label", className)}

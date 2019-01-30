@@ -28,7 +28,7 @@ export type LevelItemModifierProps = Partial<{
 
 export type LevelItemProps = HelpersProps & LevelItemModifierProps;
 
-export const LevelItem = forwardRefAs<LevelItemProps>(
+export const LevelItem = forwardRefAs<"div", LevelItemProps>(
   ({ align, className, ...rest }, ref) => (
     <Generic
       className={classNames(

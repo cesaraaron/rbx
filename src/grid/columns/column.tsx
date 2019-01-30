@@ -71,7 +71,7 @@ export type ColumnModifierProps = Partial<
 export type ColumnProps = HelpersProps & ColumnModifierProps;
 
 export const Column = Object.assign(
-  forwardRefAs<ColumnProps>(
+  forwardRefAs<"div", ColumnProps>(
     (
       {
         className,

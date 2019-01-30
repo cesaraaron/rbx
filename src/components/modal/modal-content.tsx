@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type ModalContentProps = HelpersProps;
 
-export const ModalContent = forwardRefAs<ModalContentProps>(
+export const ModalContent = forwardRefAs<"div", ModalContentProps>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("modal-content", className)}

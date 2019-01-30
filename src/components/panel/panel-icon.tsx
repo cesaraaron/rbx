@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type PanelIconProps = HelpersProps;
 
-export const PanelIcon = forwardRefAs<PanelIconProps>(
+export const PanelIcon = forwardRefAs<"span", PanelIconProps>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("panel-icon", className)}

@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type FileInputProps = HelpersProps;
 
-export const FileInput = forwardRefAs<FileInputProps>(
+export const FileInput = forwardRefAs<"input", FileInputProps>(
   ({ className, ...rest }, ref) => {
     const htmlProps = { type: "file" };
 

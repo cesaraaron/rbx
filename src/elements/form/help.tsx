@@ -12,7 +12,7 @@ export type HelpModifierProps = Partial<{
 
 export type HelpProps = HelpersProps & HelpModifierProps;
 
-export const Help = forwardRefAs<HelpProps>(
+export const Help = forwardRefAs<"p", HelpProps>(
   ({ className, color, ...rest }, ref) => (
     <Generic
       className={classNames("help", { [`is-${color}`]: color }, className)}

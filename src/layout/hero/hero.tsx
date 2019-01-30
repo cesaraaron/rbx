@@ -41,7 +41,7 @@ export type HeroModifierProps = Partial<{
 export type HeroProps = HelpersProps & HeroModifierProps;
 
 export const Hero = Object.assign(
-  forwardRefAs<HeroProps>(
+  forwardRefAs<"section", HeroProps>(
     ({ className, color, gradient, size, ...rest }, ref) => (
       <Generic
         className={classNames(

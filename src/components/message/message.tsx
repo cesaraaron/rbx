@@ -33,7 +33,7 @@ export type MessageModifierProps = Partial<{
 export type MessageProps = HelpersProps & MessageModifierProps;
 
 export const Message = Object.assign(
-  forwardRefAs<MessageProps>(
+  forwardRefAs<"article", MessageProps>(
     ({ className, color, size, ...rest }, ref) => (
       <Generic
         className={classNames(

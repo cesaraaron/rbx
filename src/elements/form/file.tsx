@@ -43,7 +43,7 @@ export type FileModifierProps = Partial<{
 export type FileProps = HelpersProps & FileModifierProps;
 
 export const File = Object.assign(
-  forwardRefAs<FileProps>(
+  forwardRefAs<"div", FileProps>(
     (
       { align, boxed, className, color, fullwidth, hasName, size, ...rest },
       ref,

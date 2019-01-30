@@ -11,7 +11,7 @@ export type PaginationLinkModifiers = Partial<{
 
 export type PaginationLinkProps = HelpersProps & PaginationLinkModifiers;
 
-export const PaginationLink = forwardRefAs<PaginationLinkProps>(
+export const PaginationLink = forwardRefAs<"a", PaginationLinkProps>(
   ({ className, current, ...rest }, ref) => (
     <li>
       <Generic

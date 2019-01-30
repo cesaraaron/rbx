@@ -5,7 +5,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type RadioProps = HelpersProps;
 
-export const Radio = forwardRefAs<RadioProps>(
+export const Radio = forwardRefAs<"input", RadioProps>(
   (props, ref) => {
     const htmlProps = { type: "radio" };
 

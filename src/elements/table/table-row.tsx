@@ -11,7 +11,7 @@ export type TableRowHelperProps = Partial<{
 
 export type TableRowProps = HelpersProps & TableRowHelperProps;
 
-export const TableRow = forwardRefAs<TableRowProps>(
+export const TableRow = forwardRefAs<"tr", TableRowProps>(
   ({ className, selected, ...rest }, ref) => (
     <Generic
       className={classNames({ "is-selected": selected }, className)}

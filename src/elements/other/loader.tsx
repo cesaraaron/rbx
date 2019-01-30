@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type LoaderProps = HelpersProps;
 
-export const Loader = forwardRefAs<LoaderProps>(
+export const Loader = forwardRefAs<"div", LoaderProps>(
   ({ className, ...rest }, ref) => (
     <Generic className={classNames("loader", className)} ref={ref} {...rest} />
   ),

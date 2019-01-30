@@ -22,7 +22,7 @@ export type TableModifierProps = Partial<{
 export type TableProps = HelpersProps & TableModifierProps;
 
 export const Table = Object.assign(
-  forwardRefAs<TableProps>(
+  forwardRefAs<"table", TableProps>(
     (
       { bordered, className, fullwidth, hoverable, narrow, striped, ...rest },
       ref,

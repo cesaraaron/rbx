@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type PaginationEllipsisProps = HelpersProps;
 
-export const PaginationEllipsis = forwardRefAs<PaginationEllipsisProps>(
+export const PaginationEllipsis = forwardRefAs<"span", PaginationEllipsisProps>(
   ({ className, ...rest }, ref) => (
     <li>
       <Generic

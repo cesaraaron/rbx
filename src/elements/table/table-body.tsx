@@ -5,7 +5,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type TableBodyProps = HelpersProps;
 
-export const TableBody = forwardRefAs<TableBodyProps, "tbody">(
+export const TableBody = forwardRefAs<"tbody", TableBodyProps>(
   (props, ref) => <Generic ref={ref} {...props} />,
   { as: "tbody" },
 );

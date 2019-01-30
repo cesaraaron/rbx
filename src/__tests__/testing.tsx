@@ -244,7 +244,7 @@ export const makeNodeFactory = <T extends React.ComponentType<any>>(
  * returns a <Generic /> function.
  *
  * For example:
- *     const MyComponent = forwardRefAs<{}, 'div'>((props, ref) => (
+ *     const MyComponent = forwardRefAs<"div", {}>((props, ref) => (
  *         <Generic ref={ref} {...props} />
  *       ),
  *       { as: 'div' },

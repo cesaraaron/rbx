@@ -38,7 +38,7 @@ export type FieldModifierProps = Partial<{
 export type FieldProps = HelpersProps & FieldModifierProps;
 
 export const Field = Object.assign(
-  forwardRefAs<FieldProps>(
+  forwardRefAs<"div", FieldProps>(
     (props, ref) => {
       const {
         align,

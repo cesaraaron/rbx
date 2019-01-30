@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type FileNameProps = HelpersProps;
 
-export const FileName = forwardRefAs<FileNameProps>(
+export const FileName = forwardRefAs<"span", FileNameProps>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("file-name", className)}

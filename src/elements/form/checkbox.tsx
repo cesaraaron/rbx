@@ -5,7 +5,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type CheckboxProps = HelpersProps;
 
-export const Checkbox = forwardRefAs<CheckboxProps>(
+export const Checkbox = forwardRefAs<"input", CheckboxProps>(
   (props, ref) => {
     const htmlProps = { type: "checkbox" };
 

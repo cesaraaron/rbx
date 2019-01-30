@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type DropdownDividerProps = HelpersProps;
 
-export const DropdownDivider = forwardRefAs<DropdownDividerProps>(
+export const DropdownDivider = forwardRefAs<"hr", DropdownDividerProps>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("dropdown-divider", className)}

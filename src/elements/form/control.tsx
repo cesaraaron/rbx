@@ -32,7 +32,7 @@ export type ControlModifierProps = Partial<{
 
 export type ControlProps = HelpersProps & ControlModifierProps;
 
-export const Control = forwardRefAs<ControlProps>(
+export const Control = forwardRefAs<"div", ControlProps>(
   (
     { className, expanded, iconLeft, iconRight, loading, size, ...rest },
     ref,

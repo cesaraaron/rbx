@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type MessageHeaderProps = HelpersProps;
 
-export const MessageHeader = forwardRefAs<MessageHeaderProps>(
+export const MessageHeader = forwardRefAs<"div", MessageHeaderProps>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("message-header", className)}

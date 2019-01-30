@@ -83,7 +83,7 @@ const mapImageContainerChildren = (
   });
 };
 
-export const ImageContainer = forwardRefAs<ImageContainerProps>(
+export const ImageContainer = forwardRefAs<"figure", ImageContainerProps>(
   ({ children, className, size, ...rest }, ref) => {
     let s: string | undefined;
     if (typeof size === "string") {

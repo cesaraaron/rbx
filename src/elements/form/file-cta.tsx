@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type FileCTAProps = HelpersProps;
 
-export const FileCTA = forwardRefAs<FileCTAProps>(
+export const FileCTA = forwardRefAs<"div", FileCTAProps>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("file-cta", className)}

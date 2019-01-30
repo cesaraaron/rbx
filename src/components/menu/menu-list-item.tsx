@@ -12,7 +12,7 @@ export type MenuListItemModifierProps = Partial<{
 
 export type MenuListItemProps = HelpersProps & MenuListItemModifierProps;
 
-export const MenuListItem = forwardRefAs<MenuListItemProps>(
+export const MenuListItem = forwardRefAs<"a", MenuListItemProps>(
   ({ active, className, menu, ...rest }, ref) => (
     <li>
       <Generic

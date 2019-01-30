@@ -29,7 +29,7 @@ export type NavbarDropdownModifierProps = Partial<{
 
 export type NavbarDropdownProps = HelpersProps & NavbarDropdownModifierProps;
 
-export const NavbarDropdown = forwardRefAs<NavbarDropdownProps>(
+export const NavbarDropdown = forwardRefAs<"span", NavbarDropdownProps>(
   ({ align, boxed, className, ...rest }, ref) => (
     <Generic
       className={classNames(

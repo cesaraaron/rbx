@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type FieldBodyProps = HelpersProps;
 
-export const FieldBody = forwardRefAs<FieldBodyProps>(
+export const FieldBody = forwardRefAs<"div", FieldBodyProps>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("field-body", className)}

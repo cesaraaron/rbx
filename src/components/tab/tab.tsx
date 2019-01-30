@@ -13,7 +13,7 @@ export type TabModifierProps = Partial<{
 export type TabProps = HelpersProps & TabModifierProps;
 
 export const Tab = Object.assign(
-  forwardRefAs<TabProps>(
+  forwardRefAs<"a", TabProps>(
     ({ active, ...rest }, ref) => (
       <li className={classNames({ "is-active": active })}>
         <Generic ref={ref} {...rest} />

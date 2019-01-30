@@ -22,7 +22,7 @@ const onClickHandler = (
   ctx.setActive(!ctx.active);
 };
 
-export const DropdownTrigger = forwardRefAs<DropdownTriggerProps>(
+export const DropdownTrigger = forwardRefAs<"div", DropdownTriggerProps>(
   ({ className, onClick, ...rest }, ref) => (
     <DropdownContext.Consumer>
       {ctx => {

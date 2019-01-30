@@ -42,7 +42,7 @@ const mapChildren = (
     return child;
   });
 
-export const ModalCardHead = forwardRefAs<ModalCardHeadProps>(
+export const ModalCardHead = forwardRefAs<"header", ModalCardHeadProps>(
   ({ className, children, ...rest }, ref) => (
     <ModalContext.Consumer>
       {({ close }) => (

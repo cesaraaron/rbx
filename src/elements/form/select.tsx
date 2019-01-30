@@ -80,7 +80,7 @@ const mapSelectContainerChildren = (
   return { children: mapped, classNameExtension };
 };
 
-export const SelectContainer = forwardRefAs<SelectContainerProps>(
+export const SelectContainer = forwardRefAs<"div", SelectContainerProps>(
   (
     { className, children, color, fullwidth, rounded, size, state, ...rest },
     ref,
@@ -122,9 +122,10 @@ SelectContainer.propTypes = {
 export type SelectProps = HelpersProps;
 
 export const Select = Object.assign(
-  forwardRefAs<SelectProps>((props, ref) => <Generic ref={ref} {...props} />, {
-    as: "select",
-  }),
+  forwardRefAs<"select", SelectProps>(
+    (props, ref) => <Generic ref={ref} {...props} />,
+    { as: "select" },
+  ),
   {
     Container: SelectContainer,
     Option: SelectOption,

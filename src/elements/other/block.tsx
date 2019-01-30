@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type BlockProps = HelpersProps;
 
-export const Block = forwardRefAs<BlockProps>(
+export const Block = forwardRefAs<"div", BlockProps>(
   ({ className, ...rest }, ref) => (
     <Generic className={classNames("block", className)} ref={ref} {...rest} />
   ),

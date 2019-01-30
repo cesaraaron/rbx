@@ -28,7 +28,7 @@ export type NavbarSegmentModifierProps = {
 
 export type NavbarSegmentProps = HelpersProps & NavbarSegmentModifierProps;
 
-export const NavbarSegment = forwardRefAs<NavbarSegmentProps>(
+export const NavbarSegment = forwardRefAs<"div", NavbarSegmentProps>(
   ({ align, className, ...rest }, ref) => (
     <Generic
       className={classNames(

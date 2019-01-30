@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type DropdownContentProps = HelpersProps;
 
-export const DropdownContent = forwardRefAs<DropdownContentProps>(
+export const DropdownContent = forwardRefAs<"div", DropdownContentProps>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("dropdown-content", className)}

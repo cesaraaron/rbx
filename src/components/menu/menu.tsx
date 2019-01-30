@@ -9,7 +9,7 @@ import { MenuList } from "./menu-list";
 export type MenuProps = HelpersProps;
 
 export const Menu = Object.assign(
-  forwardRefAs<MenuProps>(
+  forwardRefAs<"aside", MenuProps>(
     ({ className, ...rest }, ref) => (
       <Generic className={classNames("menu", className)} ref={ref} {...rest} />
     ),

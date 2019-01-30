@@ -5,7 +5,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type TableHeadingProps = HelpersProps;
 
-export const TableHeading = forwardRefAs<TableHeadingProps>(
+export const TableHeading = forwardRefAs<"th", TableHeadingProps>(
   (props, ref) => <Generic ref={ref} {...props} />,
   { as: "th" },
 );

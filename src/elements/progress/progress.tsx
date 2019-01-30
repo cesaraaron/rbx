@@ -32,7 +32,7 @@ export type ProgressModifierProps = Partial<{
 
 export type ProgressProps = HelpersProps & ProgressModifierProps;
 
-export const Progress = forwardRefAs<ProgressProps>(
+export const Progress = forwardRefAs<"progress", ProgressProps>(
   ({ className, color, size, ...rest }, ref) => (
     <Generic
       className={classNames(

@@ -7,7 +7,7 @@ import { ThemeContext } from "./theme";
 
 export type GenericProps = HelpersProps;
 
-export const Generic = forwardRefAs<GenericProps>(
+export const Generic = forwardRefAs<"div", GenericProps>(
   ({ as, ...rest }, ref) => (
     <ThemeContext.Consumer>
       {({ transform }) =>

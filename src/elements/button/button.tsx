@@ -55,7 +55,7 @@ const propTypes = {
 };
 
 export const Button = Object.assign(
-  forwardRefAs<ButtonProps>(
+  forwardRefAs<"button", ButtonProps>(
     (
       {
         className,

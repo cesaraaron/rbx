@@ -6,7 +6,7 @@ import { HelpersProps } from "../../base/helpers";
 
 export type PanelTabGroupProps = HelpersProps;
 
-export const PanelTabGroup = forwardRefAs<PanelTabGroupProps>(
+export const PanelTabGroup = forwardRefAs<"div", PanelTabGroupProps>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("panel-tabs", className)}

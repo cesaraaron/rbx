@@ -11,7 +11,7 @@ import { PanelTab } from "./panel-tab";
 export type PanelProps = HelpersProps;
 
 export const Panel = Object.assign(
-  forwardRefAs<PanelProps>(
+  forwardRefAs<"nav", PanelProps>(
     ({ className, ...rest }, ref) => (
       <Generic className={classNames("panel", className)} ref={ref} {...rest} />
     ),
