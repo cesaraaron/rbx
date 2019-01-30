@@ -43,7 +43,7 @@ test: lint test-unit
 
 lint:
 	@echo "Running linter"
-	@npx tslint --project .
+	@npx tslint --project ./tsconfig.build.json
 .PHONY: lint
 
 test-unit:

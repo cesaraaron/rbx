@@ -81,8 +81,14 @@
     "gzipped": 9217
   },
   "dist/rbx.umd.js": {
+<<<<<<< HEAD
     "bundled": 91117,
     "minified": 45838,
     "gzipped": 9416
+=======
+    "bundled": 90592,
+    "minified": 45389,
+    "gzipped": 9320
+>>>>>>> moved NavbarContainer's role into a spread
   }
 }

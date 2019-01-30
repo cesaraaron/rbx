@@ -82,6 +82,10 @@ export class NavbarContainer extends React.PureComponent<
       ...rest
     } = this.props;
 
+    const htmlProps = {
+      role: "navigation",
+    };
+
     return (
       <NavbarContext.Provider
         value={{
@@ -102,7 +106,7 @@ export class NavbarContainer extends React.PureComponent<
             className,
           )}
           ref={innerRef}
-          role="navigation"
+          {...htmlProps}
           {...rest}
         />
       </NavbarContext.Provider>
