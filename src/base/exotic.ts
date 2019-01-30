@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Prefer } from "../types";
+import { Omit } from "../types";
 
 // tslint:disable:no-reserved-keywords
 
@@ -26,69 +26,114 @@ export type FromReactType<
     : never
   : T;
 
-export type AsType<
-  T extends React.ReactType,
-  P extends {} = {}
-> = T extends ForwardRefAsExoticComponent
-  ? P extends { as: infer U }
-    ? U
-    : T["defaultProps"]["as"]
-  : T;
+export type NonOptionalPropKeys<P> = Required<
+  { [K in keyof P]: undefined extends P[K] ? never : K }
+>[keyof P];
 
-export type ForwardRefAsExoticComponent<
-  TOwnProps extends {} = {},
-  TDefaultComponent extends React.ReactType = React.ReactType
+export type HasIndexSignature<P> = (string | number) extends keyof P
+  ? true
+  : number extends keyof P
+  ? true
+  : false;
+
+/**
+ * Returns `true` or `false` depending on whether `TAsComponentProps` has
+ * required props that overlap with either required or optional TOwnProps.
+ */
+export type HasIntersectingNonOptionalProps<
+  TOwnProps,
+  TAsComponentProps
+> = Extract<
+  NonOptionalPropKeys<TAsComponentProps>,
+  keyof TOwnProps
+> extends undefined
+  ? false
+  : true;
+
+/**
+ * A simple check for whether Props 'P' has any required keys.
+ */
+export type HasNonOptionalPropKeys<P> = NonOptionalPropKeys<P> extends never
+  ? false
+  : true;
+
+/**
+ * Does TAsComponentProps have an index signature, masking it's required props?
+ *   --> return 0
+ * Does TAsComponentProps have no required props?
+ *   --> return 0 | 1
+ * Is there an interesection between TAsComponentProps props that are required
+ * and TOwnProps?
+ *   --> return 0
+ * --> return 0 | 1
+ */
+export type ForwardRefAsExoticComponentCompositeProps<
+  TOwnProps,
+  TAsComponentProps
+> = {
+  0: TOwnProps & { with: TAsComponentProps };
+  1: TOwnProps & (Omit<TAsComponentProps, keyof TOwnProps> & { with?: never });
+}[HasIndexSignature<TAsComponentProps> extends true
+  ? 0
+  : HasNonOptionalPropKeys<TAsComponentProps> extends false
+  ? (0 | 1)
+  : HasIntersectingNonOptionalProps<TOwnProps, TAsComponentProps> extends true
+  ? 0
+  : (0 | 1)];
+
+/**
+ * This is used to copy all properties from React.ForwardRefExoticComponent
+ * except the callable annotation.
+ */
+export type NonCallableForwardRefExoticComponentProps<
+  TOwnProps,
+  TDefaultComponent extends React.ReactType,
+  TExtendedProps = TOwnProps & {
+    as?: TDefaultComponent;
+    with?: React.ComponentProps<TDefaultComponent>;
+  }
 > = Pick<
-  React.ForwardRefExoticComponent<TDefaultComponent>,
-  Exclude<
-    keyof React.ForwardRefExoticComponent<TDefaultComponent>,
-    "defaultProps"
-  >
-> & {
-  <TAsComponent extends React.ReactType = TDefaultComponent>(
-    props: Prefer<
-      { as?: TAsComponent } & TOwnProps,
-      React.ComponentProps<TAsComponent>
-    > &
-      React.RefAttributes<
-        TAsComponent extends keyof JSX.IntrinsicElements
-          ? FromReactType<TAsComponent>
-          : TAsComponent
-      >,
-  ): JSX.Element | null;
-  defaultProps: { as: TDefaultComponent } & Partial<
-    Prefer<
-      React.PropsWithoutRef<TOwnProps> &
-        React.RefAttributes<FromReactType<TDefaultComponent>>,
-      React.ComponentPropsWithoutRef<TDefaultComponent>
-    >
-  >;
+  React.ForwardRefExoticComponent<TExtendedProps>,
+  keyof React.ForwardRefExoticComponent<TExtendedProps>
+>;
+
+// tslint:disable:no-any
+export type ForwardRefAsExoticComponent<
+  TOwnProps,
+  TDefaultComponent extends React.ReactType
+> = NonCallableForwardRefExoticComponentProps<TOwnProps, TDefaultComponent> & {
+  <
+    TAsComponent extends React.ReactType = TDefaultComponent,
+    TAsComponentProps = React.ComponentProps<TAsComponent>
+  >(
+    props: { as?: TAsComponent } & ForwardRefAsExoticComponentCompositeProps<
+      TOwnProps,
+      TAsComponentProps
+    >,
+  ): React.ReactElement<any> | null;
+  defaultProps: {
+    as: TDefaultComponent;
+  } & Partial<TOwnProps & React.ComponentPropsWithoutRef<TDefaultComponent>>;
   displayName: string;
   propTypes?: React.WeakValidationMap<
-    {
-      [k in
-        | "as"
-        | keyof TOwnProps
-        // tslint:disable-next-line:no-any
-        | keyof React.ComponentPropsWithoutRef<TDefaultComponent>]: any
-    }
+    { [k in "as" | "with" | keyof TOwnProps]: any }
   >;
 };
 
 export function forwardRefAs<
-  TOwnProps,
-  TDefaultComponent extends React.ReactType
+  TDefaultComponent extends React.ReactType,
+  TOwnProps
 >(
-  factory: React.RefForwardingComponent<
-    HTMLElement | SVGElement | React.ComponentType,
-    TOwnProps & { as: React.ReactType }
+  Component: React.RefForwardingComponent<
+    any,
+    TOwnProps & { as: React.ReactType; with?: any }
   >,
-  defaultProps: ForwardRefAsExoticComponent<
-    TOwnProps,
-    TDefaultComponent
-  >["defaultProps"],
+  defaultProps: { as: React.ReactType },
 ) {
-  return Object.assign(React.forwardRef(factory), {
-    defaultProps,
-  }) as ForwardRefAsExoticComponent<TOwnProps, TDefaultComponent>;
+  const factory = React.forwardRef(Component);
+  factory.defaultProps = {};
+  Object.assign(factory.defaultProps, defaultProps);
+
+  return factory as ForwardRefAsExoticComponent<TOwnProps, TDefaultComponent>;
 }
+// tslint:enable:no-any

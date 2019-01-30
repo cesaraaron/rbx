@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-import { Omit, ReturnType } from "../../types";
+import { Omit } from "../../types";
 import { DEFAULTS, VariablesDefinitions } from "./variables";
 
 export const makePropTypesFactory: MakePropTypesFactoryFunction = makePropTypes => variables =>
