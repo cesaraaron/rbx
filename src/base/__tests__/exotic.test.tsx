@@ -370,7 +370,7 @@ describe("ForwardRefAsExoticComponent Props", () => {
   type ownProps = { a: number };
   type defaultComponentProps = { b: string };
   type defaultComponent = React.FC<defaultComponentProps>;
-  type received = ForwardRefAsExoticComponent<ownProps, defaultComponent>;
+  type received = ForwardRefAsExoticComponent<defaultComponent, ownProps>;
   type props = React.ComponentProps<received>;
 
   describe("without composition (no 'as' prop)", () => {
