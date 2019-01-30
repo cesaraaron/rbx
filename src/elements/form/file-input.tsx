@@ -7,14 +7,18 @@ import { HelpersProps } from "../../base/helpers";
 export type FileInputProps = HelpersProps;
 
 export const FileInput = forwardRefAs<FileInputProps>(
-  ({ className, ...rest }, ref) => (
-    <Generic
-      className={classNames("file-input", className)}
-      ref={ref}
-      type="file"
-      {...rest}
-    />
-  ),
+  ({ className, ...rest }, ref) => {
+    const htmlProps = { type: "file" };
+
+    return (
+      <Generic
+        className={classNames("file-input", className)}
+        ref={ref}
+        {...htmlProps}
+        {...rest}
+      />
+    );
+  },
   { as: "input" },
 );
 

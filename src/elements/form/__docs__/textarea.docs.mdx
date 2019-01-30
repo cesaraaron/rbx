@@ -9,7 +9,7 @@ import { Playground } from "docz";
 import {
   ForwardRefAsExoticComponentDoc,
   mapEnumerable,
-  OptionBlock
+  OptionBlock,
 } from "src/__docs__/components";
 import { DEFAULTS } from "src/base/helpers/variables";
 import { Control } from "../control";
@@ -165,21 +165,25 @@ Use the `fixedSize` prop of a `<Textarea>` to remove the user's ability to resiz
     color: {
       description: "change the textarea's color",
       typeName: "string",
-      typeTip: mapEnumerable(DEFAULTS.colors)
+      typeTip: mapEnumerable(DEFAULTS.colors),
     },
     fixedSize: {
       description: "remove the drag handle from the textarea",
-      typeName: "boolean"
+      typeName: "boolean",
+    },
+    rows: {
+      description: "the number of rows the textarea shows",
+      typeName: "number",
     },
     size: {
       description: "change the textarea's size",
       typeName: "string",
-      typeTip: mapEnumerable(TEXTAREA_DEFAULTS.sizes)
+      typeTip: mapEnumerable(TEXTAREA_DEFAULTS.sizes),
     },
     state: {
       description: "change the textarea's state",
       typeName: "string",
-      typeTip: mapEnumerable(TEXTAREA_DEFAULTS.states)
-    }
+      typeTip: mapEnumerable(TEXTAREA_DEFAULTS.states),
+    },
   }}
 />

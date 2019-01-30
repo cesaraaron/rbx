@@ -26,18 +26,22 @@ const onClickHandler = (
 export const DropdownItem = forwardRefAs<DropdownItemProps>(
   ({ active, className, onClick, ...rest }, ref) => (
     <DropdownContext.Consumer>
-      {ctx => (
-        <Generic
-          className={classNames(
-            "dropdown-item",
-            { "is-active": active },
-            className,
-          )}
-          onClick={onClickHandler(onClick, ctx)}
-          ref={ref}
-          {...rest}
-        />
-      )}
+      {ctx => {
+        const htmlProps = { onClick: onClickHandler(onClick, ctx) };
+
+        return (
+          <Generic
+            className={classNames(
+              "dropdown-item",
+              { "is-active": active },
+              className,
+            )}
+            ref={ref}
+            {...htmlProps}
+            {...rest}
+          />
+        );
+      }}
     </DropdownContext.Consumer>
   ),
   { as: "a" },

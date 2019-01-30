@@ -73,7 +73,7 @@ describe(`${DISPLAY_NAME} component`, () => {
   });
 
   describe("props", () => {
-    const { propTypes } = COMPONENT;
+    const { propTypes = {} } = COMPONENT;
 
     describe("onClick", () => {
       validatePropType(propTypes, "onClick", [

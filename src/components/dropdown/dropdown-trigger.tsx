@@ -25,14 +25,18 @@ const onClickHandler = (
 export const DropdownTrigger = forwardRefAs<DropdownTriggerProps>(
   ({ className, onClick, ...rest }, ref) => (
     <DropdownContext.Consumer>
-      {ctx => (
-        <Generic
-          className={classNames("dropdown-trigger", className)}
-          onClick={onClickHandler(onClick, ctx)}
-          ref={ref}
-          {...rest}
-        />
-      )}
+      {ctx => {
+        const htmlProps = { onClick: onClickHandler(onClick, ctx) };
+
+        return (
+          <Generic
+            className={classNames("dropdown-trigger", className)}
+            ref={ref}
+            {...htmlProps}
+            {...rest}
+          />
+        );
+      }}
     </DropdownContext.Consumer>
   ),
   { as: "div" },

@@ -91,6 +91,7 @@ export type NonCallableForwardRefExoticComponentProps<
   TExtendedProps = TOwnProps & {
     as?: TDefaultComponent;
     with?: React.ComponentProps<TDefaultComponent>;
+    children?: React.ReactNode;
   }
 > = Pick<
   React.ForwardRefExoticComponent<TExtendedProps>,
@@ -106,29 +107,40 @@ export type ForwardRefAsExoticComponent<
     TAsComponent extends React.ReactType = TDefaultComponent,
     TAsComponentProps = React.ComponentProps<TAsComponent>
   >(
-    props: { as?: TAsComponent } & ForwardRefAsExoticComponentCompositeProps<
+    props: {
+      as?: TAsComponent;
+      children?: React.ReactNode;
+    } & ForwardRefAsExoticComponentCompositeProps<
       TOwnProps,
       TAsComponentProps
-    >,
+    > &
+      React.RefAttributes<
+        TAsComponent extends keyof JSX.IntrinsicElements
+          ? FromReactType<TAsComponent>
+          : TAsComponent
+      >,
   ): React.ReactElement<any> | null;
   defaultProps: {
     as: TDefaultComponent;
-  } & Partial<TOwnProps & React.ComponentPropsWithoutRef<TDefaultComponent>>;
+  } & Partial<TOwnProps>;
   displayName: string;
   propTypes?: React.WeakValidationMap<
-    { [k in "as" | "with" | keyof TOwnProps]: any }
+    { [k in "as" | "with" | "children" | keyof TOwnProps]: any }
   >;
 };
 
 export function forwardRefAs<
-  TDefaultComponent extends React.ReactType,
-  TOwnProps
+  TOwnProps,
+  TDefaultComponent extends React.ReactType = React.ReactType
 >(
   Component: React.RefForwardingComponent<
     any,
-    TOwnProps & { as: React.ReactType; with?: any }
+    TOwnProps & { as: React.ReactType; children?: React.ReactNode; with?: any }
   >,
-  defaultProps: { as: React.ReactType },
+  defaultProps: ForwardRefAsExoticComponent<
+    TOwnProps,
+    TDefaultComponent
+  >["defaultProps"],
 ) {
   const factory = React.forwardRef(Component);
   factory.defaultProps = {};

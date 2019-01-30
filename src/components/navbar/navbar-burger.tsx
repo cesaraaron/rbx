@@ -25,23 +25,29 @@ const onClickHandler = (
 export const NavbarBurger = forwardRefAs<NavbarBurgerProps>(
   ({ className, onClick, ...rest }, ref) => (
     <NavbarContext.Consumer>
-      {ctx => (
-        <Generic
-          className={classNames(
-            "navbar-burger",
-            { "is-active": ctx.active },
-            className,
-          )}
-          onClick={onClickHandler(onClick, ctx)}
-          ref={ref}
-          role="button"
-          {...rest}
-        >
-          <span />
-          <span />
-          <span />
-        </Generic>
-      )}
+      {ctx => {
+        const htmlProps = {
+          onClick: onClickHandler(onClick, ctx),
+          role: "button",
+        };
+
+        return (
+          <Generic
+            className={classNames(
+              "navbar-burger",
+              { "is-active": ctx.active },
+              className,
+            )}
+            ref={ref}
+            {...htmlProps}
+            {...rest}
+          >
+            <span />
+            <span />
+            <span />
+          </Generic>
+        );
+      }}
     </NavbarContext.Consumer>
   ),
   { as: "div" },

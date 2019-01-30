@@ -25,15 +25,21 @@ const onClickHandler = (
 export const ModalClose = forwardRefAs<ModalCloseProps>(
   ({ className, onClick, ...rest }, ref) => (
     <ModalContext.Consumer>
-      {ctx => (
-        <Generic
-          aria-label="close"
-          className={classNames("modal-close", "is-large", className)}
-          onClick={onClickHandler(onClick, ctx)}
-          ref={ref}
-          {...rest}
-        />
-      )}
+      {ctx => {
+        const htmlProps = {
+          "aria-label": "close",
+          onClick: onClickHandler(onClick, ctx),
+        };
+
+        return (
+          <Generic
+            className={classNames("modal-close", "is-large", className)}
+            ref={ref}
+            {...htmlProps}
+            {...rest}
+          />
+        );
+      }}
     </ModalContext.Consumer>
   ),
   { as: "button" },

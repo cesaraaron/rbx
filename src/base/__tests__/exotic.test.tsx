@@ -422,7 +422,7 @@ describe("ForwardRefAsExoticComponent Props", () => {
 
 describe("forwardRefAs", () => {
   type GrandParentProps = { a: "g-a"; b: number; className?: string };
-  const GrandParent = forwardRefAs<"div", GrandParentProps>(
+  const GrandParent = forwardRefAs<GrandParentProps>(
     ({ as, a, b, className, with: withProps, ...rest }, ref) => {
       return React.createElement(as, {
         className: classNames(
@@ -451,7 +451,7 @@ describe("forwardRefAs", () => {
   });
 
   type ParentProps = { a: "p-a"; c: number; className?: string };
-  const Parent = forwardRefAs<"span", ParentProps>(
+  const Parent = forwardRefAs<ParentProps>(
     ({ as, a, c, className, with: withProps, ...rest }, ref) => {
       return React.createElement(as, {
         className: classNames(
@@ -480,7 +480,7 @@ describe("forwardRefAs", () => {
   });
 
   type ChildProps = { a: "c-a"; d: number; className?: string };
-  const Child = forwardRefAs<"p", ChildProps>(
+  const Child = forwardRefAs<ChildProps>(
     ({ as, a, d, className, with: withProps, ...rest }, ref) => {
       return React.createElement(as, {
         className: classNames(

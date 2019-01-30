@@ -29,18 +29,22 @@ const handleOnClick = (
 export const NavbarLink = forwardRefAs<NavbarLinkProps>(
   ({ arrowless, className, onClick, ...rest }, ref) => (
     <NavbarItemContext.Consumer>
-      {ctx => (
-        <Generic
-          className={classNames(
-            "navbar-link",
-            { "is-arrowless": arrowless },
-            className,
-          )}
-          onClick={handleOnClick(onClick, ctx)}
-          ref={ref}
-          {...rest}
-        />
-      )}
+      {ctx => {
+        const htmlProps = { onClick: handleOnClick(onClick, ctx) };
+
+        return (
+          <Generic
+            className={classNames(
+              "navbar-link",
+              { "is-arrowless": arrowless },
+              className,
+            )}
+            ref={ref}
+            {...htmlProps}
+            {...rest}
+          />
+        );
+      }}
     </NavbarItemContext.Consumer>
   ),
   { as: "span" },

@@ -100,15 +100,19 @@ export class NavbarItemContainer extends React.PureComponent<
 
     return (
       <NavbarItemContext.Consumer>
-        {ctx => (
-          <Generic
-            as={as}
-            className={className}
-            onClick={this.handleOnClick(ctx)}
-            ref={ref}
-            {...rest}
-          />
-        )}
+        {ctx => {
+          const htmlProps = { onClick: this.handleOnClick(ctx) };
+
+          return (
+            <Generic
+              as={as}
+              className={className}
+              ref={ref}
+              {...htmlProps}
+              {...rest}
+            />
+          );
+        }}
       </NavbarItemContext.Consumer>
     );
   }

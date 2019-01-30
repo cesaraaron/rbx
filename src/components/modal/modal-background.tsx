@@ -27,15 +27,21 @@ const onClickHandler = (
 export const ModalBackground = forwardRefAs<ModalBackgroundProps>(
   ({ className, onClick, ...rest }, ref) => (
     <ModalContext.Consumer>
-      {ctx => (
-        <Generic
-          className={classNames("modal-background", className)}
-          onClick={onClickHandler(onClick, ctx)}
-          ref={ref}
-          role="presentation"
-          {...rest}
-        />
-      )}
+      {ctx => {
+        const htmlProps = {
+          onClick: onClickHandler(onClick, ctx),
+          role: "presentation",
+        };
+
+        return (
+          <Generic
+            className={classNames("modal-background", className)}
+            ref={ref}
+            {...htmlProps}
+            {...rest}
+          />
+        );
+      }}
     </ModalContext.Consumer>
   ),
   { as: "div" },

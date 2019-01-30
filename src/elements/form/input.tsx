@@ -64,6 +64,7 @@ export const Input = forwardRefAs<InputProps>(
     ref,
   ) => {
     const isReadOnly = readOnly === true || isStatic === true;
+    const htmlProps = { readOnly: isReadOnly };
 
     return (
       <Generic
@@ -78,7 +79,7 @@ export const Input = forwardRefAs<InputProps>(
           },
           className,
         )}
-        readOnly={isReadOnly}
+        {...htmlProps}
         ref={ref}
         {...rest}
       />

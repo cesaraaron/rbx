@@ -32,7 +32,7 @@ describe(`${DISPLAY_NAME} component`, () => {
   testThemeIntegration(COMPONENT);
 
   describe("props", () => {
-    const { propTypes } = COMPONENT;
+    const { propTypes = {} } = COMPONENT;
 
     describe("align", () => {
       validateStringOrNumberPropType(propTypes, "align");
