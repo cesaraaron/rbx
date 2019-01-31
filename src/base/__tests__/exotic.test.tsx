@@ -3,6 +3,7 @@ import Enzyme from "enzyme";
 import React from "react";
 
 import {
+  ForwardingPropsCompatible,
   forwardRefAs,
   ForwardRefAsExoticComponent,
   ForwardRefAsExoticComponentCompositeProps,
@@ -366,11 +367,98 @@ describe("ForwardRefAsExoticComponentCompositeProps", () => {
   });
 });
 
+describe("ForwardingPropsCompatible", () => {
+  it("should allow forwarding, receiving equal with required key", () => {
+    type forwarding = { a: string };
+    type receiving = forwarding;
+    type result = ForwardingPropsCompatible<forwarding, receiving>;
+    type expected = true;
+    assert<result, expected>();
+  });
+
+  it("should allow forwarding, receiving equal with optional key", () => {
+    type forwarding = { a?: string };
+    type receiving = forwarding;
+    type result = ForwardingPropsCompatible<forwarding, receiving>;
+    type expected = true;
+    assert<result, expected>();
+  });
+
+  it("should allow forwarding with required key, receiving with optional key", () => {
+    type forwarding = { a: string };
+    type receiving = { a?: string };
+    type result = ForwardingPropsCompatible<forwarding, receiving>;
+    type expected = true;
+    assert<result, expected>();
+  });
+
+  it("should not allow forwarding with optional key, receiving with required key", () => {
+    type forwarding = { a?: string };
+    type receiving = { a: string };
+    type result = ForwardingPropsCompatible<forwarding, receiving>;
+    type expected = false;
+    assert<result, expected>();
+  });
+
+  it("should allow empty forwarding, non-empty receiving", () => {
+    type forwarding = {};
+    type receiving = { a: string };
+    type result = ForwardingPropsCompatible<forwarding, receiving>;
+    type expected = true;
+    assert<result, expected>();
+  });
+
+  it("should allow empty forwarding and empty receiving", () => {
+    type forwarding = {};
+    type receiving = {};
+    type result = ForwardingPropsCompatible<forwarding, receiving>;
+    type expected = true;
+    assert<result, expected>();
+  });
+
+  it("should not allow forwarding with required key and empty receiving", () => {
+    type forwarding = { a: string };
+    type receiving = {};
+    type result = ForwardingPropsCompatible<forwarding, receiving>;
+    type expected = false;
+    assert<result, expected>();
+  });
+
+  it("should not allow forwarding with optional key and empty receiving", () => {
+    type forwarding = { a?: string };
+    type receiving = {};
+    type result = ForwardingPropsCompatible<forwarding, receiving>;
+    type expected = false;
+    assert<result, expected>();
+  });
+
+  it("should allow forwarding to be a subset of receiving", () => {
+    type forwarding = { a: string };
+    type receiving = { a: string; b: string };
+    type result = ForwardingPropsCompatible<forwarding, receiving>;
+    type expected = true;
+    assert<result, expected>();
+  });
+
+  it("should not allow forwarding to be a superset of receiving", () => {
+    type forwarding = { a: string; b: string };
+    type receiving = { a: string };
+    type result = ForwardingPropsCompatible<forwarding, receiving>;
+    type expected = false;
+    assert<result, expected>();
+  });
+});
+
 describe("ForwardRefAsExoticComponent Props", () => {
   type ownProps = { a: number };
-  type defaultComponentProps = { b: string };
+  type defaultComponentProps = { b: string; className?: string };
   type defaultComponent = React.FC<defaultComponentProps>;
-  type received = ForwardRefAsExoticComponent<defaultComponent, ownProps>;
+  type forwards = { className: string };
+  type received = ForwardRefAsExoticComponent<
+    defaultComponent,
+    ownProps,
+    forwards
+  >;
   type props = React.ComponentProps<received>;
 
   describe("without composition (no 'as' prop)", () => {

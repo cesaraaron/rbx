@@ -26,11 +26,18 @@ export type FromReactType<
     : never
   : T;
 
+/**
+ * Returns those keys which are non-optional
+ */
 export type NonOptionalPropKeys<P extends {}> = Required<
   { [K in keyof P]: undefined extends P[K] ? never : K }
 >[keyof P];
 
-export type HasIndexSignature<P> = (string | number) extends keyof P
+/**
+ * Returns true if P has an index signature, otherwise false.
+ * https://www.typescriptlang.org/docs/handbook/interfaces.html
+ */
+export type HasIndexSignature<P extends {}> = (string | number) extends keyof P
   ? true
   : number extends keyof P
   ? true
@@ -51,13 +58,32 @@ export type HasIntersectingNonOptionalProps<
   : true;
 
 /**
- * A simple check for whether Props 'P' has any required keys.
+ * Returns true if P has at least one non-optional keys, else false
  */
 export type HasNonOptionalPropKeys<P extends {}> = NonOptionalPropKeys<
   P
 > extends never
   ? false
   : true;
+
+/**
+ * Returns true if PReceived accepts PForwarded props, else false
+ */
+export type ForwardingPropsCompatible<
+  PForwarding extends {},
+  PReceiving extends {}
+> = keyof PForwarding extends undefined
+  ? true
+  : keyof PReceiving extends undefined
+  ? false
+  : keyof PForwarding extends (keyof PForwarding & keyof PReceiving)
+  ? {
+      [K in keyof PForwarding &
+        keyof PReceiving]: PForwarding[K] extends PReceiving[K] ? true : false
+    }[keyof PForwarding & keyof PReceiving] extends false
+    ? false
+    : true
+  : false;
 
 /**
  * Does TAsComponentProps have an index signature, masking it's required props?
@@ -103,7 +129,8 @@ export type NonCallableForwardRefExoticComponentProps<
 // tslint:disable:no-any
 export type ForwardRefAsExoticComponent<
   TDefaultComponent extends React.ReactType,
-  TOwnProps extends {}
+  TOwnProps extends {},
+  TForwardsProps extends {}
 > = NonCallableForwardRefExoticComponentProps<TDefaultComponent, TOwnProps> & {
   <
     TAsComponent extends React.ReactType = TDefaultComponent,
@@ -133,7 +160,8 @@ export type ForwardRefAsExoticComponent<
 
 export function forwardRefAs<
   TDefaultComponent extends React.ReactType,
-  TOwnProps extends {}
+  TOwnProps extends {},
+  TForwardsProps extends {} = {}
 >(
   Component: React.RefForwardingComponent<
     any,
@@ -141,13 +169,18 @@ export function forwardRefAs<
   >,
   defaultProps: ForwardRefAsExoticComponent<
     TDefaultComponent,
-    TOwnProps
+    TOwnProps,
+    TForwardsProps
   >["defaultProps"],
 ) {
   const factory = React.forwardRef(Component);
   factory.defaultProps = {};
   Object.assign(factory.defaultProps, defaultProps);
 
-  return factory as ForwardRefAsExoticComponent<TDefaultComponent, TOwnProps>;
+  return factory as ForwardRefAsExoticComponent<
+    TDefaultComponent,
+    TOwnProps,
+    TForwardsProps
+  >;
 }
 // tslint:enable:no-any

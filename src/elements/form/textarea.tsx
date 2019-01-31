@@ -28,14 +28,23 @@ export type TextareaVariables = Prefer<
 export type TextareaModifierProps = Partial<{
   color: Variables["colors"];
   fixedSize: boolean;
-  rows: number;
+  rows: React.TextareaHTMLAttributes<HTMLTextAreaElement>["rows"];
   size: TextareaVariables["sizes"];
   state: TextareaVariables["states"];
 }>;
 
-export type TextareaProps = HelpersProps & TextareaModifierProps;
+export type TextareaOwnProps = HelpersProps & TextareaModifierProps;
 
-export const Textarea = forwardRefAs<"textarea", TextareaProps>(
+export type TextareaForwardsProps = {
+  className: string;
+  rows: TextareaModifierProps["rows"];
+};
+
+export const Textarea = forwardRefAs<
+  "textarea",
+  TextareaOwnProps,
+  TextareaForwardsProps
+>(
   ({ className, color, fixedSize, size, state, ...rest }, ref) => (
     <Generic
       className={classNames(
