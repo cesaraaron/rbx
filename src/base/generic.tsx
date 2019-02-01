@@ -5,9 +5,14 @@ import { forwardRefAs } from "./exotic";
 import { HelpersProps } from "./helpers";
 import { ThemeContext } from "./theme";
 
-export type GenericProps = HelpersProps;
+export type GenericOwnProps = HelpersProps;
+export type GenericForwardsProps = { className: string };
 
-export const Generic = forwardRefAs<"div", GenericProps>(
+export const Generic = forwardRefAs<
+  "div",
+  GenericOwnProps,
+  GenericForwardsProps
+>(
   ({ as, ...rest }, ref) => (
     <ThemeContext.Consumer>
       {({ transform }) =>
