@@ -133,9 +133,7 @@ export type ForwardRefAsExoticComponent<
   TDefaultComponentProps extends {} = React.ComponentProps<TDefaultComponent>
 > = NonCallableForwardRefExoticComponentProps<TDefaultComponent, TOwnProps> & {
   (
-    props: {
-      as: never;
-    } & ForwardRefAsExoticComponentCompositeProps<
+    props: { as: never } & ForwardRefAsExoticComponentCompositeProps<
       TOwnProps,
       TDefaultComponentProps
     > &
@@ -150,9 +148,7 @@ export type ForwardRefAsExoticComponent<
     TAsComponent extends React.ReactType = TDefaultComponent,
     TAsComponentProps = React.ComponentProps<TAsComponent>
   >(
-    props: {
-      as: TAsComponent;
-    } & ForwardRefAsExoticComponentCompositeProps<
+    props: { as: TAsComponent } & ForwardRefAsExoticComponentCompositeProps<
       TOwnProps,
       TAsComponentProps
     > &
@@ -163,13 +159,9 @@ export type ForwardRefAsExoticComponent<
       >,
   ): React.ReactElement<any> | null;
 
-  defaultProps: {
-    as: TDefaultComponent;
-  } & Partial<TOwnProps>;
+  defaultProps: { as: TDefaultComponent } & Partial<TOwnProps>;
   displayName: string;
-  propTypes?: React.WeakValidationMap<
-    { [k in "as" | "with" | keyof TOwnProps]: any }
-  >;
+  propTypes?: React.WeakValidationMap<{ [k in "as" | keyof TOwnProps]: any }>;
 };
 
 export function forwardRefAs<
@@ -180,8 +172,7 @@ export function forwardRefAs<
 >(
   Component: React.RefForwardingComponent<
     any,
-    TOwnProps &
-      ({ as: React.ReactType; with?: any } | { as: never; with?: any })
+    TOwnProps & { as: React.ReactType; with?: any }
   >,
   defaultProps: ForwardRefAsExoticComponent<
     TDefaultComponent,
