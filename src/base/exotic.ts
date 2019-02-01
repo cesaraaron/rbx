@@ -69,18 +69,18 @@ export type HasNonOptionalPropKeys<P extends {}> = NonOptionalPropKeys<
 /**
  * Returns true if PReceived accepts PForwarded props, else false
  */
-export type ForwardingPropsCompatible<
-  PForwarding extends {},
-  PReceiving extends {}
-> = keyof PForwarding extends undefined
+export type CompatibleWithForwardsProps<
+  PForwards extends {},
+  PReceives extends {}
+> = keyof PForwards extends undefined
   ? true
-  : keyof PReceiving extends undefined
+  : keyof PReceives extends undefined
   ? false
-  : keyof PForwarding extends (keyof PForwarding & keyof PReceiving)
+  : keyof PForwards extends (keyof PForwards & keyof PReceives)
   ? {
-      [K in keyof PForwarding &
-        keyof PReceiving]: PForwarding[K] extends PReceiving[K] ? true : false
-    }[keyof PForwarding & keyof PReceiving] extends false
+      [K in keyof PForwards &
+        keyof PReceives]: PForwards[K] extends PReceives[K] ? true : false
+    }[keyof PForwards & keyof PReceives] extends false
     ? false
     : true
   : false;

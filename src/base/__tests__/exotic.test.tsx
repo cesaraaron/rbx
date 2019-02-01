@@ -3,7 +3,7 @@ import Enzyme from "enzyme";
 import React from "react";
 
 import {
-  ForwardingPropsCompatible,
+  CompatibleWithForwardsProps,
   forwardRefAs,
   ForwardRefAsExoticComponent,
   ForwardRefAsExoticComponentCompositeProps,
@@ -20,14 +20,7 @@ import {
  */
 const assert = <T, U extends T>() => undefined;
 
-/**
- * Asserts that the supplied props are allowed by the received props...
- * Put another way, we want to make sure that the `Supplied` props are allowed
- * by the `Received` type (...the ComponentProps type)
- */
-type isAllowed<Supplied, Received> = Supplied extends Received ? true : false;
-
-export type Assert<T, U extends T> = true;
+type DoesExtend<Supplied, Received> = Supplied extends Received ? true : false;
 
 describe("FromReactType", () => {
   it("should map 'div' => HTMLDivElement", () => {
@@ -252,27 +245,27 @@ describe("ForwardRefAsExoticComponentCompositeProps", () => {
 
     it("should allow b's required props with the prop 'with'", () => {
       type supplied = { a: string; with: { b: string } };
-      assert<isAllowed<supplied, received>, true>();
+      assert<DoesExtend<supplied, received>, true>();
     });
 
     it("should allow b's required props without the prop 'with'", () => {
       type supplied = { a: string; b: string };
-      assert<isAllowed<supplied, received>, true>();
+      assert<DoesExtend<supplied, received>, true>();
     });
 
     it("should allow b's optional props with the prop 'with'", () => {
       type supplied = { a: string; with: { b: string; c?: string } };
-      assert<isAllowed<supplied, received>, true>();
+      assert<DoesExtend<supplied, received>, true>();
     });
 
     it("should allow b's optional props without the prop 'with'", () => {
       type supplied = { a: string; b: string; c?: string };
-      assert<isAllowed<supplied, received>, true>();
+      assert<DoesExtend<supplied, received>, true>();
     });
 
     it("should not allowed b's props to straddle the prop 'with'", () => {
       type supplied = { a: string; b: string; with: { c?: string } };
-      assert<isAllowed<supplied, received>, false>();
+      assert<DoesExtend<supplied, received>, false>();
     });
   });
 
@@ -283,7 +276,7 @@ describe("ForwardRefAsExoticComponentCompositeProps", () => {
 
     it("should allow b's props without the with prop", () => {
       type supplied = { a: string; b: string };
-      assert<isAllowed<supplied, received>, true>();
+      assert<DoesExtend<supplied, received>, true>();
     });
   });
 
@@ -294,17 +287,17 @@ describe("ForwardRefAsExoticComponentCompositeProps", () => {
 
     it("should allow b's required props with the prop 'with'", () => {
       type supplied = { a: string; with: { a: string } };
-      assert<isAllowed<supplied, received>, true>();
+      assert<DoesExtend<supplied, received>, true>();
     });
 
     it("should allow b's optional props with the prop 'with'", () => {
       type supplied = { a: string; with: { a: string; b?: string } };
-      assert<isAllowed<supplied, received>, true>();
+      assert<DoesExtend<supplied, received>, true>();
     });
 
     it("should not allow b's required props to be omitted", () => {
       type supplied = { a: string };
-      assert<isAllowed<supplied, received>, false>();
+      assert<DoesExtend<supplied, received>, false>();
     });
 
     it("playground", () => {
@@ -326,22 +319,22 @@ describe("ForwardRefAsExoticComponentCompositeProps", () => {
 
     it("should allow b's required props with the prop 'with'", () => {
       type supplied = { c: string; with: { a: string } };
-      assert<isAllowed<supplied, received>, true>();
+      assert<DoesExtend<supplied, received>, true>();
     });
 
     it("should allow b's optional props with the prop 'with'", () => {
       type supplied = { c: string; with: { a: string; b?: string } };
-      assert<isAllowed<supplied, received>, true>();
+      assert<DoesExtend<supplied, received>, true>();
     });
 
     it("should not allow 'with' to be omitted, as b's required prop is in index type", () => {
       type supplied = { c: string; a: string; b?: string };
-      assert<isAllowed<supplied, received>, false>();
+      assert<DoesExtend<supplied, received>, false>();
     });
 
     it("should not allow b's required props to be omitted", () => {
       type supplied = { c: string };
-      assert<isAllowed<supplied, received>, false>();
+      assert<DoesExtend<supplied, received>, false>();
     });
   });
 
@@ -352,98 +345,98 @@ describe("ForwardRefAsExoticComponentCompositeProps", () => {
 
     it("should allow b's required props with the prop 'with'", () => {
       type supplied = { a: string; with: { a: string } };
-      assert<isAllowed<supplied, received>, true>();
+      assert<DoesExtend<supplied, received>, true>();
     });
 
     it("should allow b's optional props with the prop 'with'", () => {
       type supplied = { a: string; with: { a: string; b?: string } };
-      assert<isAllowed<supplied, received>, true>();
+      assert<DoesExtend<supplied, received>, true>();
     });
 
     it("should not allow b's required props to be omitted", () => {
       type supplied = { a: string };
-      assert<isAllowed<supplied, received>, false>();
+      assert<DoesExtend<supplied, received>, false>();
     });
   });
 });
 
-describe("ForwardingPropsCompatible", () => {
-  it("should allow forwarding, receiving equal with required key", () => {
-    type forwarding = { a: string };
-    type receiving = forwarding;
-    type result = ForwardingPropsCompatible<forwarding, receiving>;
+describe("CompatibleWithForwardsProps", () => {
+  it("should allow pforwards, preceives equal with required key", () => {
+    type pforwards = { a: string };
+    type preceives = pforwards;
+    type result = CompatibleWithForwardsProps<pforwards, preceives>;
     type expected = true;
     assert<result, expected>();
   });
 
-  it("should allow forwarding, receiving equal with optional key", () => {
-    type forwarding = { a?: string };
-    type receiving = forwarding;
-    type result = ForwardingPropsCompatible<forwarding, receiving>;
+  it("should allow pforwards, preceives equal with optional key", () => {
+    type pforwards = { a?: string };
+    type preceives = pforwards;
+    type result = CompatibleWithForwardsProps<pforwards, preceives>;
     type expected = true;
     assert<result, expected>();
   });
 
-  it("should allow forwarding with required key, receiving with optional key", () => {
-    type forwarding = { a: string };
-    type receiving = { a?: string };
-    type result = ForwardingPropsCompatible<forwarding, receiving>;
+  it("should allow pforwards with required key, preceives with optional key", () => {
+    type pforwards = { a: string };
+    type preceives = { a?: string };
+    type result = CompatibleWithForwardsProps<pforwards, preceives>;
     type expected = true;
     assert<result, expected>();
   });
 
-  it("should not allow forwarding with optional key, receiving with required key", () => {
-    type forwarding = { a?: string };
-    type receiving = { a: string };
-    type result = ForwardingPropsCompatible<forwarding, receiving>;
+  it("should not allow pforwards with optional key, preceives with required key", () => {
+    type pforwards = { a?: string };
+    type preceives = { a: string };
+    type result = CompatibleWithForwardsProps<pforwards, preceives>;
     type expected = false;
     assert<result, expected>();
   });
 
-  it("should allow empty forwarding, non-empty receiving", () => {
-    type forwarding = {};
-    type receiving = { a: string };
-    type result = ForwardingPropsCompatible<forwarding, receiving>;
+  it("should allow empty pforwards, non-empty preceives", () => {
+    type pforwards = {};
+    type preceives = { a: string };
+    type result = CompatibleWithForwardsProps<pforwards, preceives>;
     type expected = true;
     assert<result, expected>();
   });
 
-  it("should allow empty forwarding and empty receiving", () => {
-    type forwarding = {};
-    type receiving = {};
-    type result = ForwardingPropsCompatible<forwarding, receiving>;
+  it("should allow empty pforwards and empty preceives", () => {
+    type pforwards = {};
+    type preceives = {};
+    type result = CompatibleWithForwardsProps<pforwards, preceives>;
     type expected = true;
     assert<result, expected>();
   });
 
-  it("should not allow forwarding with required key and empty receiving", () => {
-    type forwarding = { a: string };
-    type receiving = {};
-    type result = ForwardingPropsCompatible<forwarding, receiving>;
+  it("should not allow pforwards with required key and empty preceives", () => {
+    type pforwards = { a: string };
+    type preceives = {};
+    type result = CompatibleWithForwardsProps<pforwards, preceives>;
     type expected = false;
     assert<result, expected>();
   });
 
-  it("should not allow forwarding with optional key and empty receiving", () => {
-    type forwarding = { a?: string };
-    type receiving = {};
-    type result = ForwardingPropsCompatible<forwarding, receiving>;
+  it("should not allow pforwards with optional key and empty preceives", () => {
+    type pforwards = { a?: string };
+    type preceives = {};
+    type result = CompatibleWithForwardsProps<pforwards, preceives>;
     type expected = false;
     assert<result, expected>();
   });
 
-  it("should allow forwarding to be a subset of receiving", () => {
-    type forwarding = { a: string };
-    type receiving = { a: string; b: string };
-    type result = ForwardingPropsCompatible<forwarding, receiving>;
+  it("should allow pforwards to be a subset of preceives", () => {
+    type pforwards = { a: string };
+    type preceives = { a: string; b: string };
+    type result = CompatibleWithForwardsProps<pforwards, preceives>;
     type expected = true;
     assert<result, expected>();
   });
 
-  it("should not allow forwarding to be a superset of receiving", () => {
-    type forwarding = { a: string; b: string };
-    type receiving = { a: string };
-    type result = ForwardingPropsCompatible<forwarding, receiving>;
+  it("should not allow pforwards to be a superset of preceives", () => {
+    type pforwards = { a: string; b: string };
+    type preceives = { a: string };
+    type result = CompatibleWithForwardsProps<pforwards, preceives>;
     type expected = false;
     assert<result, expected>();
   });
@@ -464,12 +457,12 @@ describe("ForwardRefAsExoticComponent Props", () => {
   describe("without composition (no 'as' prop)", () => {
     it("should assume TDefaultComponent's props", () => {
       type supplied = { a: number; b: string };
-      assert<isAllowed<supplied, props>, true>();
+      assert<DoesExtend<supplied, props>, true>();
     });
 
     it("should allow defaultComponent's required props in prop 'with'", () => {
       type supplied = { a: number; with: { b: string } };
-      assert<isAllowed<supplied, props>, true>();
+      assert<DoesExtend<supplied, props>, true>();
     });
 
     it("should allow the proper Ref type", () => {
@@ -478,7 +471,7 @@ describe("ForwardRefAsExoticComponent Props", () => {
         b: string;
         ref: React.Ref<defaultComponent>;
       };
-      assert<isAllowed<supplied, props>, true>();
+      assert<DoesExtend<supplied, props>, true>();
     });
   });
 
@@ -488,12 +481,12 @@ describe("ForwardRefAsExoticComponent Props", () => {
 
     it("should assume TAsComponents's props", () => {
       type supplied = { as: asComponent; a: number; c: string };
-      assert<isAllowed<supplied, props>, true>();
+      assert<DoesExtend<supplied, props>, true>();
     });
 
     it("should allow a `with` prop with defaultComponent's required props", () => {
       type supplied = { a: number; with: { c: string } };
-      assert<isAllowed<supplied, props>, true>();
+      assert<DoesExtend<supplied, props>, true>();
     });
 
     it("should allow the proper Ref type", () => {
@@ -503,14 +496,19 @@ describe("ForwardRefAsExoticComponent Props", () => {
         c: string;
         ref: React.Ref<asComponent>;
       };
-      assert<isAllowed<supplied, props>, true>();
+      assert<DoesExtend<supplied, props>, true>();
     });
   });
 });
 
 describe("forwardRefAs", () => {
-  type GrandParentProps = { a: "g-a"; b: number; className?: string };
-  const GrandParent = forwardRefAs<"div", GrandParentProps>(
+  type GrandparentOwnProps = { a: "g-a"; b: number; className?: string };
+  type GrandparentForwardsProps = { className: string };
+  const Grandparent = forwardRefAs<
+    "div",
+    GrandparentOwnProps,
+    GrandparentForwardsProps
+  >(
     ({ as, a, b, className, with: withProps, ...rest }, ref) => {
       return React.createElement(as, {
         className: classNames(
@@ -527,19 +525,20 @@ describe("forwardRefAs", () => {
     },
     { as: "div" },
   );
-  GrandParent.displayName = "GrandParent";
+  Grandparent.displayName = "Grandparent";
 
-  describe("GrandParent", () => {
+  describe("Grandparent", () => {
     it("should receive required props", () => {
-      const node = <GrandParent a="g-a" b={2} />;
+      const node = <Grandparent a="g-a" b={2} />;
       const wrapper = Enzyme.shallow(node);
       expect(wrapper.hasClass("G-A-g-a")).toBe(true);
       expect(wrapper.hasClass("G-B-2")).toBe(true);
     });
   });
 
-  type ParentProps = { a: "p-a"; c: number; className?: string };
-  const Parent = forwardRefAs<"span", ParentProps>(
+  type ParentOwnProps = { a: "p-a"; c: number; className?: string };
+  type ParentForwardsProps = { className: string };
+  const Parent = forwardRefAs<"span", ParentOwnProps, ParentForwardsProps>(
     ({ as, a, c, className, with: withProps, ...rest }, ref) => {
       return React.createElement(as, {
         className: classNames(
@@ -567,8 +566,9 @@ describe("forwardRefAs", () => {
     });
   });
 
-  type ChildProps = { a: "c-a"; d: number; className?: string };
-  const Child = forwardRefAs<"p", ChildProps>(
+  type ChildOwnProps = { a: "c-a"; d: number; className?: string };
+  type ChildForwardsProps = { className: string };
+  const Child = forwardRefAs<"p", ChildOwnProps, ChildForwardsProps>(
     ({ as, a, d, className, with: withProps, ...rest }, ref) => {
       return React.createElement(as, {
         className: classNames(
@@ -681,7 +681,7 @@ describe("forwardRefAs", () => {
           as={Parent}
           a="c-a"
           d={3}
-          with={{ a: "p-a", c: 3, as: GrandParent, with: { a: "g-a", b: 2 } }}
+          with={{ a: "p-a", c: 3, as: Grandparent, with: { a: "g-a", b: 2 } }}
         />
       );
       const childWrapper = Enzyme.shallow(node);
