@@ -9,9 +9,9 @@ import {
   ForwardRefAsExoticComponent,
   FromReactType,
   HasIndexSignature,
-  HasIntersectingNonOptionalProps,
-  HasNonOptionalPropKeys,
-  NonOptionalPropKeys,
+  HasIntersectingNonOptionalKeys,
+  HasNonOptionalKeys,
+  NonOptionalKeys,
 } from "../exotic";
 
 /**
@@ -87,11 +87,11 @@ describe("HasIndexSignature", () => {
   });
 });
 
-describe("HasIntersectingNonOptionalProps", () => {
+describe("HasIntersectingNonOptionalKeys", () => {
   it("should be false on empty 'a', 'b' with required", () => {
     type a = {};
     type b = { a: string };
-    type supplied = HasIntersectingNonOptionalProps<a, b>;
+    type supplied = HasIntersectingNonOptionalKeys<a, b>;
     type expected = false;
 
     assert<supplied, expected>();
@@ -100,7 +100,7 @@ describe("HasIntersectingNonOptionalProps", () => {
   it("should be false on empty 'a', 'b' with optional", () => {
     type a = {};
     type b = { a?: string };
-    type supplied = HasIntersectingNonOptionalProps<a, b>;
+    type supplied = HasIntersectingNonOptionalKeys<a, b>;
     type expected = false;
 
     assert<supplied, expected>();
@@ -109,7 +109,7 @@ describe("HasIntersectingNonOptionalProps", () => {
   it("should be false on 'a' with required, empty 'b'", () => {
     type a = { a: string };
     type b = {};
-    type supplied = HasIntersectingNonOptionalProps<a, b>;
+    type supplied = HasIntersectingNonOptionalKeys<a, b>;
     type expected = false;
 
     assert<supplied, expected>();
@@ -118,7 +118,7 @@ describe("HasIntersectingNonOptionalProps", () => {
   it("should be false on 'a' with optional, empty 'b'", () => {
     type a = { a?: string };
     type b = {};
-    type supplied = HasIntersectingNonOptionalProps<a, b>;
+    type supplied = HasIntersectingNonOptionalKeys<a, b>;
     type expected = false;
 
     assert<supplied, expected>();
@@ -127,7 +127,7 @@ describe("HasIntersectingNonOptionalProps", () => {
   it("should be true when 'a' and 'b' have intersecting required", () => {
     type a = { a: string };
     type b = { a: string };
-    type supplied = HasIntersectingNonOptionalProps<a, b>;
+    type supplied = HasIntersectingNonOptionalKeys<a, b>;
     type expected = true;
 
     assert<supplied, expected>();
@@ -136,7 +136,7 @@ describe("HasIntersectingNonOptionalProps", () => {
   it("should be true when 'a' has optional, 'b' has required", () => {
     type a = { a?: string };
     type b = { a: string };
-    type supplied = HasIntersectingNonOptionalProps<a, b>;
+    type supplied = HasIntersectingNonOptionalKeys<a, b>;
     type expected = true;
 
     assert<supplied, expected>();
@@ -145,7 +145,7 @@ describe("HasIntersectingNonOptionalProps", () => {
   it("should be false when 'a' has required, 'b' has optional", () => {
     type a = { a: string };
     type b = { a?: string };
-    type supplied = HasIntersectingNonOptionalProps<a, b>;
+    type supplied = HasIntersectingNonOptionalKeys<a, b>;
     type expected = false;
 
     assert<supplied, expected>();
@@ -154,17 +154,17 @@ describe("HasIntersectingNonOptionalProps", () => {
   it("should be false when 'a', 'b' have optional", () => {
     type a = { a?: string };
     type b = { a?: string };
-    type supplied = HasIntersectingNonOptionalProps<a, b>;
+    type supplied = HasIntersectingNonOptionalKeys<a, b>;
     type expected = false;
 
     assert<supplied, expected>();
   });
 });
 
-describe("HasNonOptionalPropKeys", () => {
+describe("HasNonOptionalKeys", () => {
   it("should be true when a non-optional key exists", () => {
     type a = { a: string };
-    type supplied = HasNonOptionalPropKeys<a>;
+    type supplied = HasNonOptionalKeys<a>;
     type expected = true;
 
     assert<supplied, expected>();
@@ -172,7 +172,7 @@ describe("HasNonOptionalPropKeys", () => {
 
   it("should be false when keys are optional", () => {
     type a = { a?: string };
-    type supplied = HasNonOptionalPropKeys<a>;
+    type supplied = HasNonOptionalKeys<a>;
     type expected = false;
 
     assert<supplied, expected>();
@@ -180,7 +180,7 @@ describe("HasNonOptionalPropKeys", () => {
 
   it("should be false when no keys are present", () => {
     type a = {};
-    type supplied = HasNonOptionalPropKeys<a>;
+    type supplied = HasNonOptionalKeys<a>;
     type expected = false;
 
     assert<supplied, expected>();
@@ -188,17 +188,17 @@ describe("HasNonOptionalPropKeys", () => {
 
   it("should be true when keys are mixed", () => {
     type a = { a: string; b?: string };
-    type supplied = HasNonOptionalPropKeys<a>;
+    type supplied = HasNonOptionalKeys<a>;
     type expected = true;
 
     assert<supplied, expected>();
   });
 });
 
-describe("NonOptionalPropKeys", () => {
+describe("NonOptionalKeys", () => {
   it("should return 'never' if no required props", () => {
     type supplied = { a?: string; b?: string; c?: string };
-    type received = NonOptionalPropKeys<supplied>;
+    type received = NonOptionalKeys<supplied>;
     type expected = never;
 
     assert<received, expected>();
@@ -207,7 +207,7 @@ describe("NonOptionalPropKeys", () => {
 
   it("should only return non-optional props", () => {
     type supplied = { a?: string; b: string; c: string };
-    type received = NonOptionalPropKeys<supplied>;
+    type received = NonOptionalKeys<supplied>;
     type expected = "b" | "c";
 
     assert<received, expected>();
@@ -219,7 +219,7 @@ describe("NonOptionalPropKeys", () => {
 
     // tslint:disable-next-line: no-any
     type supplied = { [k: string]: any };
-    type received = NonOptionalPropKeys<supplied>;
+    type received = NonOptionalKeys<supplied>;
     type expected = never;
 
     assert<received, expected>();
@@ -228,7 +228,7 @@ describe("NonOptionalPropKeys", () => {
 
   it("should return 'string' if an index signature of 'string' is provided", () => {
     type supplied = { [k: string]: string };
-    type received = NonOptionalPropKeys<supplied>;
+    type received = NonOptionalKeys<supplied>;
     type expected = string;
 
     assert<received, expected>();
@@ -301,7 +301,7 @@ describe("CompositeProps", () => {
     });
 
     it("playground", () => {
-      type Extracted<T, U> = Extract<NonOptionalPropKeys<U>, keyof T>;
+      type Extracted<T, U> = Extract<NonOptionalKeys<U>, keyof T>;
       type MExtracted<T, U = string> = T extends U ? true : false;
       type m = { a: string };
       type n = { a: string; b: string };

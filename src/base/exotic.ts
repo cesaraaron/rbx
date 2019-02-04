@@ -29,7 +29,7 @@ export type FromReactType<
 /**
  * Returns those keys which are non-optional
  */
-export type NonOptionalPropKeys<P extends {}> = Required<
+export type NonOptionalKeys<P extends {}> = Required<
   { [K in keyof P]: undefined extends P[K] ? never : K }
 >[keyof P];
 
@@ -47,11 +47,11 @@ export type HasIndexSignature<P extends {}> = (string | number) extends keyof P
  * Returns `true` or `false` depending on whether `TAsComponentProps` has
  * required props that overlap with either required or optional TOwnProps.
  */
-export type HasIntersectingNonOptionalProps<
+export type HasIntersectingNonOptionalKeys<
   TOwnProps extends {},
   TAsComponentProps extends {}
 > = Extract<
-  NonOptionalPropKeys<TAsComponentProps>,
+  NonOptionalKeys<TAsComponentProps>,
   keyof TOwnProps
 > extends undefined
   ? false
@@ -60,9 +60,7 @@ export type HasIntersectingNonOptionalProps<
 /**
  * Returns true if P has at least one non-optional keys, else false
  */
-export type HasNonOptionalPropKeys<P extends {}> = NonOptionalPropKeys<
-  P
-> extends never
+export type HasNonOptionalKeys<P extends {}> = NonOptionalKeys<P> extends never
   ? false
   : true;
 
@@ -100,14 +98,15 @@ export type CompositeProps<
   TAsComponentProps extends {}
 > = {
   0: TOwnProps & { with: TAsComponentProps };
-  1: TOwnProps & (Omit<TAsComponentProps, keyof TOwnProps> & { with?: never });
-}[HasIndexSignature<TAsComponentProps> extends true
-  ? 0
-  : HasNonOptionalPropKeys<TAsComponentProps> extends false
-  ? (0 | 1)
-  : HasIntersectingNonOptionalProps<TOwnProps, TAsComponentProps> extends true
-  ? 0
-  : (0 | 1)];
+  1: TOwnProps & { with?: TAsComponentProps };
+  2: TOwnProps & Omit<TAsComponentProps, keyof TOwnProps> & { with?: never };
+}[HasIndexSignature<TAsComponentProps> extends false
+  ? HasNonOptionalKeys<TAsComponentProps> extends false
+    ? (1 | 2)
+    : HasIntersectingNonOptionalKeys<TOwnProps, TAsComponentProps> extends false
+    ? (0 | 2)
+    : 0
+  : 0];
 
 /**
  * This is used to copy all properties from React.ForwardRefExoticComponent
