@@ -95,7 +95,7 @@ export type CompatibleWithForwardsProps<
  *   --> return 0
  * --> return 0 | 1
  */
-export type ForwardRefAsExoticComponentCompositeProps<
+export type CompositeProps<
   TOwnProps extends {},
   TAsComponentProps extends {}
 > = {
@@ -133,10 +133,7 @@ export type ForwardRefAsExoticComponent<
   TDefaultComponentProps extends {} = React.ComponentProps<TDefaultComponent>
 > = NonCallableForwardRefExoticComponentProps<TDefaultComponent, TOwnProps> & {
   (
-    props: { as: never } & ForwardRefAsExoticComponentCompositeProps<
-      TOwnProps,
-      TDefaultComponentProps
-    > &
+    props: { as: never } & CompositeProps<TOwnProps, TDefaultComponentProps> &
       React.RefAttributes<
         TDefaultComponent extends keyof JSX.IntrinsicElements
           ? FromReactType<TDefaultComponent>
@@ -148,10 +145,7 @@ export type ForwardRefAsExoticComponent<
     TAsComponent extends React.ReactType = TDefaultComponent,
     TAsComponentProps = React.ComponentProps<TAsComponent>
   >(
-    props: { as: TAsComponent } & ForwardRefAsExoticComponentCompositeProps<
-      TOwnProps,
-      TAsComponentProps
-    > &
+    props: { as: TAsComponent } & CompositeProps<TOwnProps, TAsComponentProps> &
       React.RefAttributes<
         TAsComponent extends keyof JSX.IntrinsicElements
           ? FromReactType<TAsComponent>

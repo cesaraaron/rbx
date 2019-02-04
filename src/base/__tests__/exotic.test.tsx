@@ -4,9 +4,9 @@ import React from "react";
 
 import {
   CompatibleWithForwardsProps,
+  CompositeProps,
   forwardRefAs,
   ForwardRefAsExoticComponent,
-  ForwardRefAsExoticComponentCompositeProps,
   FromReactType,
   HasIndexSignature,
   HasIntersectingNonOptionalProps,
@@ -237,11 +237,11 @@ describe("NonOptionalPropKeys", () => {
 });
 
 // tslint:disable:no-reserved-keywords
-describe("ForwardRefAsExoticComponentCompositeProps", () => {
+describe("CompositeProps", () => {
   describe("disjoint required props", () => {
     type a = { a: string };
     type b = { b: string; c?: string };
-    type received = ForwardRefAsExoticComponentCompositeProps<a, b>;
+    type received = CompositeProps<a, b>;
 
     it("should allow b's required props with the prop 'with'", () => {
       type supplied = { a: string; with: { b: string } };
@@ -272,7 +272,7 @@ describe("ForwardRefAsExoticComponentCompositeProps", () => {
   describe("disjoint, no required props", () => {
     type a = { a: string };
     type b = { a?: string; b?: string };
-    type received = ForwardRefAsExoticComponentCompositeProps<a, b>;
+    type received = CompositeProps<a, b>;
 
     it("should allow b's props without the with prop", () => {
       type supplied = { a: string; b: string };
@@ -283,7 +283,7 @@ describe("ForwardRefAsExoticComponentCompositeProps", () => {
   describe("intersecting props with 1) string, and 2) string", () => {
     type a = { a: string };
     type b = { a: string; b?: string };
-    type received = ForwardRefAsExoticComponentCompositeProps<a, b>;
+    type received = CompositeProps<a, b>;
 
     it("should allow b's required props with the prop 'with'", () => {
       type supplied = { a: string; with: { a: string } };
@@ -315,7 +315,7 @@ describe("ForwardRefAsExoticComponentCompositeProps", () => {
     // will fail, as `with` is the `b` props.
     type a = { [K: string]: string | b; with: b };
     type b = { a: string; b?: string };
-    type received = ForwardRefAsExoticComponentCompositeProps<a, b>;
+    type received = CompositeProps<a, b>;
 
     it("should allow b's required props with the prop 'with'", () => {
       type supplied = { c: string; with: { a: string } };
@@ -341,7 +341,7 @@ describe("ForwardRefAsExoticComponentCompositeProps", () => {
   describe("intersecting props with 1) string, and 2) index signature: string", () => {
     type a = { a: string };
     type b = { [K: string]: string | undefined; a: string };
-    type received = ForwardRefAsExoticComponentCompositeProps<a, b>;
+    type received = CompositeProps<a, b>;
 
     it("should allow b's required props with the prop 'with'", () => {
       type supplied = { a: string; with: { a: string } };
