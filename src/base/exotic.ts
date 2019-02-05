@@ -96,14 +96,14 @@ export type CompatibleWithForwardsProps<
   : false;
 
 /**
- * Does TAsComponentProps have an index signature, masking it's required props?
+ * Does TOwnProps have an index signature, assumably consuming all keys?
  *   --> return 0
- * Does TAsComponentProps have no required props?
- *   --> return 0 | 1
- * Is there an interesection between TAsComponentProps props that are required
- * and TOwnProps?
+ * Does TAsComponentProps have no required keys?
+ *   --> return (1 | 2)
+ * Does TAsComponentProps have required keys that don't intersect with TOwnProps
+ *   --> return (0 | 2)
+ * Does TAsComponentProps have required keys that do intersect with TOwnProps?
  *   --> return 0
- * --> return 0 | 1
  */
 export type CompositeProps<
   TOwnProps extends {},
@@ -112,7 +112,7 @@ export type CompositeProps<
   0: TOwnProps & { with: TAsComponentProps };
   1: TOwnProps & { with?: TAsComponentProps };
   2: TOwnProps & Omit<TAsComponentProps, keyof TOwnProps> & { with?: never };
-}[HasIndexSignature<TAsComponentProps> extends false
+}[HasIndexSignature<TOwnProps> extends false
   ? HasNonOptionalKeys<TAsComponentProps> extends false
     ? (1 | 2)
     : HasIntersectingNonOptionalKeys<TOwnProps, TAsComponentProps> extends false
@@ -126,54 +126,49 @@ export type CompositeProps<
  */
 export type NonCallableForwardRefExoticComponentProps<
   TDefaultComponent extends React.ReactType,
-  TOwnProps extends {},
-  TExtendedProps = TOwnProps & {
-    as?: TDefaultComponent;
-    with?: React.ComponentProps<TDefaultComponent>;
-  }
+  TOwnProps extends {}
 > = Pick<
-  React.ForwardRefExoticComponent<TExtendedProps>,
-  keyof React.ForwardRefExoticComponent<TExtendedProps>
+  React.ForwardRefExoticComponent<TOwnProps & { as: TDefaultComponent }>,
+  keyof React.ForwardRefExoticComponent<TOwnProps & { as: TDefaultComponent }>
 >;
 
 // tslint:disable:no-any
 export type ForwardRefAsExoticComponent<
-  TDefaultComponent extends React.ReactType<TDefaultComponentProps>,
+  TDefaultComponent extends React.ReactType,
   TOwnProps extends {},
-  TForwardsProps extends {},
-  TDefaultComponentProps extends {} = React.ComponentProps<TDefaultComponent>
+  TForwardsProps extends {}
 > = NonCallableForwardRefExoticComponentProps<TDefaultComponent, TOwnProps> & {
-  (
-    props: { as: never } & CompositeProps<TOwnProps, TDefaultComponentProps> &
-      React.RefAttributes<
-        TDefaultComponent extends keyof JSX.IntrinsicElements
-          ? FromReactType<TDefaultComponent>
-          : TDefaultComponent
-      >,
-  ): React.ReactElement<any> | null;
-
-  <
-    TAsComponent extends React.ReactType = TDefaultComponent,
-    TAsComponentProps = React.ComponentProps<TAsComponent>
-  >(
-    props: { as: TAsComponent } & CompositeProps<TOwnProps, TAsComponentProps> &
+  <TAsComponent extends React.ReactType = TDefaultComponent>(
+    props: { as?: TAsComponent } & CompositeProps<
+      TOwnProps,
+      React.ComponentPropsWithoutRef<TAsComponent>
+    > &
       React.RefAttributes<
         TAsComponent extends keyof JSX.IntrinsicElements
           ? FromReactType<TAsComponent>
           : TAsComponent
       >,
-  ): React.ReactElement<any> | null;
+  ): CompatibleWithForwardsProps<
+    TForwardsProps,
+    React.ComponentPropsWithoutRef<TAsComponent>
+  > extends false
+    ? never
+    : React.ReactElement<any> | null;
 
-  defaultProps: { as: TDefaultComponent } & Partial<TOwnProps>;
+  defaultProps: CompatibleWithForwardsProps<
+    TForwardsProps,
+    React.ComponentPropsWithoutRef<TDefaultComponent>
+  > extends false
+    ? never
+    : { as: TDefaultComponent } & Partial<TOwnProps>;
   displayName: string;
   propTypes?: React.WeakValidationMap<{ [k in "as" | keyof TOwnProps]: any }>;
 };
 
 export function forwardRefAs<
-  TDefaultComponent extends React.ReactType<TDefaultComponentProps>,
+  TDefaultComponent extends React.ReactType,
   TOwnProps extends {},
-  TForwardsProps extends {},
-  TDefaultComponentProps extends {} = React.ComponentProps<TDefaultComponent>
+  TForwardsProps extends {}
 >(
   Component: React.RefForwardingComponent<
     any,
@@ -182,8 +177,7 @@ export function forwardRefAs<
   defaultProps: ForwardRefAsExoticComponent<
     TDefaultComponent,
     TOwnProps,
-    TForwardsProps,
-    TDefaultComponentProps
+    TForwardsProps
   >["defaultProps"],
 ) {
   const factory = React.forwardRef(Component);
@@ -193,8 +187,7 @@ export function forwardRefAs<
   return factory as ForwardRefAsExoticComponent<
     TDefaultComponent,
     TOwnProps,
-    TForwardsProps,
-    TDefaultComponentProps
+    TForwardsProps
   >;
 }
 // tslint:enable:no-any

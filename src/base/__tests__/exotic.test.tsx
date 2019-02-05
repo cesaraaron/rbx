@@ -110,37 +110,6 @@ describe("FromReactType", () => {
   });
 });
 
-describe("HasIndexSignature", () => {
-  it("should be true for type with string index signature", () => {
-    // tslint:disable-next-line: no-any
-    type supplied = { [K: string]: any };
-    type received = HasIndexSignature<supplied>;
-    type expected = true;
-
-    assert<received, expected>();
-    assert<expected, received>();
-  });
-
-  it("should be true for type with number index signature", () => {
-    // tslint:disable-next-line: no-any
-    type supplied = { [K: number]: any };
-    type received = HasIndexSignature<supplied>;
-    type expected = true;
-
-    assert<received, expected>();
-    assert<expected, received>();
-  });
-
-  it("should be false for type with without index signature", () => {
-    type supplied = { a: string };
-    type received = HasIndexSignature<supplied>;
-    type expected = false;
-
-    assert<received, expected>();
-    assert<expected, received>();
-  });
-});
-
 describe("HasIntersectingNonOptionalKeys", () => {
   it("should be false on empty 'a', 'b' with required", () => {
     type a = {};
@@ -212,6 +181,47 @@ describe("HasIntersectingNonOptionalKeys", () => {
     type expected = false;
 
     assert<supplied, expected>();
+  });
+});
+
+describe("HasIndexSignature", () => {
+  it("should be true for type with string index signature", () => {
+    // tslint:disable-next-line: no-any
+    type supplied = { [K: string]: any };
+    type received = HasIndexSignature<supplied>;
+    type expected = true;
+
+    assert<received, expected>();
+    assert<expected, received>();
+  });
+
+  it("should be true for type with number index signature", () => {
+    // tslint:disable-next-line: no-any
+    type supplied = { [K: number]: any };
+    type received = HasIndexSignature<supplied>;
+    type expected = true;
+
+    assert<received, expected>();
+    assert<expected, received>();
+  });
+
+  it("should be true for type with string and number index signature", () => {
+    // tslint:disable-next-line: no-any
+    type supplied = { [K: string]: any; [K2: number]: any };
+    type received = HasIndexSignature<supplied>;
+    type expected = true;
+
+    assert<received, expected>();
+    assert<expected, received>();
+  });
+
+  it("should be false for type without index signature", () => {
+    type supplied = { a: string };
+    type received = HasIndexSignature<supplied>;
+    type expected = false;
+
+    assert<received, expected>();
+    assert<expected, received>();
   });
 });
 
@@ -295,98 +305,109 @@ describe("CompositeProps", () => {
     type b = { b: string; c?: string };
     type received = CompositeProps<a, b>;
 
+    it("should allow b's required props at the root", () => {
+      type supplied = { a: string; b: string };
+      assert<DoesExtend<supplied, received>, true>();
+    });
+
     it("should allow b's required props with the prop 'with'", () => {
       type supplied = { a: string; with: { b: string } };
       assert<DoesExtend<supplied, received>, true>();
     });
 
-    it("should allow b's required props without the prop 'with'", () => {
-      type supplied = { a: string; b: string };
-      assert<DoesExtend<supplied, received>, true>();
-    });
-
-    it("should allow b's optional props with the prop 'with'", () => {
-      type supplied = { a: string; with: { b: string; c?: string } };
-      assert<DoesExtend<supplied, received>, true>();
-    });
-
-    it("should allow b's optional props without the prop 'with'", () => {
-      type supplied = { a: string; b: string; c?: string };
-      assert<DoesExtend<supplied, received>, true>();
-    });
-
-    it("should not allowed b's props to straddle the prop 'with'", () => {
-      type supplied = { a: string; b: string; with: { c?: string } };
+    it("should not allow b's required prop to be omitted", () => {
+      type supplied = { a: string };
       assert<DoesExtend<supplied, received>, false>();
     });
   });
 
-  describe("disjoint, no required props", () => {
-    type a = { a: string };
-    type b = { a?: string; b?: string };
-    type received = CompositeProps<a, b>;
-
-    it("should allow b's props without the with prop", () => {
-      type supplied = { a: string; b: string };
-      assert<DoesExtend<supplied, received>, true>();
-    });
-  });
-
-  describe("intersecting props with 1) string, and 2) string", () => {
+  describe("union required props", () => {
     type a = { a: string };
     type b = { a: string; b?: string };
     type received = CompositeProps<a, b>;
-
-    it("should allow b's required props with the prop 'with'", () => {
-      type supplied = { a: string; with: { a: string } };
-      assert<DoesExtend<supplied, received>, true>();
-    });
-
-    it("should allow b's optional props with the prop 'with'", () => {
-      type supplied = { a: string; with: { a: string; b?: string } };
-      assert<DoesExtend<supplied, received>, true>();
-    });
 
     it("should not allow b's required props to be omitted", () => {
       type supplied = { a: string };
       assert<DoesExtend<supplied, received>, false>();
     });
 
-    it("playground", () => {
-      type Extracted<T, U> = Extract<NonOptionalKeys<U>, keyof T>;
-      type MExtracted<T, U = string> = T extends U ? true : false;
-      type m = { a: string };
-      type n = { a: string; b: string };
-      type extracted = Extracted<m, n>;
-      assert<MExtracted<extracted, string | number>, true>();
+    it("should allow b's required props with the prop 'with'", () => {
+      type supplied = { a: string; with: { a: string } };
+      assert<DoesExtend<supplied, received>, true>();
     });
   });
 
-  describe("intersecting props with 1) index signature, and 2) string", () => {
-    // all keys must comply with index signatures, so { [K: string]: string }
-    // will fail, as `with` is the `b` props.
-    type a = { [K: string]: string | b; with: b };
+  describe("disjoint, no required props", () => {
+    type a = { a: string };
+    type b = { b?: string; c?: string };
+    type received = CompositeProps<a, b>;
+
+    it("should allow b's props at the root", () => {
+      type supplied = { a: string; b?: string };
+      assert<DoesExtend<supplied, received>, true>();
+    });
+
+    it("should allow b's props with the prop 'with'", () => {
+      type supplied = { a: string; with: { b?: string } };
+      assert<DoesExtend<supplied, received>, true>();
+    });
+
+    it("should allow b's props to be omitted", () => {
+      type supplied = { a: string };
+      assert<DoesExtend<supplied, received>, true>();
+    });
+  });
+
+  describe("union required props with `a` index signature", () => {
+    type a = { [K: string]: any; a: string }; // tslint:disable-line:no-any
     type b = { a: string; b?: string };
     type received = CompositeProps<a, b>;
 
-    it("should allow b's required props with the prop 'with'", () => {
-      type supplied = { c: string; with: { a: string } };
-      assert<DoesExtend<supplied, received>, true>();
-    });
-
-    it("should allow b's optional props with the prop 'with'", () => {
-      type supplied = { c: string; with: { a: string; b?: string } };
-      assert<DoesExtend<supplied, received>, true>();
-    });
-
-    it("should not allow 'with' to be omitted, as b's required prop is in index type", () => {
-      type supplied = { c: string; a: string; b?: string };
+    it("should not allow b's required props to be omitted", () => {
+      type supplied = { a: string };
       assert<DoesExtend<supplied, received>, false>();
     });
+
+    it("should allow b's required props with the prop 'with'", () => {
+      type supplied = { a: string; with: { a: string } };
+      assert<DoesExtend<supplied, received>, true>();
+    });
+  });
+
+  describe("disjoint required props with `a` index signature", () => {
+    type a = { [K: string]: any; a: string }; // tslint:disable-line:no-any
+    type b = { b: string };
+    type received = CompositeProps<a, b>;
 
     it("should not allow b's required props to be omitted", () => {
-      type supplied = { c: string };
+      type supplied = { a: string };
       assert<DoesExtend<supplied, received>, false>();
+    });
+
+    it("should not allow b's required props at the root", () => {
+      type supplied = { a: string; b: string };
+      assert<DoesExtend<supplied, received>, false>();
+    });
+
+    it("should allow b's required props with the prop 'with'", () => {
+      type supplied = { a: string; with: { b: string } };
+      assert<DoesExtend<supplied, received>, true>();
+    });
+  });
+
+  describe("union required props with `b` index signature", () => {
+    type a = { a: string };
+    type b = { [K: string]: any; a: string }; // tslint:disable-line:no-any
+    type received = CompositeProps<a, b>;
+
+    it("should not allow b's required props to be omitted", () => {
+      type supplied = { a: string };
+      assert<DoesExtend<supplied, received>, false>();
+    });
+
+    it("should allow b's required props with the prop 'with'", () => {
+      type supplied = { a: string; with: { a: string } };
+      assert<DoesExtend<supplied, received>, true>();
     });
   });
 
@@ -715,7 +736,8 @@ describe("forwardRefAs", () => {
   describe("Composition through another ForwardRefAsExoticComponent", () => {
     it("should render a component through the 'as' prop with 'with' props", () => {
       const node = (
-        <Child as={Parent} a="c-a" d={3} with={{ a: "p-a", c: 3 }} />
+        <Parent as={Child} a="p-a" c={3} with={{ a: "c-a", d: 4 }} />
+        // <Child as={Parent} a="c-a" d={3} with={{ a: "p-a", c: 3 }} />
       );
       const rootWrapper = Enzyme.shallow(node);
       const nestedWrapper = rootWrapper.dive();
@@ -733,7 +755,7 @@ describe("forwardRefAs", () => {
           as={Parent}
           a="c-a"
           d={3}
-          with={{ a: "p-a", c: 3, as: Grandparent, with: { a: "g-a", b: 2 } }}
+          with={{ a: "p-a", c: 3, as: Grandparent, with: { a: "g-b", b: 2 } }}
         />
       );
       const childWrapper = Enzyme.shallow(node);
