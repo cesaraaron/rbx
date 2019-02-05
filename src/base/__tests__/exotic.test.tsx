@@ -736,8 +736,7 @@ describe("forwardRefAs", () => {
   describe("Composition through another ForwardRefAsExoticComponent", () => {
     it("should render a component through the 'as' prop with 'with' props", () => {
       const node = (
-        <Parent as={Child} a="p-a" c={3} with={{ a: "c-a", d: 4 }} />
-        // <Child as={Parent} a="c-a" d={3} with={{ a: "p-a", c: 3 }} />
+        <Child as={Parent} a="c-a" d={3} with={{ a: "p-a", c: 3 }} />
       );
       const rootWrapper = Enzyme.shallow(node);
       const nestedWrapper = rootWrapper.dive();
@@ -755,7 +754,12 @@ describe("forwardRefAs", () => {
           as={Parent}
           a="c-a"
           d={3}
-          with={{ a: "p-a", c: 3, as: Grandparent, with: { a: "g-b", b: 2 } }}
+          with={{
+            a: "p-a",
+            c: 2,
+            as: Grandparent,
+            with: { a: "g-b", b: 2 },
+          }}
         />
       );
       const childWrapper = Enzyme.shallow(node);

@@ -112,13 +112,15 @@ export type CompositeProps<
   0: TOwnProps & { with: TAsComponentProps };
   1: TOwnProps & { with?: TAsComponentProps };
   2: TOwnProps & Omit<TAsComponentProps, keyof TOwnProps> & { with?: never };
-}[HasIndexSignature<TOwnProps> extends false
-  ? HasNonOptionalKeys<TAsComponentProps> extends false
-    ? (1 | 2)
-    : HasIntersectingNonOptionalKeys<TOwnProps, TAsComponentProps> extends false
-    ? (0 | 2)
-    : 0
-  : 0];
+}[HasNonOptionalKeys<TAsComponentProps> extends true
+  ? HasIntersectingNonOptionalKeys<TOwnProps, TAsComponentProps> extends true
+    ? 0
+    : "with" extends keyof TAsComponentProps
+    ? 0
+    : (0 | 2)
+  : "with" extends keyof TAsComponentProps
+  ? 1
+  : (1 | 2)];
 
 export type __CompositeProps<
   TOwnProps extends {},
