@@ -11,6 +11,7 @@ import {
   HasIndexSignature,
   HasIntersectingNonOptionalKeys,
   HasNonOptionalKeys,
+  KnownKeys,
   NonOptionalKeys,
 } from "../exotic";
 
@@ -21,6 +22,59 @@ import {
 const assert = <T, U extends T>() => undefined;
 
 type DoesExtend<Supplied, Received> = Supplied extends Received ? true : false;
+
+describe("KnownKeys", () => {
+  it("should extract known keys with string index signature", () => {
+    type supplied = {
+      [K: string]: any; // tslint:disable-line:no-any
+      a: string;
+    };
+    type received = KnownKeys<supplied>;
+    type expected = "a";
+    assert<received, expected>();
+    assert<expected, received>();
+  });
+
+  it("should extract known keys with number index signature", () => {
+    type supplied = {
+      [K: number]: any; // tslint:disable-line:no-any
+      1: number;
+    };
+    type received = KnownKeys<supplied>;
+    type expected = 1;
+    assert<received, expected>();
+    assert<expected, received>();
+  });
+
+  it("should extract known keys with string or number index signature", () => {
+    type supplied = {
+      [K: string]: any; // tslint:disable-line:no-any
+      [K2: number]: any; // tslint:disable-line:no-any
+      a: string;
+      1: number;
+    };
+    type received = KnownKeys<supplied>;
+    type expected = "a" | 1;
+    assert<received, expected>();
+    assert<expected, received>();
+  });
+
+  it("should return never from something without keys", () => {
+    type supplied = {};
+    type received = KnownKeys<supplied>;
+    type expected = never;
+    assert<received, expected>();
+    assert<expected, received>();
+  });
+
+  it("should return never from something with only index signature", () => {
+    type supplied = { [K: string]: any }; // tslint:disable-line:no-any
+    type received = KnownKeys<supplied>;
+    type expected = never;
+    assert<received, expected>();
+    assert<expected, received>();
+  });
+});
 
 describe("FromReactType", () => {
   it("should map 'div' => HTMLDivElement", () => {
@@ -196,7 +250,7 @@ describe("HasNonOptionalKeys", () => {
 });
 
 describe("NonOptionalKeys", () => {
-  it("should return 'never' if no required props", () => {
+  it("should return 'never' when no required keys", () => {
     type supplied = { a?: string; b?: string; c?: string };
     type received = NonOptionalKeys<supplied>;
     type expected = never;
@@ -205,7 +259,7 @@ describe("NonOptionalKeys", () => {
     assert<expected, received>();
   });
 
-  it("should only return non-optional props", () => {
+  it("should return non-optional keys", () => {
     type supplied = { a?: string; b: string; c: string };
     type received = NonOptionalKeys<supplied>;
     type expected = "b" | "c";
@@ -214,22 +268,20 @@ describe("NonOptionalKeys", () => {
     assert<expected, received>();
   });
 
-  it("should return 'never' if an index signature of 'any' is provided", () => {
-    // This is because `any` includes undefined
-
+  it("should return required keys with an index signature", () => {
     // tslint:disable-next-line: no-any
-    type supplied = { [k: string]: any };
+    type supplied = { [K: string]: any; a: string; b: string };
     type received = NonOptionalKeys<supplied>;
-    type expected = never;
+    type expected = "a" | "b";
 
     assert<received, expected>();
     assert<expected, received>();
   });
 
-  it("should return 'string' if an index signature of 'string' is provided", () => {
-    type supplied = { [k: string]: string };
+  it("should return never no required keys and an index signature", () => {
+    type supplied = { [k: string]: string | undefined; a?: string; b?: string };
     type received = NonOptionalKeys<supplied>;
-    type expected = string;
+    type expected = never;
 
     assert<received, expected>();
     assert<expected, received>();

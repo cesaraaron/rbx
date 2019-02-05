@@ -5,6 +5,18 @@ import { Omit } from "../types";
 // tslint:disable:no-reserved-keywords
 
 /**
+ * Extracts the known keys from an object – regardless of whether it has an
+ * index signature.
+ */
+export type KnownKeys<T extends {}> = {
+  [K in keyof T]: string extends K ? never : number extends K ? never : K
+} extends { [_ in keyof T]: infer U }
+  ? {} extends U
+    ? never
+    : U
+  : never;
+
+/**
  * Maps a keyof JSX.IntrinsicElement (e.g. 'div' or 'svg') or a
  * React.ComponentType to it's type.
  *
@@ -30,8 +42,8 @@ export type FromReactType<
  * Returns those keys which are non-optional
  */
 export type NonOptionalKeys<P extends {}> = Required<
-  { [K in keyof P]: undefined extends P[K] ? never : K }
->[keyof P];
+  { [K in KnownKeys<P>]: undefined extends P[K] ? never : K }
+>[KnownKeys<P>];
 
 /**
  * Returns true if P has an index signature, otherwise false.
