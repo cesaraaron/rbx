@@ -4,9 +4,14 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type ModalCardBodyProps = HelpersProps;
+export type ModalCardBodyOwnProps = HelpersProps;
+export type ModalCardBodyForwardsProps = { className: string };
 
-export const ModalCardBody = forwardRefAs<"section", ModalCardBodyProps>(
+export const ModalCardBody = forwardRefAs<
+  "section",
+  ModalCardBodyOwnProps,
+  ModalCardBodyForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("modal-card-body", className)}

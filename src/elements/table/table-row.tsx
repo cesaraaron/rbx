@@ -9,9 +9,14 @@ export type TableRowHelperProps = Partial<{
   selected: boolean;
 }>;
 
-export type TableRowProps = HelpersProps & TableRowHelperProps;
+export type TableRowOwnProps = HelpersProps & TableRowHelperProps;
+export type TableRowForwardsProps = { className: string };
 
-export const TableRow = forwardRefAs<"tr", TableRowProps>(
+export const TableRow = forwardRefAs<
+  "tr",
+  TableRowOwnProps,
+  TableRowForwardsProps
+>(
   ({ className, selected, ...rest }, ref) => (
     <Generic
       className={classNames({ "is-selected": selected }, className)}

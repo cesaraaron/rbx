@@ -10,9 +10,14 @@ export type MenuListItemModifierProps = Partial<{
   menu: React.ReactNode;
 }>;
 
-export type MenuListItemProps = HelpersProps & MenuListItemModifierProps;
+export type MenuListItemOwnProps = HelpersProps & MenuListItemModifierProps;
+export type MenuListItemForwardsProps = { className: string };
 
-export const MenuListItem = forwardRefAs<"a", MenuListItemProps>(
+export const MenuListItem = forwardRefAs<
+  "a",
+  MenuListItemOwnProps,
+  MenuListItemForwardsProps
+>(
   ({ active, className, menu, ...rest }, ref) => (
     <li>
       <Generic

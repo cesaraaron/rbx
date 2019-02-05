@@ -26,9 +26,17 @@ export type CardHeaderTitleModifierProps = Partial<{
   align: CardHeaderTitleVariables["alignments"];
 }>;
 
-export type CardHeaderTitleProps = HelpersProps & CardHeaderTitleModifierProps;
+export type CardHeaderTitleOwnProps = HelpersProps &
+  CardHeaderTitleModifierProps;
+export type CardHeaderTitleForwardsProps = {
+  className: string;
+};
 
-export const CardHeaderTitle = forwardRefAs<"div", CardHeaderTitleProps>(
+export const CardHeaderTitle = forwardRefAs<
+  "div",
+  CardHeaderTitleOwnProps,
+  CardHeaderTitleForwardsProps
+>(
   ({ align, className, ...rest }, ref) => (
     <Generic
       className={classNames(

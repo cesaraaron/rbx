@@ -8,10 +8,11 @@ import { ModalCardFoot } from "./modal-card-foot";
 import { ModalCardHead } from "./modal-card-head";
 import { ModalCardTitle } from "./modal-card-title";
 
-export type ModalCardProps = HelpersProps;
+export type ModalCardOwnProps = HelpersProps;
+export type ModalCardForwardsProps = { className: string };
 
 export const ModalCard = Object.assign(
-  forwardRefAs<"div", ModalCardProps>(
+  forwardRefAs<"div", ModalCardOwnProps, ModalCardForwardsProps>(
     ({ className, ...rest }, ref) => (
       <Generic
         className={classNames("modal-card", className)}

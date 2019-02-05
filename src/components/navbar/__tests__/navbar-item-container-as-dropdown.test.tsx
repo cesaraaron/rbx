@@ -7,7 +7,7 @@ import {
 } from "src/base/theme";
 import {
   NavbarItemContainer,
-  NavbarItemContainerProps,
+  NavbarItemContainerOwnProps,
   NavbarItemContainerState,
 } from "src/components/navbar/navbar-item-container";
 import {
@@ -27,7 +27,7 @@ const DISPLAY_NAME = "Navbar.Item.Container";
 const DEFAULT_ELEMENT = "div";
 const BULMA_CLASS_NAME = "navbar-item";
 
-const makeNode = (props: Omit<NavbarItemContainerProps, "dropdown">) => (
+const makeNode = (props: Omit<NavbarItemContainerOwnProps, "dropdown">) => (
   <NavbarItemContainer dropdown {...props} />
 );
 

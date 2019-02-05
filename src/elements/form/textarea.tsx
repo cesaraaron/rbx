@@ -39,6 +39,10 @@ export type TextareaForwardsProps = {
   className: string;
   rows: TextareaModifierProps["rows"];
 };
+export type TextareaForwardsForwardsProps = {
+  className: string;
+  rows: number;
+};
 
 export const Textarea = forwardRefAs<
   "textarea",

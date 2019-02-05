@@ -26,9 +26,14 @@ export type FieldLabelModifierProps = Partial<{
   size: FieldLabelVariables["sizes"];
 }>;
 
-export type FieldLabelProps = HelpersProps & FieldLabelModifierProps;
+export type FieldLabelOwnProps = HelpersProps & FieldLabelModifierProps;
+export type FieldLabelForwardsProps = { className: string };
 
-export const FieldLabel = forwardRefAs<"div", FieldLabelProps>(
+export const FieldLabel = forwardRefAs<
+  "div",
+  FieldLabelOwnProps,
+  FieldLabelForwardsProps
+>(
   ({ className, size, ...rest }, ref) => (
     <Generic
       className={classNames("field-label", { [`is-${size}`]: size }, className)}

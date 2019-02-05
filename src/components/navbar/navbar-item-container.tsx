@@ -22,22 +22,26 @@ export type NavbarItemContainerModifierProps = Partial<{
   up: boolean;
 }>;
 
-export type NavbarItemContainerProps = HelpersProps &
+export type NavbarItemContainerOwnProps = HelpersProps &
   NavbarItemContainerModifierProps;
+export type NavbarItemContainerForwardsProps = {
+  className: string;
+  onClick: React.MouseEventHandler;
+};
 
 export interface NavbarItemContainerState {
   active: boolean;
 }
 
 export class NavbarItemContainer extends React.PureComponent<
-  NavbarItemContainerProps,
+  NavbarItemContainerOwnProps,
   NavbarItemContainerState
 > {
   public static displayName = "Navbar.Item.Container";
   public readonly state: NavbarItemContainerState;
   private readonly ref = React.createRef<HTMLElement>();
 
-  constructor(props: NavbarItemContainerProps) {
+  constructor(props: NavbarItemContainerOwnProps) {
     super(props);
     this.state = { active: props.active === true };
   }
@@ -100,19 +104,15 @@ export class NavbarItemContainer extends React.PureComponent<
 
     return (
       <NavbarItemContext.Consumer>
-        {ctx => {
-          const htmlProps = { onClick: this.handleOnClick(ctx) };
-
-          return (
-            <Generic
-              as={as}
-              className={className}
-              ref={ref}
-              {...htmlProps}
-              {...rest}
-            />
-          );
-        }}
+        {ctx => (
+          <Generic
+            as={as}
+            className={className}
+            ref={ref}
+            onClick={this.handleOnClick(ctx)}
+            {...rest}
+          />
+        )}
       </NavbarItemContext.Consumer>
     );
   }

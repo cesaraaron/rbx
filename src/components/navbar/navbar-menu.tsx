@@ -5,9 +5,14 @@ import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 import { NavbarContext } from "./navbar-context";
 
-export type NavbarMenuProps = HelpersProps;
+export type NavbarMenuOwnProps = HelpersProps;
+export type NavbarMenuForwardsProps = { className: string };
 
-export const NavbarMenu = forwardRefAs<"div", NavbarMenuProps>(
+export const NavbarMenu = forwardRefAs<
+  "div",
+  NavbarMenuOwnProps,
+  NavbarMenuForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <NavbarContext.Consumer>
       {({ active }) => (

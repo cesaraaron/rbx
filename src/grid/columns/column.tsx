@@ -68,10 +68,11 @@ export type ColumnModifierProps = Partial<
     ColumnBreakpointOptions
 >;
 
-export type ColumnProps = HelpersProps & ColumnModifierProps;
+export type ColumnOwnProps = HelpersProps & ColumnModifierProps;
+export type ColumnForwardsProps = { className: string };
 
 export const Column = Object.assign(
-  forwardRefAs<"div", ColumnProps>(
+  forwardRefAs<"div", ColumnOwnProps, ColumnForwardsProps>(
     (
       {
         className,

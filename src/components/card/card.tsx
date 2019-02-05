@@ -8,10 +8,11 @@ import { CardFooter } from "./card-footer";
 import { CardHeader } from "./card-header";
 import { CardImage } from "./card-image";
 
-export type CardProps = HelpersProps;
+export type CardOwnProps = HelpersProps;
+export type CardForwardsProps = { className: string };
 
 export const Card = Object.assign(
-  forwardRefAs<"div", CardProps>(
+  forwardRefAs<"div", CardOwnProps, CardForwardsProps>(
     ({ className, ...rest }, ref) => (
       <Generic className={classNames("card", className)} ref={ref} {...rest} />
     ),

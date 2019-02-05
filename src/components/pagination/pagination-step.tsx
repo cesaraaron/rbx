@@ -26,9 +26,14 @@ export type PaginationStepModifierProps = {
   align: PaginationStepVariables["alignments"];
 };
 
-export type PaginationStepProps = HelpersProps & PaginationStepModifierProps;
+export type PaginationStepOwnProps = HelpersProps & PaginationStepModifierProps;
+export type PaginationStepForwardsProps = { className: string };
 
-export const PaginationStep = forwardRefAs<"a", PaginationStepProps>(
+export const PaginationStep = forwardRefAs<
+  "a",
+  PaginationStepOwnProps,
+  PaginationStepForwardsProps
+>(
   ({ align, className, ...rest }, ref) => (
     <Generic
       className={classNames({ [`pagination-${align}`]: align }, className)}

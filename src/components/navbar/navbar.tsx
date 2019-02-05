@@ -5,7 +5,11 @@ import { forwardRefAs } from "../../base";
 import { Omit } from "../../types";
 import { NavbarBrand } from "./navbar-brand";
 import { NavbarBurger } from "./navbar-burger";
-import { NavbarContainer, NavbarContainerProps } from "./navbar-container";
+import {
+  NavbarContainer,
+  NavbarContainerForwardsProps,
+  NavbarContainerOwnProps,
+} from "./navbar-container";
 import { NavbarContext } from "./navbar-context";
 import { NavbarDivider } from "./navbar-divider";
 import { NavbarDropdown } from "./navbar-dropdown";
@@ -14,10 +18,11 @@ import { NavbarLink } from "./navbar-link";
 import { NavbarMenu } from "./navbar-menu";
 import { NavbarSegment } from "./navbar-segment";
 
-export type NavbarProps = Omit<NavbarContainerProps, "as" | "innerRef">;
+export type NavbarOwnProps = Omit<NavbarContainerOwnProps, "as" | "innerRef">;
+export type NavbarForwardsProps = NavbarContainerForwardsProps;
 
 export const Navbar = Object.assign(
-  forwardRefAs<"nav", NavbarProps>(
+  forwardRefAs<"nav", NavbarOwnProps, NavbarForwardsProps>(
     (props, ref) => <NavbarContainer innerRef={ref} {...props} />,
     { as: "nav" },
   ),

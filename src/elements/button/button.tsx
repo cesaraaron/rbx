@@ -39,7 +39,8 @@ export type ButtonModifierProps = Partial<{
   text: boolean;
 }>;
 
-export type ButtonProps = HelpersProps & ButtonModifierProps;
+export type ButtonOwnProps = HelpersProps & ButtonModifierProps;
+export type ButtonForwardsProps = { className: string };
 
 const propTypes = {
   color: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -55,7 +56,7 @@ const propTypes = {
 };
 
 export const Button = Object.assign(
-  forwardRefAs<"button", ButtonProps>(
+  forwardRefAs<"button", ButtonOwnProps, ButtonForwardsProps>(
     (
       {
         className,

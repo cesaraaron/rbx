@@ -4,9 +4,14 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type ModalContentProps = HelpersProps;
+export type ModalContentOwnProps = HelpersProps;
+export type ModalContentForwardsProps = { className: string };
 
-export const ModalContent = forwardRefAs<"div", ModalContentProps>(
+export const ModalContent = forwardRefAs<
+  "div",
+  ModalContentOwnProps,
+  ModalContentForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("modal-content", className)}

@@ -4,9 +4,16 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type DropdownMenuProps = HelpersProps;
+export type DropdownMenuOwnProps = HelpersProps;
+export type DropdownMenuForwardsProps = {
+  className: string;
+};
 
-export const DropdownMenu = forwardRefAs<"div", DropdownMenuProps>(
+export const DropdownMenu = forwardRefAs<
+  "div",
+  DropdownMenuOwnProps,
+  DropdownMenuForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("dropdown-menu", className)}

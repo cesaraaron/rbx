@@ -4,9 +4,14 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type FileLabelProps = HelpersProps;
+export type FileLabelOwnProps = HelpersProps;
+export type FileLabelForwardsProps = { className: string };
 
-export const FileLabel = forwardRefAs<"label", FileLabelProps>(
+export const FileLabel = forwardRefAs<
+  "label",
+  FileLabelOwnProps,
+  FileLabelForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("file-label", className)}

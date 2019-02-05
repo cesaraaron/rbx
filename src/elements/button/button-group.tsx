@@ -30,9 +30,14 @@ export type ButtonGroupModifierProps = Partial<{
   size: ButtonGroupVariables["sizes"];
 }>;
 
-export type ButtonGroupProps = HelpersProps & ButtonGroupModifierProps;
+export type ButtonGroupOwnProps = HelpersProps & ButtonGroupModifierProps;
+export type ButtonGroupForwardsProps = { className: string };
 
-export const ButtonGroup = forwardRefAs<"div", ButtonGroupProps>(
+export const ButtonGroup = forwardRefAs<
+  "div",
+  ButtonGroupOwnProps,
+  ButtonGroupForwardsProps
+>(
   ({ align, className, hasAddons, size, ...rest }, ref) => (
     <Generic
       className={classNames(

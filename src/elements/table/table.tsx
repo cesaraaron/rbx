@@ -19,10 +19,11 @@ export type TableModifierProps = Partial<{
   striped: boolean;
 }>;
 
-export type TableProps = HelpersProps & TableModifierProps;
+export type TableOwnProps = HelpersProps & TableModifierProps;
+export type TableForwardsProps = { className: string };
 
 export const Table = Object.assign(
-  forwardRefAs<"table", TableProps>(
+  forwardRefAs<"table", TableOwnProps, TableForwardsProps>(
     (
       { bordered, className, fullwidth, hoverable, narrow, striped, ...rest },
       ref,

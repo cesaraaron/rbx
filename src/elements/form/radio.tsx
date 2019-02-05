@@ -3,14 +3,14 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type RadioProps = HelpersProps;
+export type RadioOwnProps = HelpersProps;
+export type RadioForwardsProps = {
+  className: string;
+  type: "radio"; // tslint:disable-line:no-reserved-keywords
+};
 
-export const Radio = forwardRefAs<"input", RadioProps>(
-  (props, ref) => {
-    const htmlProps = { type: "radio" };
-
-    return <Generic ref={ref} {...htmlProps} {...props} />;
-  },
+export const Radio = forwardRefAs<"input", RadioOwnProps, RadioForwardsProps>(
+  (props, ref) => <Generic ref={ref} type="radio" {...props} />,
   { as: "input" },
 );
 

@@ -10,9 +10,14 @@ export type NotificationModifierProps = Partial<{
   color: Variables["colors"];
 }>;
 
-export type NotificationProps = HelpersProps & NotificationModifierProps;
+export type NotificationOwnProps = HelpersProps & NotificationModifierProps;
+export type NotificationForwardsProps = { className: string };
 
-export const Notification = forwardRefAs<"div", NotificationProps>(
+export const Notification = forwardRefAs<
+  "div",
+  NotificationOwnProps,
+  NotificationForwardsProps
+>(
   ({ className, color, ...rest }, ref) => (
     <Generic
       className={classNames(

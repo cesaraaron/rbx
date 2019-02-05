@@ -4,9 +4,20 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type PaginationEllipsisProps = HelpersProps;
+export type PaginationEllipsisHelperProps = { children: React.ReactNode };
 
-export const PaginationEllipsis = forwardRefAs<"span", PaginationEllipsisProps>(
+export type PaginationEllipsisOwnProps = HelpersProps &
+  PaginationEllipsisHelperProps;
+export type PaginationEllipsisForwardsProps = {
+  className: string;
+  children: React.ReactNode;
+};
+
+export const PaginationEllipsis = forwardRefAs<
+  "span",
+  PaginationEllipsisOwnProps,
+  PaginationEllipsisForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <li>
       <Generic

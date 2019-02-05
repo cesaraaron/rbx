@@ -26,9 +26,14 @@ export type NavbarSegmentModifierProps = {
   align: NavbarSegmentVariables["alignments"];
 };
 
-export type NavbarSegmentProps = HelpersProps & NavbarSegmentModifierProps;
+export type NavbarSegmentOwnProps = HelpersProps & NavbarSegmentModifierProps;
+export type NavbarSegmentForwardsProps = { className: string };
 
-export const NavbarSegment = forwardRefAs<"div", NavbarSegmentProps>(
+export const NavbarSegment = forwardRefAs<
+  "div",
+  NavbarSegmentOwnProps,
+  NavbarSegmentForwardsProps
+>(
   ({ align, className, ...rest }, ref) => (
     <Generic
       className={classNames(

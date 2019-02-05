@@ -11,10 +11,14 @@ export type DropdownItemModifierProps = Partial<{
   onClick: React.MouseEventHandler;
 }>;
 
-export type DropdownItemProps = HelpersProps & DropdownItemModifierProps;
+export type DropdownItemOwnProps = HelpersProps & DropdownItemModifierProps;
+export type DropdownItemForwardsProps = {
+  className: string;
+  onClick: React.MouseEventHandler;
+};
 
 const onClickHandler = (
-  onClick: DropdownItemProps["onClick"] | undefined,
+  onClick: DropdownItemOwnProps["onClick"] | undefined,
   ctx: DropdownContextValue,
 ) => (event: React.MouseEvent) => {
   if (onClick !== undefined) {
@@ -23,12 +27,14 @@ const onClickHandler = (
   ctx.setActive(false);
 };
 
-export const DropdownItem = forwardRefAs<"a", DropdownItemProps>(
+export const DropdownItem = forwardRefAs<
+  "a",
+  DropdownItemOwnProps,
+  DropdownItemForwardsProps
+>(
   ({ active, className, onClick, ...rest }, ref) => (
     <DropdownContext.Consumer>
       {ctx => {
-        const htmlProps = { onClick: onClickHandler(onClick, ctx) };
-
         return (
           <Generic
             className={classNames(
@@ -37,7 +43,7 @@ export const DropdownItem = forwardRefAs<"a", DropdownItemProps>(
               className,
             )}
             ref={ref}
-            {...htmlProps}
+            onClick={onClickHandler(onClick, ctx)}
             {...rest}
           />
         );

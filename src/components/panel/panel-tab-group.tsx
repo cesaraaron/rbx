@@ -4,9 +4,14 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type PanelTabGroupProps = HelpersProps;
+export type PanelTabGroupOwnProps = HelpersProps;
+export type PanelTabGroupForwardsProps = { className: string };
 
-export const PanelTabGroup = forwardRefAs<"div", PanelTabGroupProps>(
+export const PanelTabGroup = forwardRefAs<
+  "div",
+  PanelTabGroupOwnProps,
+  PanelTabGroupForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("panel-tabs", className)}

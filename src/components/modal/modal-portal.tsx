@@ -14,9 +14,10 @@ export type ModalPortalModifierProps = Partial<{
   onClose: ModalContextValue["close"];
 }> & { document: Document };
 
-export type ModalPortalProps = ModalPortalModifierProps;
+export type ModalPortalOwnProps = ModalPortalModifierProps;
+export type ModalPortalForwardsProps = { className: string };
 
-export class ModalPortal extends React.PureComponent<ModalPortalProps> {
+export class ModalPortal extends React.PureComponent<ModalPortalOwnProps> {
   public static defaultProps = {
     closeOnBlur: initialValue.closeOnBlur,
     closeOnEsc: initialValue.closeOnEsc,

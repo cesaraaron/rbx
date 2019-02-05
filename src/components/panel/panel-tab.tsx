@@ -10,10 +10,11 @@ export type PanelTabModifierProps = Partial<{
   active: boolean;
 }>;
 
-export type PanelTabProps = HelpersProps & PanelTabModifierProps;
+export type PanelTabOwnProps = HelpersProps & PanelTabModifierProps;
+export type PanelTabForwardsProps = { className: string };
 
 export const PanelTab = Object.assign(
-  forwardRefAs<"a", PanelTabProps>(
+  forwardRefAs<"a", PanelTabOwnProps, PanelTabForwardsProps>(
     ({ active, className, ...rest }, ref) => (
       <Generic
         className={classNames({ "is-active": active }, className)}

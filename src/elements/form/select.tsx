@@ -34,7 +34,12 @@ export type SelectContainerModifierProps = Partial<{
   state: SelectContainerVariables["states"];
 }>;
 
-export type SelectContainerProps = HelpersProps & SelectContainerModifierProps;
+export type SelectContainerOwnProps = HelpersProps &
+  SelectContainerModifierProps;
+export type SelectContainerForwardsProps = {
+  className: string;
+  children: React.ReactNode;
+};
 
 const mapSelectContainerChildren = (
   children: React.ReactNode,
@@ -80,7 +85,11 @@ const mapSelectContainerChildren = (
   return { children: mapped, classNameExtension };
 };
 
-export const SelectContainer = forwardRefAs<"div", SelectContainerProps>(
+export const SelectContainer = forwardRefAs<
+  "div",
+  SelectContainerOwnProps,
+  SelectContainerForwardsProps
+>(
   (
     { className, children, color, fullwidth, rounded, size, state, ...rest },
     ref,
@@ -119,10 +128,11 @@ SelectContainer.propTypes = {
   state: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
-export type SelectProps = HelpersProps;
+export type SelectOwnProps = HelpersProps;
+export type SelectForwardsProps = { className: string };
 
 export const Select = Object.assign(
-  forwardRefAs<"select", SelectProps>(
+  forwardRefAs<"select", SelectOwnProps, SelectForwardsProps>(
     (props, ref) => <Generic ref={ref} {...props} />,
     { as: "select" },
   ),

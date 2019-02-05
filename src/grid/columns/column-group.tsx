@@ -56,9 +56,14 @@ type ColumnGroupModifierProps = Partial<
   } & ColumnGroupBreakpointOptions
 >;
 
-export type ColumnGroupProps = HelpersProps & ColumnGroupModifierProps;
+export type ColumnGroupOwnProps = HelpersProps & ColumnGroupModifierProps;
+export type ColumnGroupForwardsProps = { className: string };
 
-export const ColumnGroup = forwardRefAs<"div", ColumnGroupProps>(
+export const ColumnGroup = forwardRefAs<
+  "div",
+  ColumnGroupOwnProps,
+  ColumnGroupForwardsProps
+>(
   (
     {
       className,

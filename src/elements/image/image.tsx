@@ -10,10 +10,11 @@ export type ImageModifierProps = Partial<{
   rounded: boolean;
 }>;
 
-export type ImageProps = HelpersProps & ImageModifierProps;
+export type ImageOwnProps = HelpersProps & ImageModifierProps;
+export type ImageForwardsProps = { className: string };
 
 export const Image = Object.assign(
-  forwardRefAs<"img", ImageProps>(
+  forwardRefAs<"img", ImageOwnProps, ImageForwardsProps>(
     ({ className, rounded, ...rest }, ref) => (
       <Generic
         className={classNames({ "is-rounded": rounded }, className)}

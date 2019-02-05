@@ -3,11 +3,13 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type TableFootProps = HelpersProps;
+export type TableFootOwnProps = HelpersProps;
+export type TableFootForwardsProps = { className: string };
 
-export const TableFoot = forwardRefAs<"tfoot", TableFootProps>(
-  (props, ref) => <Generic ref={ref} {...props} />,
-  { as: "tfoot" },
-);
+export const TableFoot = forwardRefAs<
+  "tfoot",
+  TableFootOwnProps,
+  TableFootForwardsProps
+>((props, ref) => <Generic ref={ref} {...props} />, { as: "tfoot" });
 
 TableFoot.displayName = "Table.Foot";

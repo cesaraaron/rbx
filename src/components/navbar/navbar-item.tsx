@@ -5,13 +5,18 @@ import { forwardRefAs } from "../../base";
 import { Omit } from "../../types";
 import {
   NavbarItemContainer,
-  NavbarItemContainerProps,
+  NavbarItemContainerForwardsProps,
+  NavbarItemContainerOwnProps,
 } from "./navbar-item-container";
 
-export type NavbarItemProps = Omit<NavbarItemContainerProps, "as" | "innerRef">;
+export type NavbarItemOwnProps = Omit<
+  NavbarItemContainerOwnProps,
+  "as" | "innerRef"
+>;
+export type NavbarItemForwardsProps = NavbarItemContainerForwardsProps;
 
 export const NavbarItem = Object.assign(
-  forwardRefAs<"a", NavbarItemProps>(
+  forwardRefAs<"a", NavbarItemOwnProps, NavbarItemForwardsProps>(
     (props, ref) => <NavbarItemContainer innerRef={ref} {...props} />,
     { as: "a" },
   ),

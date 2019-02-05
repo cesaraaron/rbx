@@ -4,9 +4,10 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type BlockProps = HelpersProps;
+export type BlockOwnProps = HelpersProps;
+export type BlockForwardsProps = { className: string };
 
-export const Block = forwardRefAs<"div", BlockProps>(
+export const Block = forwardRefAs<"div", BlockOwnProps, BlockForwardsProps>(
   ({ className, ...rest }, ref) => (
     <Generic className={classNames("block", className)} ref={ref} {...rest} />
   ),

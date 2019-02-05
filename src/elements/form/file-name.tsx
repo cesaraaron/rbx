@@ -4,9 +4,14 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type FileNameProps = HelpersProps;
+export type FileNameOwnProps = HelpersProps;
+export type FileNameForwardsProps = { className: string };
 
-export const FileName = forwardRefAs<"span", FileNameProps>(
+export const FileName = forwardRefAs<
+  "span",
+  FileNameOwnProps,
+  FileNameForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("file-name", className)}

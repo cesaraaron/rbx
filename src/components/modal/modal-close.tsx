@@ -10,10 +10,15 @@ export type ModalCloseModifierProps = Partial<{
   onClick: React.MouseEventHandler;
 }>;
 
-export type ModalCloseProps = HelpersProps & ModalCloseModifierProps;
+export type ModalCloseOwnProps = HelpersProps & ModalCloseModifierProps;
+export type ModalCloseForwardsProps = {
+  "aria-label": "close";
+  className: string;
+  onClick: React.MouseEventHandler;
+};
 
 const onClickHandler = (
-  onClick: ModalCloseProps["onClick"] | undefined,
+  onClick: ModalCloseOwnProps["onClick"] | undefined,
   ctx: ModalContextValue,
 ) => (event: React.MouseEvent) => {
   if (onClick !== undefined) {
@@ -22,24 +27,22 @@ const onClickHandler = (
   ctx.close();
 };
 
-export const ModalClose = forwardRefAs<"button", ModalCloseProps>(
+export const ModalClose = forwardRefAs<
+  "button",
+  ModalCloseOwnProps,
+  ModalCloseForwardsProps
+>(
   ({ className, onClick, ...rest }, ref) => (
     <ModalContext.Consumer>
-      {ctx => {
-        const htmlProps = {
-          "aria-label": "close",
-          onClick: onClickHandler(onClick, ctx),
-        };
-
-        return (
-          <Generic
-            className={classNames("modal-close", "is-large", className)}
-            ref={ref}
-            {...htmlProps}
-            {...rest}
-          />
-        );
-      }}
+      {ctx => (
+        <Generic
+          className={classNames("modal-close", "is-large", className)}
+          ref={ref}
+          aria-label="close"
+          onClick={onClickHandler(onClick, ctx)}
+          {...rest}
+        />
+      )}
     </ModalContext.Consumer>
   ),
   { as: "button" },

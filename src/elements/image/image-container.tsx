@@ -46,7 +46,8 @@ export type ImageContainerModifierProps = Partial<{
   size: ImageContainerVariables["sizes"];
 }>;
 
-export type ImageContainerProps = HelpersProps & ImageContainerModifierProps;
+export type ImageContainerOwnProps = HelpersProps & ImageContainerModifierProps;
+export type ImageContainerForwardsProps = { className: string };
 
 const mapImageContainerChildren = (
   children: React.ReactNode,
@@ -83,7 +84,11 @@ const mapImageContainerChildren = (
   });
 };
 
-export const ImageContainer = forwardRefAs<"figure", ImageContainerProps>(
+export const ImageContainer = forwardRefAs<
+  "figure",
+  ImageContainerOwnProps,
+  ImageContainerForwardsProps
+>(
   ({ children, className, size, ...rest }, ref) => {
     let s: string | undefined;
     if (typeof size === "string") {

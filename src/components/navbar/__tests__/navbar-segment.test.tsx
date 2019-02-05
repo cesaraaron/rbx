@@ -3,7 +3,7 @@ import React from "react";
 import {
   NAVBAR_SEGMENT_DEFAULTS,
   NavbarSegment,
-  NavbarSegmentProps,
+  NavbarSegmentOwnProps,
 } from "src/components/navbar/navbar-segment";
 
 import {
@@ -19,9 +19,9 @@ const DISPLAY_NAME = "Navbar.Segment";
 const DEFAULT_ELEMENT = "div";
 // const BULMA_CLASS_NAME = "navbar-";
 
-const makeNode = (props: Partial<NavbarSegmentProps>) => {
+const makeNode = (props: Partial<NavbarSegmentOwnProps>) => {
   const propsWithDefaults = {
-    align: "start" as NavbarSegmentProps["align"],
+    align: "start" as NavbarSegmentOwnProps["align"],
     ...props,
   };
 

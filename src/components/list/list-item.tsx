@@ -9,9 +9,16 @@ export type ListItemModifierProps = Partial<{
   active: boolean;
 }>;
 
-export type ListItemProps = HelpersProps & ListItemModifierProps;
+export type ListItemOwnProps = HelpersProps & ListItemModifierProps;
+export type ListItemForwardsProps = {
+  className: string;
+};
 
-export const ListItem = forwardRefAs<"a", ListItemProps>(
+export const ListItem = forwardRefAs<
+  "a",
+  ListItemOwnProps,
+  ListItemForwardsProps
+>(
   ({ active, className, ...rest }, ref) => (
     <Generic
       className={classNames("list-item", { "is-active": active }, className)}

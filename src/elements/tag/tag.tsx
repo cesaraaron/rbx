@@ -28,10 +28,11 @@ export type TagModifierProps = Partial<{
   size: TagVariables["sizes"];
 }>;
 
-export type TagProps = HelpersProps & TagModifierProps;
+export type TagOwnProps = HelpersProps & TagModifierProps;
+export type TagForwardsProps = { className: string; children: React.ReactNode };
 
 export const Tag = Object.assign(
-  forwardRefAs<"span", TagProps>(
+  forwardRefAs<"span", TagOwnProps, TagForwardsProps>(
     (
       { children, className, color, delete: isDelete, rounded, size, ...rest },
       ref,

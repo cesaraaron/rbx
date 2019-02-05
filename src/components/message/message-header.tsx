@@ -4,9 +4,14 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type MessageHeaderProps = HelpersProps;
+export type MessageHeaderOwnProps = HelpersProps;
+export type MessageHeaderForwardsProps = { className: string };
 
-export const MessageHeader = forwardRefAs<"div", MessageHeaderProps>(
+export const MessageHeader = forwardRefAs<
+  "div",
+  MessageHeaderOwnProps,
+  MessageHeaderForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("message-header", className)}

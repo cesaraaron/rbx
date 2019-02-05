@@ -120,6 +120,11 @@ export type CompositeProps<
     : 0
   : 0];
 
+export type __CompositeProps<
+  TOwnProps extends {},
+  TAsComponentProps extends {}
+> = TOwnProps & Omit<TAsComponentProps, keyof TOwnProps>;
+
 /**
  * This is used to copy all properties from React.ForwardRefExoticComponent
  * except the callable annotation.

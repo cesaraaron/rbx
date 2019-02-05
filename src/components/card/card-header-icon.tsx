@@ -4,9 +4,16 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type CardHeaderIconProps = HelpersProps;
+export type CardHeaderIconOwnProps = HelpersProps;
+export type CardHeaderIconForwardsProps = {
+  className: string;
+};
 
-export const CardHeaderIcon = forwardRefAs<"div", CardHeaderIconProps>(
+export const CardHeaderIcon = forwardRefAs<
+  "div",
+  CardHeaderIconOwnProps,
+  CardHeaderIconForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("card-header-icon", className)}

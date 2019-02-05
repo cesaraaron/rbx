@@ -4,9 +4,15 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type LoaderProps = HelpersProps;
+export type LoaderModifierProps = Partial<{ children: React.ReactNode }>;
 
-export const Loader = forwardRefAs<"div", LoaderProps>(
+export type LoaderOwnProps = HelpersProps & LoaderModifierProps;
+export type LoaderForwardsProps = {
+  className: string;
+  children: React.ReactNode;
+};
+
+export const Loader = forwardRefAs<"div", LoaderOwnProps, LoaderForwardsProps>(
   ({ className, ...rest }, ref) => (
     <Generic className={classNames("loader", className)} ref={ref} {...rest} />
   ),

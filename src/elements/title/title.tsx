@@ -28,9 +28,10 @@ export type TitleModifierProps = Partial<{
   subtitle: boolean;
 }>;
 
-export type TitleProps = HelpersProps & TitleModifierProps;
+export type TitleOwnProps = HelpersProps & TitleModifierProps;
+export type TitleForwardsProps = { className: string };
 
-export const Title = forwardRefAs<"h1", TitleProps>(
+export const Title = forwardRefAs<"h1", TitleOwnProps, TitleForwardsProps>(
   ({ className, size, spaced, subtitle, ...rest }, ref) => (
     <Generic
       className={classNames(

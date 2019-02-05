@@ -11,9 +11,14 @@ export type ContainerModifierProps = Partial<{
   fluid: boolean;
 }>;
 
-export type ContainerProps = HelpersProps & ContainerModifierProps;
+export type ContainerOwnProps = HelpersProps & ContainerModifierProps;
+export type ContainerForwardsProps = { className: string };
 
-export const Container = forwardRefAs<"div", ContainerProps>(
+export const Container = forwardRefAs<
+  "div",
+  ContainerOwnProps,
+  ContainerForwardsProps
+>(
   ({ className, fluid, breakpoint, ...rest }, ref) => (
     <Generic
       className={classNames(

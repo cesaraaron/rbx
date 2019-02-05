@@ -27,8 +27,3 @@ Generic.displayName = "Generic";
 Generic.propTypes = {
   as: renderablePropType,
 };
-
-type FooProps = { a: string; className?: string };
-const Foo: React.FC<FooProps> = () => <div />;
-
-const f = <Generic as={Generic} />;

@@ -10,10 +10,16 @@ export type ModalBackgroundModifierProps = Partial<{
   onClick: React.MouseEventHandler;
 }>;
 
-export type ModalBackgroundProps = HelpersProps & ModalBackgroundModifierProps;
+export type ModalBackgroundOwnProps = HelpersProps &
+  ModalBackgroundModifierProps;
+export type ModalBackgroundForwardsProps = {
+  className: string;
+  onClick: React.MouseEventHandler;
+  role: "presentation";
+};
 
 const onClickHandler = (
-  onClick: ModalBackgroundProps["onClick"],
+  onClick: ModalBackgroundOwnProps["onClick"],
   ctx: ModalContextValue,
 ) => (event: React.MouseEvent) => {
   if (onClick !== undefined) {
@@ -24,24 +30,22 @@ const onClickHandler = (
   }
 };
 
-export const ModalBackground = forwardRefAs<"div", ModalBackgroundProps>(
+export const ModalBackground = forwardRefAs<
+  "div",
+  ModalBackgroundOwnProps,
+  ModalBackgroundForwardsProps
+>(
   ({ className, onClick, ...rest }, ref) => (
     <ModalContext.Consumer>
-      {ctx => {
-        const htmlProps = {
-          onClick: onClickHandler(onClick, ctx),
-          role: "presentation",
-        };
-
-        return (
-          <Generic
-            className={classNames("modal-background", className)}
-            ref={ref}
-            {...htmlProps}
-            {...rest}
-          />
-        );
-      }}
+      {ctx => (
+        <Generic
+          className={classNames("modal-background", className)}
+          ref={ref}
+          onClick={onClickHandler(onClick, ctx)}
+          role="presentation"
+          {...rest}
+        />
+      )}
     </ModalContext.Consumer>
   ),
   { as: "div" },

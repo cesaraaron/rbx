@@ -10,10 +10,15 @@ export type DropdownTriggerModifierProps = Partial<{
   onClick: React.MouseEventHandler;
 }>;
 
-export type DropdownTriggerProps = HelpersProps & DropdownTriggerModifierProps;
+export type DropdownTriggerOwnProps = HelpersProps &
+  DropdownTriggerModifierProps;
+export type DropdownTriggerForwardsProps = {
+  className: string;
+  onClick: React.MouseEventHandler;
+};
 
 const onClickHandler = (
-  onClick: DropdownTriggerProps["onClick"] | undefined,
+  onClick: DropdownTriggerOwnProps["onClick"] | undefined,
   ctx: DropdownContextValue,
 ) => (event: React.MouseEvent) => {
   if (onClick !== undefined) {
@@ -22,21 +27,21 @@ const onClickHandler = (
   ctx.setActive(!ctx.active);
 };
 
-export const DropdownTrigger = forwardRefAs<"div", DropdownTriggerProps>(
+export const DropdownTrigger = forwardRefAs<
+  "div",
+  DropdownTriggerOwnProps,
+  DropdownTriggerForwardsProps
+>(
   ({ className, onClick, ...rest }, ref) => (
     <DropdownContext.Consumer>
-      {ctx => {
-        const htmlProps = { onClick: onClickHandler(onClick, ctx) };
-
-        return (
-          <Generic
-            className={classNames("dropdown-trigger", className)}
-            ref={ref}
-            {...htmlProps}
-            {...rest}
-          />
-        );
-      }}
+      {ctx => (
+        <Generic
+          className={classNames("dropdown-trigger", className)}
+          ref={ref}
+          onClick={onClickHandler(onClick, ctx)}
+          {...rest}
+        />
+      )}
     </DropdownContext.Consumer>
   ),
   { as: "div" },

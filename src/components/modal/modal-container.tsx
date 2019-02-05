@@ -5,7 +5,7 @@ import { canUseDOM } from "../../utils";
 import { ModalContextValue } from "./modal-context";
 import { ModalPortal } from "./modal-portal";
 
-export type ModalContainerProps = Partial<{
+export type ModalContainerOwnProps = Partial<{
   active: boolean;
   as: React.ReactType; // tslint:disable-line:no-reserved-keywords
   children: React.ReactNode;
@@ -17,14 +17,18 @@ export type ModalContainerProps = Partial<{
   innerRef: React.Ref<HTMLElement | SVGElement | React.ComponentType>;
   onClose(): void;
 }>;
+export type ModalContainerForwardsProps = { className: string };
 
-export class ModalContainer extends React.PureComponent<ModalContainerProps> {
+export class ModalContainer extends React.PureComponent<
+  ModalContainerOwnProps
+> {
   public static displayName = "Modal.Container";
   private readonly el: HTMLDivElement | undefined;
 
-  constructor(props: ModalContainerProps) {
+  constructor(props: ModalContainerOwnProps) {
     super(props);
     if (canUseDOM()) {
+      // todo: use `as`
       this.el = this.document.createElement("div");
       if (props.containerClassName !== undefined) {
         this.el.className = props.containerClassName;

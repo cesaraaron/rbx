@@ -3,7 +3,7 @@ import React from "react";
 import {
   PAGINATION_STEP_DEFAULTS,
   PaginationStep,
-  PaginationStepProps,
+  PaginationStepOwnProps,
 } from "src/components/pagination/pagination-step";
 
 import {
@@ -19,9 +19,9 @@ const DISPLAY_NAME = "Pagination.Step";
 const DEFAULT_ELEMENT = "a";
 // const BULMA_CLASS_NAME = "pagination-";
 
-const makeNode = (props: Partial<PaginationStepProps>) => {
+const makeNode = (props: Partial<PaginationStepOwnProps>) => {
   const propsWithDefaults = {
-    align: "next" as PaginationStepProps["align"],
+    align: "next" as PaginationStepOwnProps["align"],
     ...props,
   };
 

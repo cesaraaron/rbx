@@ -29,7 +29,8 @@ export type LabelModifierProps = Partial<{
   size: LabelVariables["sizes"];
 }>;
 
-export type LabelProps = HelpersProps & LabelModifierProps;
+export type LabelOwnProps = HelpersProps & LabelModifierProps;
+export type LabelForwardsProps = { className: string };
 
 const identifyLabelDiscriminator = (children: React.ReactNode) => {
   let discriminator = "label";
@@ -61,7 +62,7 @@ const identifyLabelDiscriminator = (children: React.ReactNode) => {
   return discriminator;
 };
 
-export const Label = forwardRefAs<"label", LabelProps>(
+export const Label = forwardRefAs<"label", LabelOwnProps, LabelForwardsProps>(
   ({ className, disabled, size, ...rest }, ref) => {
     const discriminator = identifyLabelDiscriminator(rest.children);
 

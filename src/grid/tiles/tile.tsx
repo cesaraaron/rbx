@@ -30,9 +30,10 @@ export type TileModifierProps = Partial<{
   vertical: boolean;
 }>;
 
-export type TileProps = HelpersProps & TileModifierProps;
+export type TileOwnProps = HelpersProps & TileModifierProps;
+export type TileForwardsProps = { className: string };
 
-export const Tile = forwardRefAs<"div", TileProps>(
+export const Tile = forwardRefAs<"div", TileOwnProps, TileForwardsProps>(
   ({ className, kind, size, vertical, ...rest }, ref) => (
     <Generic
       className={classNames(

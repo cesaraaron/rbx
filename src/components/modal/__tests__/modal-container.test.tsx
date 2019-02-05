@@ -4,7 +4,7 @@ import React from "react";
 
 import {
   ModalContainer,
-  ModalContainerProps,
+  ModalContainerOwnProps,
 } from "src/components/modal/modal-container";
 import {
   ModalContext,
@@ -19,7 +19,7 @@ const DISPLAY_NAME = "Modal.Container";
 const DEFAULT_ELEMENT = "div";
 const BULMA_CLASS_NAME = "modal";
 
-const makeNode = (props: ModalContainerProps) => {
+const makeNode = (props: ModalContainerOwnProps) => {
   return <ModalContainer {...props} />;
 };
 

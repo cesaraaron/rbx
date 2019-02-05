@@ -30,9 +30,14 @@ export type ControlModifierProps = Partial<{
   size: ControlVariables["sizes"];
 }>;
 
-export type ControlProps = HelpersProps & ControlModifierProps;
+export type ControlOwnProps = HelpersProps & ControlModifierProps;
+export type ControlForwardsProps = { className: string };
 
-export const Control = forwardRefAs<"div", ControlProps>(
+export const Control = forwardRefAs<
+  "div",
+  ControlOwnProps,
+  ControlForwardsProps
+>(
   (
     { className, expanded, iconLeft, iconRight, loading, size, ...rest },
     ref,

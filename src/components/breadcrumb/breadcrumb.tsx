@@ -33,10 +33,14 @@ export type BreadcrumbModifierProps = Partial<{
   size: BreadcrumbVariables["sizes"];
 }>;
 
-export type BreadcrumbProps = HelpersProps & BreadcrumbModifierProps;
+export type BreadcrumbOwnProps = HelpersProps & BreadcrumbModifierProps;
+export type BreadcrumbForwardsProps = {
+  className: string;
+  children: React.ReactNode;
+};
 
 export const Breadcrumb = Object.assign(
-  forwardRefAs<"nav", BreadcrumbProps>(
+  forwardRefAs<"nav", BreadcrumbOwnProps, BreadcrumbForwardsProps>(
     ({ align, children, className, separator, size, ...rest }, ref) => (
       <Generic
         className={classNames(

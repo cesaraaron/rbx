@@ -6,12 +6,17 @@ import { Omit } from "../../types";
 import { ModalBackground } from "./modal-background";
 import { ModalCard } from "./modal-card";
 import { ModalClose } from "./modal-close";
-import { ModalContainer, ModalContainerProps } from "./modal-container";
+import {
+  ModalContainer,
+  ModalContainerForwardsProps,
+  ModalContainerOwnProps,
+} from "./modal-container";
 import { ModalContent } from "./modal-content";
 import { ModalContext } from "./modal-context";
 import { ModalPortal } from "./modal-portal";
 
-export type ModalProps = Omit<ModalContainerProps, "as" | "innerRef">;
+export type ModalOwnProps = Omit<ModalContainerOwnProps, "as" | "innerRef">;
+export type ModalForwardsProps = ModalContainerForwardsProps;
 
 const propTypes = {
   active: PropTypes.bool,
@@ -24,7 +29,7 @@ const propTypes = {
 };
 
 export const Modal = Object.assign(
-  forwardRefAs<"div", ModalProps>(
+  forwardRefAs<"div", ModalOwnProps, ModalForwardsProps>(
     (props, ref) => <ModalContainer innerRef={ref} {...props} />,
     {
       as: "div",

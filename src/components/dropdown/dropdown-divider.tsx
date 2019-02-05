@@ -4,9 +4,16 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type DropdownDividerProps = HelpersProps;
+export type DropdownDividerOwnProps = HelpersProps;
+export type DropdownDividerForwardsProps = {
+  className: string;
+};
 
-export const DropdownDivider = forwardRefAs<"hr", DropdownDividerProps>(
+export const DropdownDivider = forwardRefAs<
+  "hr",
+  DropdownDividerOwnProps,
+  DropdownDividerForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("dropdown-divider", className)}

@@ -10,9 +10,10 @@ export type HelpModifierProps = Partial<{
   color: Variables["colors"];
 }>;
 
-export type HelpProps = HelpersProps & HelpModifierProps;
+export type HelpOwnProps = HelpersProps & HelpModifierProps;
+export type HelpForwardsProps = { className: string };
 
-export const Help = forwardRefAs<"p", HelpProps>(
+export const Help = forwardRefAs<"p", HelpOwnProps, HelpForwardsProps>(
   ({ className, color, ...rest }, ref) => (
     <Generic
       className={classNames("help", { [`is-${color}`]: color }, className)}

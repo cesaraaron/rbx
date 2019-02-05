@@ -34,9 +34,17 @@ export type TabGroupModifierProps = Partial<{
   size: TabGroupVariables["sizes"];
 }>;
 
-export type TabGroupProps = HelpersProps & TabGroupModifierProps;
+export type TabGroupOwnProps = HelpersProps & TabGroupModifierProps;
+export type TabGroupForwardsProps = {
+  className: string;
+  children: React.ReactNode;
+};
 
-export const TabGroup = forwardRefAs<"div", TabGroupProps>(
+export const TabGroup = forwardRefAs<
+  "div",
+  TabGroupOwnProps,
+  TabGroupForwardsProps
+>(
   ({ align, children, className, fullwidth, kind, size, ...rest }, ref) => (
     <Generic
       className={classNames(

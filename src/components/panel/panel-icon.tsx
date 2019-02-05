@@ -4,9 +4,14 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type PanelIconProps = HelpersProps;
+export type PanelIconOwnProps = HelpersProps;
+export type PanelIconForwardsProps = { className: string };
 
-export const PanelIcon = forwardRefAs<"span", PanelIconProps>(
+export const PanelIcon = forwardRefAs<
+  "span",
+  PanelIconOwnProps,
+  PanelIconForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("panel-icon", className)}

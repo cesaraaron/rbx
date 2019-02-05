@@ -9,7 +9,7 @@ import {
 import { initialValue as modalInitialValue } from "src/components/modal/modal-context";
 import {
   ModalPortal,
-  ModalPortalProps,
+  ModalPortalOwnProps,
 } from "src/components/modal/modal-portal";
 
 import {
@@ -24,7 +24,7 @@ const DISPLAY_NAME = "Modal.Portal";
 const DEFAULT_ELEMENT = "div";
 const BULMA_CLASS_NAME = "modal";
 
-const makeNode = (props: ModalPortalProps) => {
+const makeNode = (props: ModalPortalOwnProps) => {
   const withDefaults = { document, ...props };
 
   return <ModalPortal {...withDefaults} />;

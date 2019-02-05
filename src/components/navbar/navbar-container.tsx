@@ -35,14 +35,16 @@ export type NavbarContainerModifierProps = Partial<{
   transparent: boolean;
 }>;
 
-export type NavbarContainerProps = HelpersProps & NavbarContainerModifierProps;
+export type NavbarContainerOwnProps = HelpersProps &
+  NavbarContainerModifierProps;
+export type NavbarContainerForwardsProps = { className: string; role: string };
 
 export interface NavbarContainerState {
   active: boolean;
 }
 
 export class NavbarContainer extends React.PureComponent<
-  NavbarContainerProps,
+  NavbarContainerOwnProps,
   NavbarContainerState
 > {
   public static defaultProps = {
@@ -52,7 +54,7 @@ export class NavbarContainer extends React.PureComponent<
 
   public readonly state: NavbarContainerState;
 
-  constructor(props: NavbarContainerProps) {
+  constructor(props: NavbarContainerOwnProps) {
     super(props);
     this.state = { active: props.active === true };
   }
@@ -82,10 +84,6 @@ export class NavbarContainer extends React.PureComponent<
       ...rest
     } = this.props;
 
-    const htmlProps = {
-      role: "navigation",
-    };
-
     return (
       <NavbarContext.Provider
         value={{
@@ -106,7 +104,7 @@ export class NavbarContainer extends React.PureComponent<
             className,
           )}
           ref={innerRef}
-          {...htmlProps}
+          role="navigation"
           {...rest}
         />
       </NavbarContext.Provider>

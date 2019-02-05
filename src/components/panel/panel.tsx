@@ -8,10 +8,11 @@ import { PanelHeading } from "./panel-heading";
 import { PanelIcon } from "./panel-icon";
 import { PanelTab } from "./panel-tab";
 
-export type PanelProps = HelpersProps;
+export type PanelOwnProps = HelpersProps;
+export type PanelForwardsProps = { className: string };
 
 export const Panel = Object.assign(
-  forwardRefAs<"nav", PanelProps>(
+  forwardRefAs<"nav", PanelOwnProps, PanelForwardsProps>(
     ({ className, ...rest }, ref) => (
       <Generic className={classNames("panel", className)} ref={ref} {...rest} />
     ),

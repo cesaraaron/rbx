@@ -26,9 +26,14 @@ export type SectionModifierProps = Partial<{
   size: SectionVariables["sizes"];
 }>;
 
-export type SectionProps = HelpersProps & SectionModifierProps;
+export type SectionOwnProps = HelpersProps & SectionModifierProps;
+export type SectionForwardsProps = { className: string };
 
-export const Section = forwardRefAs<"section", SectionProps>(
+export const Section = forwardRefAs<
+  "section",
+  SectionOwnProps,
+  SectionForwardsProps
+>(
   ({ className, size, ...rest }, ref) => (
     <Generic
       className={classNames("section", { [`is-${size}`]: size }, className)}

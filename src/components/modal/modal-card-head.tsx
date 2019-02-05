@@ -6,7 +6,11 @@ import { HelpersProps } from "../../base/helpers";
 import { Delete } from "../../elements";
 import { ModalContext, ModalContextValue } from "./modal-context";
 
-export type ModalCardHeadProps = HelpersProps;
+export type ModalCardHeadOwnProps = HelpersProps;
+export type ModalCardHeadForwardsProps = {
+  className: string;
+  children: React.ReactNode;
+};
 
 const mapChildren = (
   children: React.ReactNode,
@@ -42,7 +46,11 @@ const mapChildren = (
     return child;
   });
 
-export const ModalCardHead = forwardRefAs<"header", ModalCardHeadProps>(
+export const ModalCardHead = forwardRefAs<
+  "header",
+  ModalCardHeadOwnProps,
+  ModalCardHeadForwardsProps
+>(
   ({ className, children, ...rest }, ref) => (
     <ModalContext.Consumer>
       {({ close }) => (

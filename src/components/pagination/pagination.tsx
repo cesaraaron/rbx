@@ -34,10 +34,11 @@ export type PaginationModifiers = Partial<{
   size: PaginationVariables["sizes"];
 }>;
 
-export type PaginationProps = HelpersProps & PaginationModifiers;
+export type PaginationOwnProps = HelpersProps & PaginationModifiers;
+export type PaginationForwardsProps = { className: string };
 
 export const Pagination = Object.assign(
-  forwardRefAs<"nav", PaginationProps>(
+  forwardRefAs<"nav", PaginationOwnProps, PaginationForwardsProps>(
     ({ align, className, rounded, size, ...rest }, ref) => (
       <Generic
         className={classNames(

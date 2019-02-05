@@ -32,8 +32,11 @@ export type DropdownContainerModifierProps = Partial<{
   up: boolean;
 }>;
 
-export type DropdownContainerProps = HelpersProps &
+export type DropdownContainerOwnProps = HelpersProps &
   DropdownContainerModifierProps;
+export type DropdownContainerForwardsProps = {
+  className: string;
+};
 
 const initialState = {
   active: false,
@@ -42,14 +45,14 @@ const initialState = {
 export type DropdownContainerState = typeof initialState;
 
 export class DropdownContainer extends React.PureComponent<
-  DropdownContainerProps,
+  DropdownContainerOwnProps,
   DropdownContainerState
 > {
   public static displayName = "Dropdown.Container";
   public readonly state: DropdownContainerState;
   private readonly ref = React.createRef<HTMLElement>();
 
-  constructor(props: DropdownContainerProps) {
+  constructor(props: DropdownContainerOwnProps) {
     super(props);
     this.state = { active: props.active === true };
   }

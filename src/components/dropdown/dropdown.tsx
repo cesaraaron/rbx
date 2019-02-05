@@ -5,7 +5,8 @@ import { forwardRefAs } from "../../base";
 import { Omit } from "../../types";
 import {
   DropdownContainer,
-  DropdownContainerProps,
+  DropdownContainerForwardsProps,
+  DropdownContainerOwnProps,
 } from "./dropdown-container";
 import { DropdownContent } from "./dropdown-content";
 import { DropdownContext } from "./dropdown-context";
@@ -14,10 +15,14 @@ import { DropdownItem } from "./dropdown-item";
 import { DropdownMenu } from "./dropdown-menu";
 import { DropdownTrigger } from "./dropdown-trigger";
 
-export type DropdownProps = Omit<DropdownContainerProps, "as" | "innerRef">;
+export type DropdownOwnProps = Omit<
+  DropdownContainerOwnProps,
+  "as" | "innerRef"
+>;
+export type DropdownForwardsProps = DropdownContainerForwardsProps;
 
 export const Dropdown = Object.assign(
-  forwardRefAs<"div", DropdownProps>(
+  forwardRefAs<"div", DropdownOwnProps, DropdownForwardsProps>(
     (props, ref) => <DropdownContainer innerRef={ref} {...props} />,
     { as: "div" },
   ),

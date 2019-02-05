@@ -6,10 +6,13 @@ import { HelpersProps } from "../../base/helpers";
 import { CardHeaderIcon } from "./card-header-icon";
 import { CardHeaderTitle } from "./card-header-title";
 
-export type CardHeaderProps = HelpersProps;
+export type CardHeaderOwnProps = HelpersProps;
+export type CardHeaderForwardsProps = {
+  className: string;
+};
 
 export const CardHeader = Object.assign(
-  forwardRefAs<"div", CardHeaderProps>(
+  forwardRefAs<"div", CardHeaderOwnProps, CardHeaderForwardsProps>(
     ({ className, ...rest }, ref) => (
       <Generic
         className={classNames("card-header", className)}

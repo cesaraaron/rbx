@@ -4,9 +4,10 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type FooterProps = HelpersProps;
+export type FooterOwnProps = HelpersProps;
+export type FooterForwardsProps = { className: string };
 
-export const Footer = forwardRefAs<"div", FooterProps>(
+export const Footer = forwardRefAs<"div", FooterOwnProps, FooterForwardsProps>(
   ({ className, ...rest }, ref) => (
     <Generic className={classNames("footer", className)} ref={ref} {...rest} />
   ),

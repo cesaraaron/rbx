@@ -31,9 +31,10 @@ export type IconModifierProps = Partial<{
   size: IconVariables["sizes"];
 }>;
 
-export type IconProps = HelpersProps & IconModifierProps;
+export type IconOwnProps = HelpersProps & IconModifierProps;
+export type IconForwardsProps = { className: string };
 
-export const Icon = forwardRefAs<"span", IconProps>(
+export const Icon = forwardRefAs<"span", IconOwnProps, IconForwardsProps>(
   ({ align, className, color, size, ...rest }, ref) => (
     <Generic
       className={classNames(

@@ -27,9 +27,14 @@ export type TagGroupModifierProps = Partial<{
   size: TagGroupVariables["sizes"];
 }>;
 
-export type TagGroupProps = HelpersProps & TagGroupModifierProps;
+export type TagGroupOwnProps = HelpersProps & TagGroupModifierProps;
+export type TagGroupForwardsProps = { className: string };
 
-export const TagGroup = forwardRefAs<"span", TagGroupProps>(
+export const TagGroup = forwardRefAs<
+  "span",
+  TagGroupOwnProps,
+  TagGroupForwardsProps
+>(
   ({ className, gapless, size, ...rest }, ref) => (
     <Generic
       className={classNames(

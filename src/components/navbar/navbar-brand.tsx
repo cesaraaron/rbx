@@ -4,9 +4,14 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type NavbarBrandProps = HelpersProps;
+export type NavbarBrandOwnProps = HelpersProps;
+export type NavbarBrandForwardsProps = { className: string };
 
-export const NavbarBrand = forwardRefAs<"div", NavbarBrandProps>(
+export const NavbarBrand = forwardRefAs<
+  "div",
+  NavbarBrandOwnProps,
+  NavbarBrandForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("navbar-brand", className)}

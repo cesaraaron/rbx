@@ -4,9 +4,16 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type CardContentProps = HelpersProps;
+export type CardContentOwnProps = HelpersProps;
+export type CardContentForwardsProps = {
+  className: string;
+};
 
-export const CardContent = forwardRefAs<"div", CardContentProps>(
+export const CardContent = forwardRefAs<
+  "div",
+  CardContentOwnProps,
+  CardContentForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("card-content", className)}

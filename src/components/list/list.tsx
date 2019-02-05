@@ -5,10 +5,11 @@ import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 import { ListItem } from "./list-item";
 
-export type ListProps = HelpersProps;
+export type ListOwnProps = HelpersProps;
+export type ListForwardsProps = { className: string };
 
 export const List = Object.assign(
-  forwardRefAs<"div", ListProps>(
+  forwardRefAs<"div", ListOwnProps, ListForwardsProps>(
     ({ className, ...rest }, ref) => (
       <Generic className={classNames("list", className)} ref={ref} {...rest} />
     ),

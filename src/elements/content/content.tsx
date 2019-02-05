@@ -27,10 +27,11 @@ export type ContentModifierProps = Partial<{
   size: ContentVariables["sizes"];
 }>;
 
-export type ContentProps = HelpersProps & ContentModifierProps;
+export type ContentOwnProps = HelpersProps & ContentModifierProps;
+export type ContentForwardsProps = { className: string };
 
 export const Content = Object.assign(
-  forwardRefAs<"div", ContentProps>(
+  forwardRefAs<"div", ContentOwnProps, ContentForwardsProps>(
     ({ className, size, ...rest }, ref) => (
       <Generic
         className={classNames("content", { [`is-${size}`]: size }, className)}

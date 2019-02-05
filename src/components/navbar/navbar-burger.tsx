@@ -10,10 +10,16 @@ export type NavbarBurgerModifierProps = Partial<{
   onClick: React.MouseEventHandler;
 }>;
 
-export type NavbarBurgerProps = HelpersProps & NavbarBurgerModifierProps;
+export type NavbarBurgerOwnProps = HelpersProps & NavbarBurgerModifierProps;
+export type NavbarBurgerForwardsProps = {
+  children: React.ReactNode;
+  className: string;
+  onClick: React.MouseEventHandler;
+  role: string;
+};
 
 const onClickHandler = (
-  onClick: NavbarBurgerProps["onClick"] | undefined,
+  onClick: NavbarBurgerOwnProps["onClick"] | undefined,
   ctx: NavbarContextValue,
 ) => (event: React.MouseEvent) => {
   if (onClick !== undefined) {
@@ -22,15 +28,14 @@ const onClickHandler = (
   ctx.setActive(!ctx.active);
 };
 
-export const NavbarBurger = forwardRefAs<"div", NavbarBurgerProps>(
+export const NavbarBurger = forwardRefAs<
+  "div",
+  NavbarBurgerOwnProps,
+  NavbarBurgerForwardsProps
+>(
   ({ className, onClick, ...rest }, ref) => (
     <NavbarContext.Consumer>
       {ctx => {
-        const htmlProps = {
-          onClick: onClickHandler(onClick, ctx),
-          role: "button",
-        };
-
         return (
           <Generic
             className={classNames(
@@ -39,7 +44,8 @@ export const NavbarBurger = forwardRefAs<"div", NavbarBurgerProps>(
               className,
             )}
             ref={ref}
-            {...htmlProps}
+            onClick={onClickHandler(onClick, ctx)}
+            role={"button"}
             {...rest}
           >
             <span />

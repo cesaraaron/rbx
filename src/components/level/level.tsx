@@ -11,10 +11,13 @@ export type LevelModifierProps = Partial<{
   breakpoint: Variables["breakpoints"];
 }>;
 
-export type LevelProps = HelpersProps & LevelModifierProps;
+export type LevelOwnProps = HelpersProps & LevelModifierProps;
+export type LevelForwardsProps = {
+  className: string;
+};
 
 export const Level = Object.assign(
-  forwardRefAs<"nav", LevelProps>(
+  forwardRefAs<"nav", LevelOwnProps, LevelForwardsProps>(
     ({ breakpoint, className, ...rest }, ref) => (
       <Generic
         className={classNames(

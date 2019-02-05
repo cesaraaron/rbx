@@ -27,11 +27,16 @@ export type ContentOrderedListModifierProps = Partial<{
   type: ContentOrderedListVariables["types"]; // tslint:disable-line:no-reserved-keywords
 }>;
 
-export type ContentOrderedListProps = HelpersProps &
+export type ContentOrderedListOwnProps = HelpersProps &
   ContentOrderedListModifierProps;
+export type ContentOrderedListForwardsProps = { className: string };
 
 export const ContentOrderedList = Object.assign(
-  forwardRefAs<"ol", ContentOrderedListProps>(
+  forwardRefAs<
+    "ol",
+    ContentOrderedListOwnProps,
+    ContentOrderedListForwardsProps
+  >(
     ({ className, type, ...rest }, ref) => (
       <Generic
         className={classNames({ [`is-${type}`]: type }, className)}

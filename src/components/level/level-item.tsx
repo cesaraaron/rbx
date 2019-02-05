@@ -26,9 +26,16 @@ export type LevelItemModifierProps = Partial<{
   align: LevelItemVariables["alignments"];
 }>;
 
-export type LevelItemProps = HelpersProps & LevelItemModifierProps;
+export type LevelItemOwnProps = HelpersProps & LevelItemModifierProps;
+export type LevelItemForwardsProps = {
+  className: string;
+};
 
-export const LevelItem = forwardRefAs<"div", LevelItemProps>(
+export const LevelItem = forwardRefAs<
+  "div",
+  LevelItemOwnProps,
+  LevelItemForwardsProps
+>(
   ({ align, className, ...rest }, ref) => (
     <Generic
       className={classNames(

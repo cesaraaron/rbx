@@ -14,10 +14,14 @@ export type NavbarLinkModifierProps = Partial<{
   onClick: React.MouseEventHandler;
 }>;
 
-export type NavbarLinkProps = HelpersProps & NavbarLinkModifierProps;
+export type NavbarLinkOwnProps = HelpersProps & NavbarLinkModifierProps;
+export type NavbarLinkForwardsProps = {
+  className: string;
+  onClick: React.MouseEventHandler;
+};
 
 const handleOnClick = (
-  onClick: NavbarLinkProps["onClick"] | undefined,
+  onClick: NavbarLinkOwnProps["onClick"] | undefined,
   ctx: NavbarItemContextValue,
 ) => (event: React.MouseEvent) => {
   if (onClick !== undefined) {
@@ -26,25 +30,25 @@ const handleOnClick = (
   ctx.setActive(!ctx.active);
 };
 
-export const NavbarLink = forwardRefAs<"span", NavbarLinkProps>(
+export const NavbarLink = forwardRefAs<
+  "span",
+  NavbarLinkOwnProps,
+  NavbarLinkForwardsProps
+>(
   ({ arrowless, className, onClick, ...rest }, ref) => (
     <NavbarItemContext.Consumer>
-      {ctx => {
-        const htmlProps = { onClick: handleOnClick(onClick, ctx) };
-
-        return (
-          <Generic
-            className={classNames(
-              "navbar-link",
-              { "is-arrowless": arrowless },
-              className,
-            )}
-            ref={ref}
-            {...htmlProps}
-            {...rest}
-          />
-        );
-      }}
+      {ctx => (
+        <Generic
+          className={classNames(
+            "navbar-link",
+            { "is-arrowless": arrowless },
+            className,
+          )}
+          ref={ref}
+          onClick={handleOnClick(onClick, ctx)}
+          {...rest}
+        />
+      )}
     </NavbarItemContext.Consumer>
   ),
   { as: "span" },

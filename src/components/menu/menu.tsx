@@ -6,10 +6,13 @@ import { HelpersProps } from "../../base/helpers";
 import { MenuLabel } from "./menu-label";
 import { MenuList } from "./menu-list";
 
-export type MenuProps = HelpersProps;
+export type MenuOwnProps = HelpersProps;
+export type MenuForwardsProps = {
+  className: string;
+};
 
 export const Menu = Object.assign(
-  forwardRefAs<"aside", MenuProps>(
+  forwardRefAs<"aside", MenuOwnProps, MenuForwardsProps>(
     ({ className, ...rest }, ref) => (
       <Generic className={classNames("menu", className)} ref={ref} {...rest} />
     ),

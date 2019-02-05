@@ -40,10 +40,11 @@ export type FileModifierProps = Partial<{
   size: FileVariables["sizes"];
 }>;
 
-export type FileProps = HelpersProps & FileModifierProps;
+export type FileOwnProps = HelpersProps & FileModifierProps;
+export type FileForwardsProps = { className: string };
 
 export const File = Object.assign(
-  forwardRefAs<"div", FileProps>(
+  forwardRefAs<"div", FileOwnProps, FileForwardsProps>(
     (
       { align, boxed, className, color, fullwidth, hasName, size, ...rest },
       ref,

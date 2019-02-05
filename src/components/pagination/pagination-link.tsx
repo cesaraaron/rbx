@@ -9,9 +9,14 @@ export type PaginationLinkModifiers = Partial<{
   current: boolean;
 }>;
 
-export type PaginationLinkProps = HelpersProps & PaginationLinkModifiers;
+export type PaginationLinkOwnProps = HelpersProps & PaginationLinkModifiers;
+export type PaginationLinkForwardsProps = { className: string };
 
-export const PaginationLink = forwardRefAs<"a", PaginationLinkProps>(
+export const PaginationLink = forwardRefAs<
+  "a",
+  PaginationLinkOwnProps,
+  PaginationLinkForwardsProps
+>(
   ({ className, current, ...rest }, ref) => (
     <li>
       <Generic

@@ -4,9 +4,14 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type HeroHeadProps = HelpersProps;
+export type HeroHeadOwnProps = HelpersProps;
+export type HeroHeadForwardsProps = { className: string };
 
-export const HeroHead = forwardRefAs<"div", HeroHeadProps>(
+export const HeroHead = forwardRefAs<
+  "div",
+  HeroHeadOwnProps,
+  HeroHeadForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("hero-head", className)}

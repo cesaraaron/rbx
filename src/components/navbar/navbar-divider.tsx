@@ -4,9 +4,14 @@ import React from "react";
 import { forwardRefAs, Generic } from "../../base";
 import { HelpersProps } from "../../base/helpers";
 
-export type NavbarDividerProps = HelpersProps;
+export type NavbarDividerOwnProps = HelpersProps;
+export type NavbarDividerForwardsProps = { className: string };
 
-export const NavbarDivider = forwardRefAs<"div", NavbarDividerProps>(
+export const NavbarDivider = forwardRefAs<
+  "div",
+  NavbarDividerOwnProps,
+  NavbarDividerForwardsProps
+>(
   ({ className, ...rest }, ref) => (
     <Generic
       className={classNames("navbar-divider", className)}

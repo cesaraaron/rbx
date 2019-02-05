@@ -47,9 +47,10 @@ export type InputModifierProps = Partial<{
   type: InputVariables["types"]; // tslint:disable-line:no-reserved-keywords
 }>;
 
-export type InputProps = HelpersProps & InputModifierProps;
+export type InputOwnProps = HelpersProps & InputModifierProps;
+export type InputForwardsProps = { className: string; readOnly: boolean };
 
-export const Input = forwardRefAs<"input", InputProps>(
+export const Input = forwardRefAs<"input", InputOwnProps, InputForwardsProps>(
   (
     {
       className,
@@ -64,7 +65,6 @@ export const Input = forwardRefAs<"input", InputProps>(
     ref,
   ) => {
     const isReadOnly = readOnly === true || isStatic === true;
-    const htmlProps = { readOnly: isReadOnly };
 
     return (
       <Generic
@@ -79,7 +79,7 @@ export const Input = forwardRefAs<"input", InputProps>(
           },
           className,
         )}
-        {...htmlProps}
+        readOnly={isReadOnly}
         ref={ref}
         {...rest}
       />
