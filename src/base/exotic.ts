@@ -152,6 +152,8 @@ export type ForwardRefAsExoticComponent<
       React.RefAttributes<
         TAsComponent extends keyof JSX.IntrinsicElements
           ? FromReactType<TAsComponent>
+          : TAsComponent extends ForwardRefAsExoticComponent<infer U, any, any> // tslint:disable-line:no-any
+          ? U
           : TAsComponent
       >,
   ): CompatibleWithForwardsProps<
