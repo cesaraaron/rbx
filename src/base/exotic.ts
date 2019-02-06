@@ -107,18 +107,25 @@ export type CompatibleWithForwardsProps<
  */
 export type CompositeProps<
   TOwnProps extends {},
-  TAsComponentProps extends {}
+  TAsComponent extends React.ReactType
 > = {
-  0: TOwnProps & { with: TAsComponentProps };
-  1: TOwnProps & { with?: TAsComponentProps };
-  2: TOwnProps & Omit<TAsComponentProps, keyof TOwnProps> & { with?: never };
-}[HasNonOptionalKeys<TAsComponentProps> extends true
-  ? HasIntersectingNonOptionalKeys<TOwnProps, TAsComponentProps> extends true
+  // ComponentPropsWithoutRef flattens the type.
+  0: TOwnProps & { with: React.ComponentProps<TAsComponent> };
+  1: TOwnProps & { with?: React.ComponentProps<TAsComponent> };
+  2: TOwnProps &
+    Omit<React.ComponentProps<TAsComponent>, keyof TOwnProps> & {
+      with?: never;
+    };
+}[HasNonOptionalKeys<React.ComponentProps<TAsComponent>> extends true
+  ? HasIntersectingNonOptionalKeys<
+      TOwnProps,
+      React.ComponentProps<TAsComponent>
+    > extends true
     ? 0
-    : "with" extends keyof TAsComponentProps
+    : TAsComponent extends ForwardRefAsExoticComponent<any, any, any> // tslint:disable-line:no-any
     ? 0
     : (0 | 2)
-  : "with" extends keyof TAsComponentProps
+  : TAsComponent extends ForwardRefAsExoticComponent<any, any, any> // tslint:disable-line:no-any
   ? 1
   : (1 | 2)];
 
@@ -141,10 +148,7 @@ export type ForwardRefAsExoticComponent<
   TForwardsProps extends {}
 > = NonCallableForwardRefExoticComponentProps<TDefaultComponent, TOwnProps> & {
   <TAsComponent extends React.ReactType = TDefaultComponent>(
-    props: { as?: TAsComponent } & CompositeProps<
-      TOwnProps,
-      React.ComponentPropsWithoutRef<TAsComponent>
-    > &
+    props: { as?: TAsComponent } & CompositeProps<TOwnProps, TAsComponent> &
       React.RefAttributes<
         TAsComponent extends keyof JSX.IntrinsicElements
           ? FromReactType<TAsComponent>
@@ -152,14 +156,14 @@ export type ForwardRefAsExoticComponent<
       >,
   ): CompatibleWithForwardsProps<
     TForwardsProps,
-    React.ComponentPropsWithoutRef<TAsComponent>
+    React.ComponentProps<TAsComponent>
   > extends false
     ? never
     : React.ReactElement<any> | null;
 
   defaultProps: CompatibleWithForwardsProps<
     TForwardsProps,
-    React.ComponentPropsWithoutRef<TDefaultComponent>
+    React.ComponentProps<TDefaultComponent>
   > extends false
     ? never
     : { as: TDefaultComponent } & Partial<TOwnProps>;

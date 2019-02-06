@@ -303,7 +303,7 @@ describe("CompositeProps", () => {
   describe("disjoint required props", () => {
     type a = { a: string };
     type b = { b: string; c?: string };
-    type received = CompositeProps<a, b>;
+    type received = CompositeProps<a, React.ReactType<b>>;
 
     it("should allow b's required props at the root", () => {
       type supplied = { a: string; b: string };
@@ -324,7 +324,7 @@ describe("CompositeProps", () => {
   describe("union required props", () => {
     type a = { a: string };
     type b = { a: string; b?: string };
-    type received = CompositeProps<a, b>;
+    type received = CompositeProps<a, React.ReactType<b>>;
 
     it("should not allow b's required props to be omitted", () => {
       type supplied = { a: string };
@@ -340,7 +340,7 @@ describe("CompositeProps", () => {
   describe("disjoint, no required props", () => {
     type a = { a: string };
     type b = { b?: string; c?: string };
-    type received = CompositeProps<a, b>;
+    type received = CompositeProps<a, React.ReactType<b>>;
 
     it("should allow b's props at the root", () => {
       type supplied = { a: string; b?: string };
@@ -361,7 +361,7 @@ describe("CompositeProps", () => {
   describe("union required props with `a` index signature", () => {
     type a = { [K: string]: any; a: string }; // tslint:disable-line:no-any
     type b = { a: string; b?: string };
-    type received = CompositeProps<a, b>;
+    type received = CompositeProps<a, React.ReactType<b>>;
 
     it("should not allow b's required props to be omitted", () => {
       type supplied = { a: string };
@@ -377,7 +377,7 @@ describe("CompositeProps", () => {
   describe("disjoint required props with `a` index signature", () => {
     type a = { [K: string]: any; a: string }; // tslint:disable-line:no-any
     type b = { b: string };
-    type received = CompositeProps<a, b>;
+    type received = CompositeProps<a, React.ReactType<b>>;
 
     it("should not allow b's required props to be omitted", () => {
       type supplied = { a: string };
@@ -398,7 +398,7 @@ describe("CompositeProps", () => {
   describe("union required props with `b` index signature", () => {
     type a = { a: string };
     type b = { [K: string]: any; a: string }; // tslint:disable-line:no-any
-    type received = CompositeProps<a, b>;
+    type received = CompositeProps<a, React.ReactType<b>>;
 
     it("should not allow b's required props to be omitted", () => {
       type supplied = { a: string };
@@ -408,27 +408,6 @@ describe("CompositeProps", () => {
     it("should allow b's required props with the prop 'with'", () => {
       type supplied = { a: string; with: { a: string } };
       assert<DoesExtend<supplied, received>, true>();
-    });
-  });
-
-  describe("intersecting props with 1) string, and 2) index signature: string", () => {
-    type a = { a: string };
-    type b = { [K: string]: string | undefined; a: string };
-    type received = CompositeProps<a, b>;
-
-    it("should allow b's required props with the prop 'with'", () => {
-      type supplied = { a: string; with: { a: string } };
-      assert<DoesExtend<supplied, received>, true>();
-    });
-
-    it("should allow b's optional props with the prop 'with'", () => {
-      type supplied = { a: string; with: { a: string; b?: string } };
-      assert<DoesExtend<supplied, received>, true>();
-    });
-
-    it("should not allow b's required props to be omitted", () => {
-      type supplied = { a: string };
-      assert<DoesExtend<supplied, received>, false>();
     });
   });
 });
@@ -756,9 +735,9 @@ describe("forwardRefAs", () => {
           d={3}
           with={{
             a: "p-a",
-            c: 2,
+            c: 3,
             as: Grandparent,
-            with: { a: "g-b", b: 2 },
+            with: { a: "g-a", b: 2 },
           }}
         />
       );

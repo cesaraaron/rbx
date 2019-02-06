@@ -28,7 +28,6 @@ export class ModalContainer extends React.PureComponent<
   constructor(props: ModalContainerOwnProps) {
     super(props);
     if (canUseDOM()) {
-      // todo: use `as`
       this.el = this.document.createElement("div");
       if (props.containerClassName !== undefined) {
         this.el.className = props.containerClassName;
