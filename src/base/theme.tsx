@@ -2,7 +2,7 @@ import React from "react";
 import { HelpersProps, makeRootValidatingTransform } from "./helpers";
 import { ValidatingTransformFunction } from "./helpers/factory";
 
-export interface ThemeContextValue<T = HelpersProps> {
+export interface ThemeContextValue<T extends object = HelpersProps> {
   transform: ValidatingTransformFunction<T>;
 }
 
