@@ -1,12 +1,11 @@
 import PropTypes from "prop-types";
 
-import { Omit } from "../../types";
 import { DEFAULTS, VariablesDefinitions } from "./variables";
 
 export const makePropTypesFactory: MakePropTypesFactoryFunction = makePropTypes => variables =>
   makePropTypes({ ...DEFAULTS, ...variables });
 
-export type MakeValidatingTransformFunction<T> = (
+export type MakeValidatingTransformFunction<T extends object> = (
   variables?: Partial<VariablesDefinitions>,
 ) => (
   props: T,
@@ -14,7 +13,7 @@ export type MakeValidatingTransformFunction<T> = (
   location?: string,
 ) => ReturnType<TransformFunction<T>>;
 
-export const makeValidatingTransformFactory = <T extends {}>(
+export const makeValidatingTransformFactory = <T extends object>(
   makePropTypesFunc: ReturnType<MakePropTypesFactoryFunction>,
   transformFunc: TransformFunction<T>,
 ): MakeValidatingTransformFunction<T> => (variables = DEFAULTS) => {
@@ -34,7 +33,9 @@ export const makeValidatingTransformFactory = <T extends {}>(
   };
 };
 
-export const makeRootValidatingTransformFactory = <TTransformProps extends {}>(
+export const makeRootValidatingTransformFactory = <
+  TTransformProps extends object
+>(
   // tslint:disable-next-line:no-any
   ...makeValidatingTransformFuncs: MakeValidatingTransformFunction<any>[]
 ): MakeValidatingTransformFunction<TTransformProps> => (
@@ -62,13 +63,13 @@ type MakePropTypesFactoryFunction = (
   variables?: Partial<VariablesDefinitions>,
 ) => ReturnType<MakePropTypesFunction>;
 
-export type TransformFunction<TTransformProps extends {}> = <
+export type TransformFunction<TTransformProps extends object> = <
   TProps extends TTransformProps & { className?: string }
 >(
   props: TProps,
-) => Omit<TProps, keyof TTransformProps>;
+) => Pick<TProps, Exclude<keyof TProps, keyof TTransformProps>>;
 
-export type ValidatingTransformFunction<TTransformProps extends {}> = <
+export type ValidatingTransformFunction<TTransformProps extends object> = <
   TProps extends TTransformProps & { className?: string }
 >(
   props: TProps,
