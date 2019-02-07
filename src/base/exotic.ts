@@ -43,10 +43,17 @@ export type CompositeProps<
   TAsComponent extends React.ReactType
 > = {
   // ComponentPropsWithoutRef flattens the type.
-  0: TOwnProps & { with: React.ComponentProps<TAsComponent> };
-  1: TOwnProps & { with?: React.ComponentProps<TAsComponent> };
+  0: TOwnProps & {
+    with: Omit<React.ComponentProps<TAsComponent>, "key" | "ref">;
+  };
+  1: TOwnProps & {
+    with?: Omit<React.ComponentProps<TAsComponent>, "key" | "ref">;
+  };
   2: TOwnProps &
-    Omit<React.ComponentProps<TAsComponent>, keyof TOwnProps> & {
+    Omit<
+      React.ComponentProps<TAsComponent>,
+      keyof TOwnProps | "key" | "ref"
+    > & {
       with?: never;
     };
 }[HasRequiredKeys<React.ComponentProps<TAsComponent>> extends true
