@@ -10,6 +10,7 @@ import {
   KnownKeys,
   Lit,
   NonOptionalKeys,
+  Omit,
   OmitU,
   OptionalKeys,
   Prefer,
@@ -542,6 +543,34 @@ describe("NonOptionalKeys", () => {
     type supplied = { [k: string]: string | undefined; a?: string; b?: string };
     type received = NonOptionalKeys<supplied>;
     type expected = never;
+
+    assert<received, expected>();
+    assert<expected, received>();
+  });
+});
+
+describe("Omit", () => {
+  type supplied = { a: number; b: number; c: number };
+
+  it("omits one key", () => {
+    type received = Omit<supplied, "a">;
+    type expected = { b: number; c: number };
+
+    assert<received, expected>();
+    assert<expected, received>();
+  });
+
+  it("omits the union", () => {
+    type received = Omit<supplied, "a" | "b">;
+    type expected = { c: number };
+
+    assert<received, expected>();
+    assert<expected, received>();
+  });
+
+  it("doesn't omit on null", () => {
+    type received = Omit<supplied, null>;
+    type expected = supplied;
 
     assert<received, expected>();
     assert<expected, received>();
