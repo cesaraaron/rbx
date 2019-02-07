@@ -14,8 +14,8 @@ import {
  * required props that overlap with either required or optional TOwnProps.
  */
 export type HasIntersectingNonOptionalKeys<
-  TOwnProps extends {},
-  TAsComponentProps extends {}
+  TOwnProps extends object,
+  TAsComponentProps extends object
 > = Extract<
   NonOptionalKeys<TAsComponentProps>,
   keyof TOwnProps
@@ -27,8 +27,8 @@ export type HasIntersectingNonOptionalKeys<
  * Returns true if PReceived accepts PForwarded props, else false
  */
 export type CompatibleWithForwardsProps<
-  PForwards extends {},
-  PReceives extends {}
+  PForwards extends object,
+  PReceives extends object
 > = keyof PForwards extends undefined
   ? true
   : keyof PReceives extends undefined
@@ -53,7 +53,7 @@ export type CompatibleWithForwardsProps<
  *   --> return 0
  */
 export type CompositeProps<
-  TOwnProps extends {},
+  TOwnProps extends object,
   TAsComponent extends React.ReactType
 > = {
   // ComponentPropsWithoutRef flattens the type.
@@ -82,7 +82,7 @@ export type CompositeProps<
  */
 export type NonCallableForwardRefExoticComponentProps<
   TDefaultComponent extends React.ReactType,
-  TOwnProps extends {}
+  TOwnProps extends object
 > = Pick<
   React.ForwardRefExoticComponent<TOwnProps & { as: TDefaultComponent }>,
   keyof React.ForwardRefExoticComponent<TOwnProps & { as: TDefaultComponent }>
@@ -91,8 +91,8 @@ export type NonCallableForwardRefExoticComponentProps<
 // tslint:disable:no-any
 export type ForwardRefAsExoticComponent<
   TDefaultComponent extends React.ReactType,
-  TOwnProps extends {},
-  TForwardsProps extends {}
+  TOwnProps extends object,
+  TForwardsProps extends object
 > = NonCallableForwardRefExoticComponentProps<TDefaultComponent, TOwnProps> & {
   <TAsComponent extends React.ReactType = TDefaultComponent>(
     props: { as?: TAsComponent } & CompositeProps<TOwnProps, TAsComponent> &
@@ -122,8 +122,8 @@ export type ForwardRefAsExoticComponent<
 
 export function forwardRefAs<
   TDefaultComponent extends React.ReactType,
-  TOwnProps extends {},
-  TForwardsProps extends {}
+  TOwnProps extends object,
+  TForwardsProps extends object
 >(
   Component: React.RefForwardingComponent<
     any,

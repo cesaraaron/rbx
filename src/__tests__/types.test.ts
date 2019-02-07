@@ -9,9 +9,9 @@ import {
   KeysOfUnion,
   KnownKeys,
   Lit,
+  Merge,
   NonOptionalKeys,
   Omit,
-  OmitU,
   OptionalKeys,
   Prefer,
   RequiredKeys,
@@ -326,11 +326,33 @@ describe("OptionalKeys", () => {
   });
 });
 
-describe("OmitU", () => {
+describe("Merge", () => {
+  it("should support the identity property", () => {
+    type supplied = { a: string };
+    type received = Merge<supplied>;
+    type expected = supplied;
+
+    assert<received, expected>();
+    assert<expected, received>();
+  });
+
+  it("should merge required, optional, and index signature", () => {
+    type supplied = { a: string } & { b?: string } & {
+      [K: string]: string | undefined;
+    };
+    type received = Merge<supplied>;
+    type expected = { [K: string]: string | undefined; a: string; b?: string };
+
+    assert<received, expected>();
+    assert<expected, received>();
+  });
+});
+
+describe("Omit", () => {
   describe("singleton", () => {
     it("should omit one key from singleton", () => {
       type supplied = { a: number; b: number; c: number };
-      type received = OmitU<supplied, "a">;
+      type received = Omit<supplied, "a">;
       type expected = { b: number; c: number };
 
       assert<received, expected>();
@@ -339,7 +361,7 @@ describe("OmitU", () => {
 
     it("should omit the union of keys from singleton", () => {
       type supplied = { a: number; b: number; c: number };
-      type received = OmitU<supplied, "a" | "b">;
+      type received = Omit<supplied, "a" | "b">;
       type expected = { c: number };
 
       assert<received, expected>();
@@ -348,26 +370,51 @@ describe("OmitU", () => {
 
     it("should return same type as singleton when key not present", () => {
       type supplied = { a: string };
-      type received = OmitU<supplied, "b">;
+      type received = Omit<supplied, "b">;
 
       assert<received, supplied>();
       assert<supplied, received>();
     });
 
+    it("should maintain optionals", () => {
+      type supplied = { a?: string };
+      type received = Omit<supplied, null>;
+
+      assert<received, supplied>();
+      assert<supplied, received>();
+    });
+
+    it("should maintain index signature", () => {
+      type supplied = { [K: string]: string; a: string };
+      type received = Omit<supplied, "a">;
+      type expected = { [K: string]: string };
+
+      assert<received, expected>();
+      assert<expected, received>();
+    });
+
     it("should not omit on null", () => {
       type supplied = { a: number; b: number; c: number };
-      type received = OmitU<supplied, null>;
+      type received = Omit<supplied, null>;
       type expected = supplied;
 
       assert<received, expected>();
       assert<expected, received>();
+    });
+
+    it("should not omit on undefined", () => {
+      type supplied = { a: number; b: number };
+      type received = Omit<supplied, undefined>;
+
+      assert<received, supplied>();
+      assert<supplied, received>();
     });
   });
 
   describe("union", () => {
     it("should omit one key from union", () => {
       type supplied = { a: string; c: number } | { b: string; c: number };
-      type received = OmitU<supplied, "c">;
+      type received = Omit<supplied, "c">;
       type expected = { a: string } | { b: string };
 
       assert<received, expected>();
@@ -378,7 +425,7 @@ describe("OmitU", () => {
       type supplied =
         | { a: number; d: number; e: number }
         | { b: number; d: number; e: number };
-      type received = OmitU<supplied, "d" | "e">;
+      type received = Omit<supplied, "d" | "e">;
       type expected = { a: number } | { b: number };
 
       assert<received, expected>();
@@ -387,15 +434,40 @@ describe("OmitU", () => {
 
     it("should return same type as union when key not present", () => {
       type supplied = { a: string } | { b: string };
-      type received = OmitU<supplied, "c">;
+      type received = Omit<supplied, "c">;
 
       assert<received, supplied>();
       assert<supplied, received>();
     });
 
+    it("should maintain optionals", () => {
+      type supplied = { a?: string } | { b?: string };
+      type received = Omit<supplied, null>;
+
+      assert<received, supplied>();
+      assert<supplied, received>();
+    });
+
+    it("should maintain index signature", () => {
+      type supplied = { [K: string]: string; a: string } | { b: string };
+      type received = Omit<supplied, "a">;
+      type expected = { [K: string]: string } | { b: string };
+
+      assert<received, expected>();
+      assert<expected, received>();
+    });
+
     it("should not omit on null", () => {
       type supplied = { a: number; b: number } | { c: number; d: number };
-      type received = OmitU<supplied, null>;
+      type received = Omit<supplied, null>;
+
+      assert<received, supplied>();
+      assert<supplied, received>();
+    });
+
+    it("should not omit on undefined", () => {
+      type supplied = { a: number; b: number } | { c: number; d: number };
+      type received = Omit<supplied, undefined>;
 
       assert<received, supplied>();
       assert<supplied, received>();
@@ -403,7 +475,7 @@ describe("OmitU", () => {
 
     it("should exclude key from union with key optionally present", () => {
       type supplied = { a: string; c: number } | { b: string };
-      type received = OmitU<supplied, "c">;
+      type received = Omit<supplied, "c">;
       type expected = { a: string } | { b: string };
 
       assert<received, expected>();
@@ -543,34 +615,6 @@ describe("NonOptionalKeys", () => {
     type supplied = { [k: string]: string | undefined; a?: string; b?: string };
     type received = NonOptionalKeys<supplied>;
     type expected = never;
-
-    assert<received, expected>();
-    assert<expected, received>();
-  });
-});
-
-describe("Omit", () => {
-  type supplied = { a: number; b: number; c: number };
-
-  it("omits one key", () => {
-    type received = Omit<supplied, "a">;
-    type expected = { b: number; c: number };
-
-    assert<received, expected>();
-    assert<expected, received>();
-  });
-
-  it("omits the union", () => {
-    type received = Omit<supplied, "a" | "b">;
-    type expected = { c: number };
-
-    assert<received, expected>();
-    assert<expected, received>();
-  });
-
-  it("doesn't omit on null", () => {
-    type received = Omit<supplied, null>;
-    type expected = supplied;
 
     assert<received, expected>();
     assert<expected, received>();
