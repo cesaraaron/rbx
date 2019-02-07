@@ -1,6 +1,7 @@
 import React from "react";
 
 import {
+  AnyKeyType,
   FromReactType,
   HasIndexSignature,
   HasIntersectingRequiredKeys,
@@ -19,6 +20,15 @@ import {
 // Always passes when the test is run,
 // but only compiles if `T` is a subtype of`U`.
 export const assert = <T, U extends T>() => undefined;
+
+describe("AnyKeyType", () => {
+  it("should be extended by string, number, or symbol", () => {
+    assert<AnyKeyType, string>();
+    assert<AnyKeyType, number>();
+    assert<AnyKeyType, symbol>();
+    assert<string | number | symbol, AnyKeyType>();
+  });
+});
 
 describe("FromReactType", () => {
   it("should map 'div' => HTMLDivElement", () => {

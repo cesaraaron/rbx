@@ -1,6 +1,11 @@
 import React from "react";
 
 /**
+ * A simplification on supplying `string | number | symbol` (any key type)
+ */
+export type AnyKeyType = keyof any; // tslint:disable-line:no-any
+
+/**
  * Maps a keyof JSX.IntrinsicElement (e.g. 'div' or 'svg') or a
  * React.ComponentType to it's type.
  *
@@ -78,7 +83,7 @@ export type Merge<P> = { [K in keyof P]: P[K] };
  */
 export type Omit<
   T extends object,
-  K extends string | number | symbol | null | undefined
+  K extends AnyKeyType | null | undefined
 > = T extends any // tslint:disable-line:no-any
   ? Merge<
       Pick<T, Exclude<KnownKeys<T>, K>> &
