@@ -7,7 +7,6 @@ import {
   CompositeProps,
   forwardRefAs,
   ForwardRefAsExoticComponent,
-  HasIntersectingRequiredKeys,
 } from "../exotic";
 
 /**
@@ -17,80 +16,6 @@ import {
 const assert = <T, U extends T>() => undefined;
 
 type DoesExtend<Supplied, Received> = Supplied extends Received ? true : false;
-
-describe("HasIntersectingRequiredKeys", () => {
-  it("should be false on empty 'a', 'b' with required", () => {
-    type a = {};
-    type b = { a: string };
-    type supplied = HasIntersectingRequiredKeys<a, b>;
-    type expected = false;
-
-    assert<supplied, expected>();
-  });
-
-  it("should be false on empty 'a', 'b' with optional", () => {
-    type a = {};
-    type b = { a?: string };
-    type supplied = HasIntersectingRequiredKeys<a, b>;
-    type expected = false;
-
-    assert<supplied, expected>();
-  });
-
-  it("should be false on 'a' with required, empty 'b'", () => {
-    type a = { a: string };
-    type b = {};
-    type supplied = HasIntersectingRequiredKeys<a, b>;
-    type expected = false;
-
-    assert<supplied, expected>();
-  });
-
-  it("should be false on 'a' with optional, empty 'b'", () => {
-    type a = { a?: string };
-    type b = {};
-    type supplied = HasIntersectingRequiredKeys<a, b>;
-    type expected = false;
-
-    assert<supplied, expected>();
-  });
-
-  it("should be true when 'a' and 'b' have intersecting required", () => {
-    type a = { a: string };
-    type b = { a: string };
-    type supplied = HasIntersectingRequiredKeys<a, b>;
-    type expected = true;
-
-    assert<supplied, expected>();
-  });
-
-  it("should be true when 'a' has optional, 'b' has required", () => {
-    type a = { a?: string };
-    type b = { a: string };
-    type supplied = HasIntersectingRequiredKeys<a, b>;
-    type expected = true;
-
-    assert<supplied, expected>();
-  });
-
-  it("should be false when 'a' has required, 'b' has optional", () => {
-    type a = { a: string };
-    type b = { a?: string };
-    type supplied = HasIntersectingRequiredKeys<a, b>;
-    type expected = false;
-
-    assert<supplied, expected>();
-  });
-
-  it("should be false when 'a', 'b' have optional", () => {
-    type a = { a?: string };
-    type b = { a?: string };
-    type supplied = HasIntersectingRequiredKeys<a, b>;
-    type expected = false;
-
-    assert<supplied, expected>();
-  });
-});
 
 // tslint:disable:no-reserved-keywords
 describe("CompositeProps", () => {

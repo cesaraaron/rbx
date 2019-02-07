@@ -1,19 +1,13 @@
 import React from "react";
 
-import { FromReactType, HasRequiredKeys, Omit, RequiredKeys } from "../types";
+import {
+  FromReactType,
+  HasIntersectingRequiredKeys,
+  HasRequiredKeys,
+  Omit,
+} from "../types";
 
 // tslint:disable:no-reserved-keywords
-
-/**
- * Returns `true` or `false` depending on whether `TAsComponentProps` has
- * required props that overlap with either required or optional TOwnProps.
- */
-export type HasIntersectingRequiredKeys<
-  TOwnProps extends object,
-  TAsComponentProps extends object
-> = Extract<RequiredKeys<TAsComponentProps>, keyof TOwnProps> extends undefined
-  ? false
-  : true;
 
 /**
  * Returns true if PReceived accepts PForwarded props, else false

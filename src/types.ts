@@ -35,6 +35,15 @@ export type HasIndexSignature<P extends object> = (
   : false;
 
 /**
+ * Returns `true` or `false` depending on whether `T` has
+ * required keys that overlap with the keys of `P`.
+ */
+export type HasIntersectingRequiredKeys<
+  P extends object,
+  T extends object
+> = Extract<RequiredKeys<T>, keyof P> extends undefined ? false : true;
+
+/**
  * Extracts the keys of a union type
  */
 // tslint:disable-next-line:no-any
