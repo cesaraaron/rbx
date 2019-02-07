@@ -3,14 +3,12 @@ import React from "react";
 import {
   FromReactType,
   HasIndexSignature,
-  HasNonOptionalKeys,
   HasOptionalKeys,
   HasRequiredKeys,
   KeysOfUnion,
   KnownKeys,
   Lit,
   Merge,
-  NonOptionalKeys,
   Omit,
   OptionalKeys,
   Prefer,
@@ -280,6 +278,24 @@ describe("OptionalKeys", () => {
       assert<supplied, expected>();
       assert<expected, supplied>();
     });
+
+    it("should identify an optional any key", () => {
+      type a = { a?: any }; // tslint:disable-line:no-any
+      type supplied = OptionalKeys<a>;
+      type expected = "a";
+
+      assert<supplied, expected>();
+      assert<expected, supplied>();
+    });
+
+    it("should not identify a non-optional any key", () => {
+      type a = { a: any }; // tslint:disable-line:no-any
+      type supplied = OptionalKeys<a>;
+      type expected = never;
+
+      assert<supplied, expected>();
+      assert<expected, supplied>();
+    });
   });
 
   describe("index signature", () => {
@@ -545,78 +561,22 @@ describe("RequiredKeys", () => {
     assert<received, expected>();
     assert<expected, received>();
   });
-});
 
-/** Legacy */
-describe("HasNonOptionalKeys", () => {
-  it("should be true when a non-optional key exists", () => {
-    type a = { a: string };
-    type supplied = HasNonOptionalKeys<a>;
-    type expected = true;
-
-    assert<supplied, expected>();
-  });
-
-  it("should be false when keys are optional", () => {
-    type a = { a?: string };
-    type supplied = HasNonOptionalKeys<a>;
-    type expected = false;
-
-    assert<supplied, expected>();
-  });
-
-  it("should be false when no keys are present", () => {
-    type a = {};
-    type supplied = HasNonOptionalKeys<a>;
-    type expected = false;
-
-    assert<supplied, expected>();
-  });
-
-  it("should be true when keys are mixed", () => {
-    type a = { a: string; b?: string };
-    type supplied = HasNonOptionalKeys<a>;
-    type expected = true;
-
-    assert<supplied, expected>();
-  });
-});
-
-describe("NonOptionalKeys", () => {
-  it("should return 'never' when no required keys", () => {
-    type supplied = { a?: string; b?: string; c?: string };
-    type received = NonOptionalKeys<supplied>;
+  it("should not identify an optional any key", () => {
+    type a = { a?: any }; // tslint:disable-line:no-any
+    type supplied = RequiredKeys<a>;
     type expected = never;
 
-    assert<received, expected>();
-    assert<expected, received>();
+    assert<supplied, expected>();
+    assert<expected, supplied>();
   });
 
-  it("should return non-optional keys", () => {
-    type supplied = { a?: string; b: string; c: string };
-    type received = NonOptionalKeys<supplied>;
-    type expected = "b" | "c";
+  it("should identify a non-optional any key", () => {
+    type a = { a: any }; // tslint:disable-line:no-any
+    type supplied = RequiredKeys<a>;
+    type expected = "a";
 
-    assert<received, expected>();
-    assert<expected, received>();
-  });
-
-  it("should return required keys with an index signature", () => {
-    // tslint:disable-next-line: no-any
-    type supplied = { [K: string]: any; a: string; b: string };
-    type received = NonOptionalKeys<supplied>;
-    type expected = "a" | "b";
-
-    assert<received, expected>();
-    assert<expected, received>();
-  });
-
-  it("should return never no required keys and an index signature", () => {
-    type supplied = { [k: string]: string | undefined; a?: string; b?: string };
-    type received = NonOptionalKeys<supplied>;
-    type expected = never;
-
-    assert<received, expected>();
-    assert<expected, received>();
+    assert<supplied, expected>();
+    assert<expected, supplied>();
   });
 });

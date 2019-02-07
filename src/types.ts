@@ -72,14 +72,13 @@ export type Omit<
   K extends string | number | symbol | null | undefined
 > = T extends any // tslint:disable-line:no-any
   ? Merge<
-      { [PR in Exclude<RequiredKeys<T>, K>]: T[PR] } &
-        { [PO in Exclude<OptionalKeys<T>, K>]?: T[PO] } &
+      Pick<T, Exclude<KnownKeys<T>, K>> &
         Pick<T, Exclude<keyof T, KnownKeys<T>>>
     >
   : never;
 
 type _OptionalKeys<A extends object, B extends object> = {
-  [K in KnownKeys<A> & KnownKeys<B>]: A[K] extends B[K] ? never : K
+  [K in KnownKeys<A> & KnownKeys<B>]: Pick<A, K> extends Pick<B, K> ? never : K
 };
 
 /**
@@ -116,22 +115,5 @@ export type HasRequiredKeys<T extends object> = RequiredKeys<T> extends never
  * Returns true if T has at least one optional key, else false
  */
 export type HasOptionalKeys<T extends object> = OptionalKeys<T> extends never
-  ? false
-  : true;
-
-/** Legacy */
-/**
- * Returns those keys which are non-optional
- */
-export type NonOptionalKeys<P extends object> = Required<
-  { [K in KnownKeys<P>]: undefined extends P[K] ? never : K }
->[KnownKeys<P>];
-
-/**
- * Returns true if P has at least one non-optional keys, else false
- */
-export type HasNonOptionalKeys<P extends object> = NonOptionalKeys<
-  P
-> extends never
   ? false
   : true;

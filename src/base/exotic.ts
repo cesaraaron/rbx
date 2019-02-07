@@ -1,11 +1,6 @@
 import React from "react";
 
-import {
-  FromReactType,
-  HasNonOptionalKeys,
-  NonOptionalKeys,
-  Omit,
-} from "../types";
+import { FromReactType, HasRequiredKeys, Omit, RequiredKeys } from "../types";
 
 // tslint:disable:no-reserved-keywords
 
@@ -13,13 +8,10 @@ import {
  * Returns `true` or `false` depending on whether `TAsComponentProps` has
  * required props that overlap with either required or optional TOwnProps.
  */
-export type HasIntersectingNonOptionalKeys<
+export type HasIntersectingRequiredKeys<
   TOwnProps extends object,
   TAsComponentProps extends object
-> = Extract<
-  NonOptionalKeys<TAsComponentProps>,
-  keyof TOwnProps
-> extends undefined
+> = Extract<RequiredKeys<TAsComponentProps>, keyof TOwnProps> extends undefined
   ? false
   : true;
 
@@ -63,8 +55,8 @@ export type CompositeProps<
     Omit<React.ComponentProps<TAsComponent>, keyof TOwnProps> & {
       with?: never;
     };
-}[HasNonOptionalKeys<React.ComponentProps<TAsComponent>> extends true
-  ? HasIntersectingNonOptionalKeys<
+}[HasRequiredKeys<React.ComponentProps<TAsComponent>> extends true
+  ? HasIntersectingRequiredKeys<
       TOwnProps,
       React.ComponentProps<TAsComponent>
     > extends true
