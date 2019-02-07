@@ -120,7 +120,7 @@ export const hasProperties = <T extends object>(
 export const makeRandomString = (length: number = 8) =>
   crypto.randomBytes(length).toString("hex");
 
-export const validatePropType = <T extends {}>(
+export const validatePropType = <T extends object>(
   propTypes: React.WeakValidationMap<T>,
   propName: string,
   options: {
@@ -164,7 +164,7 @@ export const validatePropType = <T extends {}>(
     });
   });
 
-export const validateBoolPropType = <T extends {}>(
+export const validateBoolPropType = <T extends object>(
   propTypes: React.WeakValidationMap<T>,
   propName: string,
   extras?: Partial<T>,
@@ -174,7 +174,7 @@ export const validateBoolPropType = <T extends {}>(
     { value: "string", valid: false, extras },
   ]);
 
-export const validateNumberPropType = <T extends {}>(
+export const validateNumberPropType = <T extends object>(
   propTypes: React.WeakValidationMap<T>,
   propName: string,
   extras?: Partial<T>,
@@ -184,7 +184,7 @@ export const validateNumberPropType = <T extends {}>(
     { value: "string", valid: false, extras },
   ]);
 
-export const validateOneOfPropType = <T extends {}>(
+export const validateOneOfPropType = <T extends object>(
   propTypes: React.WeakValidationMap<T>,
   propName: string,
   choices: (string | number)[],
@@ -195,7 +195,7 @@ export const validateOneOfPropType = <T extends {}>(
     { value: "__UNKNOWN", valid: false, extras },
   ]);
 
-export const validateRefPropType = <T extends {}>(
+export const validateRefPropType = <T extends object>(
   propTypes: React.WeakValidationMap<T>,
   propName: string,
   extras?: Partial<T>,
@@ -206,7 +206,7 @@ export const validateRefPropType = <T extends {}>(
     { value: "string", valid: false, extras }, // deprecated, won't support
   ]);
 
-export const validateStringPropType = <T extends {}>(
+export const validateStringPropType = <T extends object>(
   propTypes: React.WeakValidationMap<T>,
   propName: string,
   extras?: Partial<T>,
@@ -216,7 +216,7 @@ export const validateStringPropType = <T extends {}>(
     { value: 1, valid: false, extras },
   ]);
 
-export const validateStringOrNumberPropType = <T extends {}>(
+export const validateStringOrNumberPropType = <T extends object>(
   propTypes: React.WeakValidationMap<T>,
   propName: string,
   extras?: Partial<T>,
