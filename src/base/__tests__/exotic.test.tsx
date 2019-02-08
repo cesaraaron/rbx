@@ -5,8 +5,10 @@ import React from "react";
 import {
   CompatibleWithForwardsProps,
   CompositeProps,
+  FinalAsReactType,
   forwardRefAs,
   ForwardRefAsExoticComponent,
+  ForwardRefAsExoticComponentRefAttributes,
 } from "../exotic";
 
 /**
@@ -436,6 +438,7 @@ describe("forwardRefAs", () => {
       const node = (
         <Child as={Parent} a="c-a" d={3} with={{ a: "p-a", c: 3 }} />
       );
+
       const rootWrapper = Enzyme.shallow(node);
       const nestedWrapper = rootWrapper.dive();
       expect(nestedWrapper.hasClass("C-A-c-a")).toBe(true);
@@ -469,6 +472,153 @@ describe("forwardRefAs", () => {
       expect(grandParentWrapper.hasClass("P-C-3")).toBe(true);
       expect(grandParentWrapper.hasClass("G-A-g-a")).toBe(true);
       expect(grandParentWrapper.hasClass("G-B-2")).toBe(true);
+    });
+  });
+});
+
+describe("FinalAsReactType", () => {
+  describe("non-nested", () => {
+    it("should extract keyof JSX.IntrinsicElements 'as'", () => {
+      type supplied = { as: "div" };
+      type received = FinalAsReactType<supplied>;
+      type expected = "div";
+
+      assert<expected, received>();
+      assert<received, expected>();
+    });
+
+    it("should extract non-ForwardRefAsExoticComponent type 'as'", () => {
+      type ComponentType = React.FC<{ foo: "foo" }>;
+      type supplied = { as: ComponentType };
+      type received = FinalAsReactType<supplied>;
+      type expected = ComponentType;
+
+      assert<expected, received>();
+      assert<received, expected>();
+    });
+  });
+
+  describe("nested", () => {
+    it("should extract ForwardRefAsExoticComponent type's default 'as'", () => {
+      type ComponentType = ForwardRefAsExoticComponent<"div">;
+
+      type supplied = { as: ComponentType };
+      type received = FinalAsReactType<supplied>;
+      type expected = HTMLDivElement;
+
+      assert<expected, received>();
+      assert<received, expected>();
+    });
+
+    it("should extract ForwardRefAsExoticComponent 'with.as'", () => {
+      type ComponentType = ForwardRefAsExoticComponent<"div">;
+
+      type supplied = { as: ComponentType; with: { as: "span" } };
+      type received = FinalAsReactType<supplied>;
+      type expected = "span";
+
+      assert<expected, received>();
+      assert<received, expected>();
+    });
+  });
+
+  describe("deeply nested", () => {
+    it("should extract nested ForwardRefAsExoticComponent default as'", () => {
+      type ComponentType1 = ForwardRefAsExoticComponent<"div">;
+      type ComponentType2 = ForwardRefAsExoticComponent<"span">;
+
+      type supplied = { as: ComponentType1; with: { as: ComponentType2 } };
+      type received = FinalAsReactType<supplied>;
+      type expected = HTMLSpanElement;
+
+      assert<expected, received>();
+      assert<received, expected>();
+    });
+
+    it("should extract nested ForwardRefAsExoticComponent 'with.as'", () => {
+      type ComponentType1 = ForwardRefAsExoticComponent<"div">;
+      type ComponentType2 = ForwardRefAsExoticComponent<"span">;
+
+      type supplied = {
+        as: ComponentType1;
+        with: { as: ComponentType2; with: { as: "table" } };
+      };
+      type received = FinalAsReactType<supplied>;
+      type expected = "table";
+
+      assert<expected, received>();
+      assert<received, expected>();
+    });
+  });
+});
+
+describe("ForwardRefAsExoticComponentRefAttributes", () => {
+  describe("non-nested", () => {
+    it("should extract keyof JSX.IntrinsicElements 'as'", () => {
+      type supplied = { as: "div" };
+      type received = ForwardRefAsExoticComponentRefAttributes<supplied>;
+      type expected = React.RefAttributes<HTMLDivElement>;
+
+      assert<expected, received>();
+      assert<received, expected>();
+    });
+
+    it("should extract non-ForwardRefAsExoticComponent type 'as'", () => {
+      type ComponentType = React.FC<{ foo: "foo" }>;
+      type supplied = { as: ComponentType };
+      type received = ForwardRefAsExoticComponentRefAttributes<supplied>;
+      type expected = React.RefAttributes<ComponentType>;
+
+      assert<expected, received>();
+      assert<received, expected>();
+    });
+  });
+
+  describe("nested", () => {
+    type ComponentType = ForwardRefAsExoticComponent<"div">;
+
+    it("should extract ForwardRefAsExoticComponent type's default 'as'", () => {
+      type supplied = { as: ComponentType };
+      type received = ForwardRefAsExoticComponentRefAttributes<supplied>;
+      type expected = React.RefAttributes<HTMLDivElement>;
+
+      assert<expected, received>();
+      assert<received, expected>();
+    });
+
+    it("should extract ForwardRefAsExoticComponent 'with.as'", () => {
+      type supplied = { as: ComponentType; with: { as: "span" } };
+      type received = ForwardRefAsExoticComponentRefAttributes<supplied>;
+      type expected = React.RefAttributes<HTMLSpanElement>;
+
+      assert<expected, received>();
+      assert<received, expected>();
+    });
+  });
+
+  describe("deeply nested", () => {
+    type ComponentType1 = ForwardRefAsExoticComponent<"div">;
+    type ComponentType2 = ForwardRefAsExoticComponent<"span">;
+
+    it("should extract nested ForwardRefAsExoticComponent default as'", () => {
+      type supplied = { as: ComponentType1; with: { as: ComponentType2 } };
+      type received = ForwardRefAsExoticComponentRefAttributes<supplied>;
+      type expected = React.RefAttributes<HTMLSpanElement>;
+
+      assert<expected, received>();
+      assert<received, expected>();
+    });
+
+    it("should extract nested ForwardRefAsExoticComponent 'with.as'", () => {
+      type supplied = {
+        as: ComponentType1;
+        with: { as: ComponentType2; with: { as: "table" } };
+      };
+      type received = ForwardRefAsExoticComponentRefAttributes<supplied>;
+      type expected = React.RefAttributes<HTMLTableElement>;
+
+      assert<expected, received>();
+      assert<received, expected>();
     });
   });
 });

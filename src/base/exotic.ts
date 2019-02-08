@@ -62,12 +62,40 @@ export type CompositeProps<
       React.ComponentProps<TAsComponent>
     > extends true
     ? 0
-    : TAsComponent extends ForwardRefAsExoticComponent<any, any, any> // tslint:disable-line:no-any
+    : TAsComponent extends ForwardRefAsExoticComponent<any> // tslint:disable-line:no-any
     ? 0
     : (0 | 2)
-  : TAsComponent extends ForwardRefAsExoticComponent<any, any, any> // tslint:disable-line:no-any
+  : TAsComponent extends ForwardRefAsExoticComponent<any> // tslint:disable-line:no-any
   ? 1
   : (1 | 2)];
+
+/**
+ * Extracts the React.ReactType from a set of props `P`.
+ * If the 'as' is a ForwardRefAsExoticType component, search can continue
+ * recursively through its 'with' prop.
+ */
+export type FinalAsReactType<
+  P extends { as?: React.ReactType },
+  T extends React.ReactType = P extends { as?: infer U } ? U : never
+> = {
+  0: T;
+  1: P extends { with: { as?: React.ReactType } }
+    ? FinalAsReactType<P["with"]>
+    : T extends ForwardRefAsExoticComponent<infer V>
+    ? FromReactType<V>
+    : never;
+}[T extends keyof JSX.IntrinsicElements
+  ? 0
+  : T extends ForwardRefAsExoticComponent<any> // tslint:disable-line:no-any
+  ? 1
+  : 0];
+
+/**
+ * Creates ref attributes for the final 'as' type in props
+ */
+export type ForwardRefAsExoticComponentRefAttributes<
+  P extends { as?: React.ReactType }
+> = React.RefAttributes<FromReactType<FinalAsReactType<P>>>;
 
 /**
  * This is used to copy all properties from React.ForwardRefExoticComponent
@@ -84,18 +112,11 @@ export type NonCallableForwardRefExoticComponentProps<
 // tslint:disable:no-any
 export type ForwardRefAsExoticComponent<
   TDefaultComponent extends React.ReactType,
-  TOwnProps extends object,
-  TForwardsProps extends object
+  TOwnProps extends object = {},
+  TForwardsProps extends object = {}
 > = NonCallableForwardRefExoticComponentProps<TDefaultComponent, TOwnProps> & {
   <TAsComponent extends React.ReactType = TDefaultComponent>(
-    props: { as?: TAsComponent } & CompositeProps<TOwnProps, TAsComponent> &
-      React.RefAttributes<
-        TAsComponent extends keyof JSX.IntrinsicElements
-          ? FromReactType<TAsComponent>
-          : TAsComponent extends ForwardRefAsExoticComponent<infer U, any, any> // tslint:disable-line:no-any
-          ? U
-          : TAsComponent
-      >,
+    props: { as?: TAsComponent } & CompositeProps<TOwnProps, TAsComponent>,
   ): CompatibleWithForwardsProps<
     TForwardsProps,
     React.ComponentProps<TAsComponent>

@@ -12,7 +12,7 @@ export type AnyKeyType = keyof any; // tslint:disable-line:no-any
  * For example:
  *   FromReactType<"div"> ==> HTMLDivElement
  *   FromReactType<"svg"> ==> SVGSVGElement
- *   FromReactType<React.FC<P>. ==> React.FC<P>
+ *   FromReactType<React.FC<P>> ==> React.FC<P>
  */
 export type FromReactType<
   T extends React.ReactType
