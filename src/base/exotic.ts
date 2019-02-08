@@ -38,10 +38,10 @@ export type CompatibleWithForwardsProps<
  * Does TAsComponentProps have required keys that do intersect with TOwnProps?
  *   --> return 0
  */
-export type CompositeProps<
+export type ForwardRefAsExoticComponentPropsWithoutRef<
   TOwnProps extends object,
   TAsComponent extends React.ReactType
-> = {
+> = { as?: TAsComponent } & {
   // ComponentPropsWithoutRef flattens the type.
   0: TOwnProps & {
     with: Omit<React.ComponentProps<TAsComponent>, "key" | "ref">;
@@ -69,26 +69,32 @@ export type CompositeProps<
   ? 1
   : (1 | 2)];
 
+export type ForwardRefAsExoticComponentPropsWithRef<
+  TOwnProps extends object,
+  TAsComponent extends React.ReactType
+> = WithRef<
+  ForwardRefAsExoticComponentPropsWithoutRef<TOwnProps, TAsComponent>
+>;
+
 /**
  * Extracts the React.ReactType from a set of props `P`.
  * If the 'as' is a ForwardRefAsExoticType component, search can continue
  * recursively through its 'with' prop.
  */
-export type FinalAsReactType<
-  P extends { as?: React.ReactType },
-  T extends React.ReactType = P extends { as?: infer U } ? U : never
-> = {
-  0: T;
-  1: P extends { with: { as?: React.ReactType } }
-    ? FinalAsReactType<P["with"]>
-    : T extends ForwardRefAsExoticComponent<infer V>
-    ? FromReactType<V>
+export type FinalAsReactType<P extends { as?: React.ReactType }> = {
+  0: P extends { as?: infer U } ? U : never;
+  1: P extends { as?: infer U }
+    ? P extends { with: { as?: React.ReactType } }
+      ? FinalAsReactType<P["with"]>
+      : U extends ForwardRefAsExoticComponent<infer W>
+      ? FromReactType<W>
+      : U
     : never;
-}[T extends keyof JSX.IntrinsicElements
-  ? 0
-  : T extends ForwardRefAsExoticComponent<any> // tslint:disable-line:no-any
-  ? 1
-  : 0];
+}[P extends { as?: infer U } // Mapped type prevents flattening / circular ref
+  ? U extends ForwardRefAsExoticComponent<any> // tslint:disable-line:no-any
+    ? 1
+    : 0
+  : never]; // tslint:disable-line:no-any
 
 /**
  * Creates ref attributes for the final 'as' type in props
@@ -96,6 +102,9 @@ export type FinalAsReactType<
 export type ForwardRefAsExoticComponentRefAttributes<
   P extends { as?: React.ReactType }
 > = React.RefAttributes<FromReactType<FinalAsReactType<P>>>;
+
+export type WithRef<P extends { as?: React.ReactType }> = P &
+  React.RefAttributes<FromReactType<FinalAsReactType<P>>>;
 
 /**
  * This is used to copy all properties from React.ForwardRefExoticComponent
@@ -116,7 +125,10 @@ export type ForwardRefAsExoticComponent<
   TForwardsProps extends object = {}
 > = NonCallableForwardRefExoticComponentProps<TDefaultComponent, TOwnProps> & {
   <TAsComponent extends React.ReactType = TDefaultComponent>(
-    props: { as?: TAsComponent } & CompositeProps<TOwnProps, TAsComponent>,
+    props: { as?: TAsComponent } & ForwardRefAsExoticComponentPropsWithRef<
+      TOwnProps,
+      TAsComponent
+    >,
   ): CompatibleWithForwardsProps<
     TForwardsProps,
     React.ComponentProps<TAsComponent>
