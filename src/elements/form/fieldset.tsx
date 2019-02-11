@@ -8,9 +8,14 @@ export type FieldsetModifierProps = Partial<{
   disabled: boolean;
 }>;
 
-export type FieldsetProps = HelpersProps & FieldsetModifierProps;
+export type FieldsetOwnProps = HelpersProps & FieldsetModifierProps;
+export type FieldsetForwardsProps = { className: string };
 
-export const Fieldset = forwardRefAs<FieldsetProps>(
+export const Fieldset = forwardRefAs<
+  "fieldset",
+  FieldsetOwnProps,
+  FieldsetForwardsProps
+>(
   ({ disabled, ...rest }, ref) => (
     <Generic disabled={disabled} ref={ref} {...rest} />
   ),
